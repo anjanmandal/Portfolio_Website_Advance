@@ -6,10 +6,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import AppAppBar from './Components/AppAppBar';
-import Footer from './Components/Footer';
+import AppAppBar from './components/AppAppBar';
+import Footer from './components/Footer';
 import getBlogTheme from './Theme/getBlogTheme';
-import ToggleColorMode from './Components/ToggleColorMode';
+import ToggleColorMode from './components/ToggleColorMode';
 import AboutSection from './components/About';
 import EducationSection from './components/Education';
 import SkillsSection from './components/Skill';
