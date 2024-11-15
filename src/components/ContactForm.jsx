@@ -368,7 +368,7 @@ const ContactForm = React.forwardRef((props, ref) => {
         </Grid>
 
         {/* Right Section - 3D Model */}
-        <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Grid item xs={12} md={6} sx={{ display: { display: 'block' } }}>
           <Box
             sx={{
               width: '100%',
