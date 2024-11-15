@@ -37,7 +37,7 @@ const experiences = [
         'As a Teaching Assistant, I supported students in understanding complex concepts in software engineering, particularly in Node.js and React.',
     },
     {
-      id: 2,
+      id: 3,
       year: '2021-2022',
       company: 'National Innovation Center',
       title: 'Software Engineering Intern',
