@@ -1,47 +1,73 @@
-// AchievementsSection.jsx
+// src/components/InvolvementSection.jsx
 
-import React, {forwardRef} from 'react';
+import React, { useState, forwardRef } from 'react';
+import PropTypes from 'prop-types';
 import {
+  Avatar,
+  AvatarGroup,
   Box,
-  Grid,
-  Typography,
-  Container,
   Card,
   CardContent,
-  Avatar,
+  CardMedia,
+  Grid,
+  Typography,
+  Backdrop,
+  IconButton,
+  Link,
 } from '@mui/material';
-import { styled, useTheme,keyframes } from '@mui/material/styles';
+import { styled, keyframes, useTheme } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import Carousel from 'react-material-ui-carousel';
 import { motion } from 'framer-motion';
-import { Star, EmojiEvents, Code } from '@mui/icons-material';
 
-// Motion Variants
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (custom) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      delay: custom * 0.2,
-      ease: 'easeOut',
-    },
-  }),
-  hover: {
-    scale: 1.05,
-    boxShadow: '0px 12px 24px rgba(0, 0, 0, 0.3)',
-    transition: {
-      duration: 0.3,
-      ease: 'easeInOut',
+// Sample data for involvements
+const involvementData = [
+  {
+    img: '/images/nsa_ulm_1.jpg',
+    tag: 'Vice President, Cultural Affairs',
+    title: 'Nepalese Student Association',
+    description:
+      'Organized biggest college events like Dashain & Tihar Banquet and Nepali Night.',
+    collaborators: [{ name: 'Nepalese Student Association', avatar: '/static/images/avatar/3.jpg' }],
+    details: {
+      images: ['/images/nsa_ulm_1.jpg', '/images/nsa_ulm_2.jpg'],
+      additionalInfo:
+    `Organized cultural events to promote Nepalese heritage on campus. Facilitated workshops and seminars to engage students in multicultural activities. Collaborated with university departments to host festivals and exhibitions. Managed a team of volunteers to execute successful events with high participation.
+      `,
     },
   },
-};
+  {
+    img: '/images/honors_ulm.jpg',
+    tag: 'Honors Program Participant',
+    title: 'Honors Program, ULM',
+    description:
+      'Secured the Honors scholarship by demonstrating academic excellence. Maintained a high GPA to remain on the Presidential List.',
+    collaborators: [{ name: 'ULM Honors Program', avatar: '/static/images/avatar/3.jpg' }],
+    details: {
+      images: ['/images/honors_ulm.jpg', '/images/honors_ulm1.jpeg'],
+      additionalInfo:
+    `Secured the Honors scholarship by demonstrating academic excellence. Maintained a high GPA to remain on the Presidential List. Engaged in research projects in computer science. Presented research findings at academic conferences, earning recognition for innovative approaches. Participated in leadership development workshops to enhance critical thinking and collaboration skills.
+      `,
+    },
+  },
+  // Add more involvements here...
+];
 
-// Styled Motion Components
-const MotionCard = motion(Card);
+// Reuse styled components from ProjectSection
 
+// Particle component
+const Particle = styled(Box)(({ theme, size, top, left }) => ({
+  position: 'absolute',
+  width: size || '10px',
+  height: size || '10px',
+  borderRadius: '50%',
+  backgroundColor: theme.palette.primary.main,
+  top: top || '50%',
+  left: left || '50%',
+  opacity: 0.7,
+}));
 
-
-// Define the shine keyframes
+// Shine keyframes for ShinyText
 const shine = keyframes`
   0% {
     background-position: -200% 0;
@@ -51,6 +77,7 @@ const shine = keyframes`
   }
 `;
 
+// ShinyText component
 const ShinyText = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   fontSize: '3rem',
@@ -60,234 +87,240 @@ const ShinyText = styled(Typography)(({ theme }) => ({
   backgroundSize: '200% auto',
   display: 'inline-block',
   letterSpacing: '0.05em',
-  animation: `${shine} 3s linear infinite`, // Use the shine keyframes here
+  animation: `${shine} 3s linear infinite`,
 }));
 
-
-// Styled component for Achievement Icons
-const AchievementIcon = styled(Avatar)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.background.paper,
-  marginBottom: theme.spacing(2),
-  width: theme.spacing(7),
-  height: theme.spacing(7),
+// StyledCard component
+const StyledCard = styled(Card)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  padding: 0,
+  height: '100%',
+  backgroundColor: theme.palette.background.paper,
+  transition: 'transform 0.3s, box-shadow 0.3s',
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+    cursor: 'pointer',
+    transform: 'translateY(-8px)',
+    boxShadow: theme.shadows[6],
+  },
+  '&:focus-visible': {
+    outline: '3px solid',
+    outlineColor: 'hsla(210, 98%, 48%, 0.5)',
+    outlineOffset: '2px',
+  },
 }));
 
-const AchievementsSection = forwardRef((props, ref) => {
+// StyledCardContent component
+const StyledCardContent = styled(CardContent)({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 4,
+  padding: 16,
+  flexGrow: 1,
+  '&:last-child': {
+    paddingBottom: 16,
+  },
+});
 
-  const theme = useTheme();
+// StyledTypography component
+const StyledTypography = styled(Typography)({
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 2,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+});
 
-  // Sample Achievements Data
-  const achievements = [
-    {
-      icon: <Star />,
-      title: 'Dean’s List',
-      description:
-        'Consistently achieved a position on the Dean’s List for outstanding academic performance throughout my undergraduate studies.',
-    },
-    {
-      icon: <EmojiEvents />,
-      title: 'Coding Competition Winner',
-      description:
-        'Secured first place in the 2023 National Coding Competition, demonstrating exceptional problem-solving and programming skills.',
-    },
-    {
-      icon: <Code />,
-      title: 'Certified Full-Stack Developer',
-      description:
-        'Earned certification in Full-Stack Development from Coursera, showcasing proficiency in both frontend and backend technologies.',
-    },
-    // Add more achievements as needed
-  ];
-
+// Collaborators component
+function Collaborators({ collaborators }) {
   return (
-    ref={ref}
     <Box
       sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        py: 10,
-        backgroundColor: theme.palette.background.default,
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 2,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '16px',
       }}
     >
-      {/* Floating Shapes with Framer Motion */}
-      <MotionFloatingShape
-        size={200}
-        top="15%"
-        left="10%"
-        colorGradient={[
-          theme.palette.secondary.light,
-          theme.palette.primary.dark,
-        ]}
-      />
-      <MotionFloatingShape
-        size={120}
-        top="65%"
-        left="80%"
-        colorGradient={[
-          theme.palette.primary.light,
-          theme.palette.secondary.dark,
-        ]}
-      />
-      <MotionFloatingShape
-        size={90}
-        top="80%"
-        left="25%"
-        colorGradient={[
-          theme.palette.secondary.light,
-          theme.palette.primary.dark,
-        ]}
-      />
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center' }}
+      >
+        <AvatarGroup max={3}>
+          {collaborators.map((collaborator, index) => (
+            <Avatar
+              key={index}
+              alt={collaborator.name}
+              src={collaborator.avatar}
+              sx={{ width: 24, height: 24 }}
+            />
+          ))}
+        </AvatarGroup>
+        <Typography variant="caption">
+          {collaborators.map((collaborator) => collaborator.name).join(', ')}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
 
-      {/* Floating Particles with Framer Motion */}
-      <MotionParticle
-        size={8}
-        color={theme.palette.primary.main}
-        top="35%"
-        left="15%"
-        delay={0}
-      />
-      <MotionParticle
-        size={6}
-        color={theme.palette.secondary.main}
-        top="25%"
-        left="50%"
-        delay={0.5}
-      />
-      <MotionParticle
-        size={10}
-        color={theme.palette.primary.light}
-        top="75%"
-        left="85%"
-        delay={1}
-      />
-      <MotionParticle
-        size={12}
-        color={theme.palette.secondary.light}
-        top="10%"
-        left="45%"
-        delay={1.5}
-      />
-      <MotionParticle
-        size={5}
-        color={theme.palette.primary.dark}
-        top="55%"
-        left="65%"
-        delay={2}
-      />
+Collaborators.propTypes = {
+  collaborators: PropTypes.arrayOf(
+    PropTypes.shape({
+      avatar: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
 
-      <Container
-        maxWidth="lg"
+// BackdropContent component
+const BackdropContent = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80%',
+  maxWidth: '800px',
+  maxHeight: '80vh', // Limit height for smaller screens
+  overflowY: 'auto',
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: theme.shadows[5],
+  padding: theme.spacing(4),
+  borderRadius: theme.shape.borderRadius,
+  outline: 'none',
+}));
+
+// InvolvementSection component
+const InvolvementSection = forwardRef((props, ref) => {
+  const theme = useTheme();
+  const [selectedInvolvement, setSelectedInvolvement] = useState(null);
+
+  const handleOpen = (involvement) => {
+    setSelectedInvolvement(involvement);
+  };
+
+  const handleClose = () => {
+    setSelectedInvolvement(null);
+  };
+
+  return (
+    <Box ref={ref} sx={{ p: 4, position: 'relative', overflow: 'hidden' }}>
+      {/* Floating Particles */}
+      <Particle top="10%" left="15%" size="8px" />
+      <Particle top="30%" left="80%" size="12px" />
+      <Particle top="50%" left="40%" size="10px" />
+      <Particle top="80%" left="20%" size="6px" />
+
+      {/* Heading */}
+      <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
-          gap: 6,
-          position: 'relative',
-          zIndex: 1,
+          textAlign: 'center',
+          mb: 6,
         }}
       >
-        {/* Shiny Heading with Framer Motion */}
-        <ShinyText
-          variant="h3"
-          variants={shinyTextVariants}
-          animate={shouldAnimate ? "animate" : undefined}
-          whileHover={{
-            backgroundPosition: ['100% 50%', '0% 50%'],
-            transition: { duration: 3, ease: 'linear' },
-          }}
-        >
-          Achievements
-        </ShinyText>
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <ShinyText variant="h3">Involvement</ShinyText>
+        </Box>
+      </Box>
 
-        {/* Achievements Grid */}
-        <Grid container spacing={4} justifyContent="center">
-          {achievements.map((achievement, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <MotionCard
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={index}
-                whileHover="hover"
-                sx={{
-                  padding: 3,
-                  background: theme.palette.background.paper,
-                  backdropFilter: 'blur(8px)',
-                  borderRadius: theme.spacing(2),
-                  boxShadow: `0px 4px 12px rgba(0, 0, 0, 0.1)`,
-                  cursor: 'pointer',
-                }}
+      {/* Grid of Involvements */}
+      <Grid container spacing={3} justifyContent="center">
+        {involvementData.map((involvement, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
+              <StyledCard onClick={() => handleOpen(involvement)} tabIndex={0}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={involvement.img}
+                  alt={involvement.title}
+                />
+                <StyledCardContent>
+                  <Typography gutterBottom variant="caption" component="div">
+                    {involvement.tag}
+                  </Typography>
+                  <Typography variant="h6" component="div">
+                    {involvement.title}
+                  </Typography>
+                  <StyledTypography variant="body2" color="text.secondary">
+                    {involvement.description}
+                  </StyledTypography>
+                </StyledCardContent>
+                <Collaborators collaborators={involvement.collaborators} />
+              </StyledCard>
+            </motion.div>
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* Backdrop for Involvement Details */}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={Boolean(selectedInvolvement)}
+        onClick={handleClose}
+      >
+        {selectedInvolvement && (
+          <BackdropContent onClick={(e) => e.stopPropagation()}>
+            <IconButton
+              onClick={handleClose}
+              aria-label="close"
+              sx={{ position: 'absolute', top: 8, right: 8 }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h4" gutterBottom sx={{ color: theme.palette.text.primary }}>
+              {selectedInvolvement.title}
+            </Typography>
+            {/* Image Carousel */}
+            {selectedInvolvement.details.images && selectedInvolvement.details.images.length > 0 && (
+              <Carousel
+                autoPlay={false}
+                navButtonsAlwaysVisible
+                indicators={selectedInvolvement.details.images.length > 1}
               >
-                <CardContent sx={{ textAlign: 'center' }}>
-                  <AchievementIcon>
-                    {achievement.icon}
-                  </AchievementIcon>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}
-                    gutterBottom
-                  >
-                    {achievement.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: theme.palette.text.secondary }}
-                  >
-                    {achievement.description}
-                  </Typography>
-                </CardContent>
-              </MotionCard>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+                {selectedInvolvement.details.images.map((image, idx) => (
+                  <CardMedia
+                    component="img"
+                    height="300"
+                    image={image}
+                    alt={`${selectedInvolvement.title} image ${idx + 1}`}
+                    key={idx}
+                    sx={{ objectFit: 'contain', mb: 2 }}
+                  />
+                ))}
+              </Carousel>
+            )}
+            {/* Involvement Description */}
+            <Typography variant="body1" paragraph sx={{ color: theme.palette.text.secondary }}>
+              {selectedInvolvement.description}
+            </Typography>
+            {/* Additional Information */}
+            {selectedInvolvement.details.additionalInfo && (
+              <Typography variant="body2" paragraph sx={{ color: theme.palette.text.secondary }}>
+                {selectedInvolvement.details.additionalInfo}
+              </Typography>
+            )}
+            {/* Involvement Link */}
+            {selectedInvolvement.details.link && (
+              <Link href={selectedInvolvement.details.link} target="_blank" rel="noopener">
+                View Involvement
+              </Link>
+            )}
+          </BackdropContent>
+        )}
+      </Backdrop>
     </Box>
   );
 });
 
-// Styled component for Floating Shapes with Framer Motion
-const MotionFloatingShape = styled(motion.div)(
-  ({ theme, size, top, left, colorGradient }) => ({
-    position: 'absolute',
-    borderRadius: '50%',
-    background: `linear-gradient(135deg, ${colorGradient[0]}, ${colorGradient[1]})`,
-    opacity: 0.15,
-    width: size || 150,
-    height: size || 150,
-    top: top || '50%',
-    left: left || '50%',
-    willChange: 'transform',
-    // Animation for floating
-    animation: `float 8s ease-in-out infinite`,
-    '@keyframes float': {
-      '0%': { transform: 'translateY(0px) translateX(0px)' },
-      '50%': { transform: 'translateY(-15px) translateX(15px)' },
-      '100%': { transform: 'translateY(0px) translateX(0px)' },
-    },
-  })
-);
-
-// Styled component for Particles with Framer Motion
-const MotionParticle = styled(motion.div)(
-  ({ theme, size, color, top, left }) => ({
-    position: 'absolute',
-    width: size || 8,
-    height: size || 8,
-    borderRadius: '50%',
-    background: color || theme.palette.primary.main,
-    opacity: 0.4,
-    top: top || '50%',
-    left: left || '50%',
-    willChange: 'transform',
-    // Animation for floating particles
-    animation: `randomFloat 7s ease-in-out infinite`,
-    '@keyframes randomFloat': {
-      '0%': { transform: 'translateY(0) translateX(0)' },
-      '50%': { transform: 'translateY(-10px) translateX(10px)' },
-      '100%': { transform: 'translateY(0) translateX(0)' },
-    },
-  })
-);
-export default AchievementsSection;
+export default InvolvementSection;

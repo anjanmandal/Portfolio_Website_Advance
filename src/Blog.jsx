@@ -18,6 +18,7 @@ import ExperienceAccordion from './components/ExperienceAccordion';
 import ExperienceDetail from './components/ExperienceDetail';
 import AchievementsSection from './components/AchievementsSection';
 import ContactForm from './components/ContactForm';
+import InvolvementSection from './components/Involvement';
 
 export default function Blog() {
   const [mode, setMode] = React.useState('light');
@@ -50,6 +51,7 @@ export default function Blog() {
   const projectsRef = React.useRef(null);
   const achievementsRef = React.useRef(null);
   const contactRef = React.useRef(null);
+  const involvementRef=React.useRef(null);
 
   // Object containing all refs
   const sections = {
@@ -60,6 +62,7 @@ export default function Blog() {
     projects: projectsRef,
     achievements: achievementsRef,
     contact: contactRef,
+    involvements:involvementRef
   };
 
   return (
@@ -85,7 +88,9 @@ export default function Blog() {
                   <ExperienceAccordion ref={experienceRef} />
                   <ProjectSection ref={projectsRef} />
                   <AchievementsSection ref={achievementsRef} />
+                  <InvolvementSection ref={involvementRef}/>
                   <ContactForm ref={contactRef} />
+                 
                 </>
               }
             />

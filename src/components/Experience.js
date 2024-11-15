@@ -35,6 +35,7 @@ const experiences = [
       ],
       description:
         'As a Teaching Assistant, I supported students in understanding complex concepts in software engineering, particularly in Node.js and React.',
+        imageDescription:'This is a picture with my professor, Dr. Kim Taylor. I served as a teaching assistant in her class.'
     },
     {
       id: 3,
@@ -54,6 +55,7 @@ const experiences = [
       description:
         `As a software engineering intern, I developed and deployed 10+ startup applications using React.js, Node.js, and Vue.js, boosting production 
         capacity by 40% through faster development and improved code maintainability. `,
+        imageDescription:'This is a picture taken during a visit from a news reporter who came to see our innovations.'
     },
     // Add more experiences with a similar structure
   ];

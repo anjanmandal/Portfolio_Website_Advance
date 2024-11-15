@@ -73,6 +73,9 @@ export default function AppAppBar({ sections }) {
               <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.achievements)}>
                 Achievements
               </Button>
+              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.involvements)}>
+                Involvements
+              </Button>
               <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.contact)}>
                 Contact
               </Button>

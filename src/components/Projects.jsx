@@ -15,7 +15,7 @@ import {
   IconButton,
   Link,
 } from '@mui/material';
-import { styled, keyframes } from '@mui/material/styles';
+import { styled, keyframes,useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import Carousel from 'react-material-ui-carousel'; // Optional: For image carousel
 // Sample data for projects
@@ -61,7 +61,7 @@ const cardData = [
       images: ['/images/okay_journey3.jpg', '/images/okay_journey.png'],
       link: 'https://www.okayjourney.com',
       additionalInfo:
-     `his Bus Ticketing Website offers a comprehensive and user-friendly platform for travelers to search for, book, and manage their bus tickets online. Users can effortlessly search for available bus routes by entering their origin, destination, and travel dates, with the ability to filter results based on price, travel time, and bus amenities. The website features real-time seat availability, allowing passengers to select their preferred seats via an interactive seat map. Upon booking, users receive immediate confirmation and an electronic ticket (e-ticket) sent directly to their email, ensuring a smooth and efficient booking process. The platform integrates a secure payment gateway, supporting various payment methods such as credit/debit cards, net banking, digital wallets, and UPI, all protected by SSL encryption and compliant with PCI-DSS standards to safeguard user data. It caters to a global audience by offering multi-language and multi-currency support, making the booking process accessible and convenient for international travelers. Registered users can access their personal accounts to view their booking history, download past e-tickets, and manage their profiles, facilitating easy repeat bookings. The website also features dynamic pricing that adjusts ticket costs based on demand and seasonality, along with promotional codes and seasonal discounts to provide users with the best possible fares.`
+     `This Bus Ticketing Website offers a comprehensive and user-friendly platform for travelers to search for, book, and manage their bus tickets online. Users can effortlessly search for available bus routes by entering their origin, destination, and travel dates, with the ability to filter results based on price, travel time, and bus amenities. The website features real-time seat availability, allowing passengers to select their preferred seats via an interactive seat map. Upon booking, users receive immediate confirmation and an electronic ticket (e-ticket) sent directly to their email, ensuring a smooth and efficient booking process. The platform integrates a secure payment gateway, supporting various payment methods such as credit/debit cards, net banking, digital wallets, and UPI, all protected by SSL encryption and compliant with PCI-DSS standards to safeguard user data. It caters to a global audience by offering multi-language and multi-currency support, making the booking process accessible and convenient for international travelers. Registered users can access their personal accounts to view their booking history, download past e-tickets, and manage their profiles, facilitating easy repeat bookings. The website also features dynamic pricing that adjusts ticket costs based on demand and seasonality, along with promotional codes and seasonal discounts to provide users with the best possible fares.`
    ,
     },
   },
@@ -205,6 +205,7 @@ const BackdropContent = styled(Box)(({ theme }) => ({
 }));
 
 const ProjectSection = forwardRef((props, ref) => {
+  const theme = useTheme();
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleOpen = (project) => {
@@ -277,7 +278,7 @@ const ProjectSection = forwardRef((props, ref) => {
                 <CloseIcon />
               </IconButton>
             </Box>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom sx={{ color: theme.palette.text.primary }} >
               {selectedProject.title}
             </Typography>
             {/* Image Carousel */}
@@ -300,12 +301,12 @@ const ProjectSection = forwardRef((props, ref) => {
               </Carousel>
             )}
             {/* Project Description */}
-            <Typography variant="body1" paragraph>
+            <Typography variant="body1" paragraph sx={{ color: theme.palette.text.secondary }} >
               {selectedProject.description}
             </Typography>
             {/* Additional Information */}
             {selectedProject.details.additionalInfo && (
-              <Typography variant="body2" paragraph>
+              <Typography variant="body2" paragraph sx={{ color: theme.palette.text.secondary }}>
                 {selectedProject.details.additionalInfo}
               </Typography>
             )}
