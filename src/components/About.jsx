@@ -1,10 +1,23 @@
 // src/components/AboutSection.jsx
 
-import React, {forwardRef} from 'react';
-import { Box, Grid, Typography, Container } from '@mui/material';
+import React, { forwardRef, useState } from 'react';
+import {
+  Box,
+  Grid,
+  Typography,
+  Container,
+  IconButton,
+  Button,
+} from '@mui/material';
 import { styled, keyframes, useTheme } from '@mui/material/styles';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import CommonBackground from './CommonBackground';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import DownloadIcon from '@mui/icons-material/Download';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 // Keyframes for floating shapes (circles)
 const float = keyframes`
@@ -29,7 +42,7 @@ const Particle = styled(Box)(({ size, color, delay, top, left }) => ({
   top: top || '50%',
   left: left || '50%',
   opacity: 0.3,
-  animation: `${float} 6s ease-in-out ${delay || '0s'} infinite`, // Corrected to use template literals
+  animation: `${float} 6s ease-in-out ${delay || '0s'} infinite`,
 }));
 
 // Keyframes for rotating the conic gradient
@@ -62,7 +75,7 @@ const SmartFrame = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   background: theme.palette.background.paper,
-  boxShadow: '0px 10px 30px -5px rgba(0, 0, 0, 0.3)', // Added quotes
+  boxShadow: '0px 10px 30px -5px rgba(0, 0, 0, 0.3)',
 
   // Outer frame with rotating gradient
   '&::before': {
@@ -78,9 +91,8 @@ const SmartFrame = styled(Box)(({ theme }) => ({
       ${theme.palette.primary.main},
       ${theme.palette.secondary.main},
       ${theme.palette.primary.light}
-    )`, // Enclosed in backticks
+    )`,
     zIndex: -2,
-
   },
 
   // Inner glow effect
@@ -93,7 +105,7 @@ const SmartFrame = styled(Box)(({ theme }) => ({
     bottom: 0,
     borderRadius: '20%',
     boxShadow: `0 0 15px 5px ${theme.palette.primary.main}`,
-    animation: `${pulse} 3s ease-in-out infinite`, // Corrected to use template literals
+    animation: `${pulse} 3s ease-in-out infinite`,
     zIndex: -1,
   },
 }));
@@ -145,13 +157,76 @@ const ShinyText = styled(Typography)(({ theme }) => ({
   WebkitBackgroundClip: 'text',
   color: 'transparent',
   backgroundSize: '200% auto',
-  animation: `${shine} 3s linear infinite, ${fadeIn} 1.5s ease-out`, // Corrected to use template literals
+  animation: `${shine} 3s linear infinite, ${fadeIn} 1.5s ease-out`,
   display: 'inline-block',
   letterSpacing: '0.05em',
 }));
 
+// Styled component for a more stylish "Hi, I am Anjan Mandal" text
+const StylishText = styled(Typography)(({ theme }) => ({
+  fontWeight: 'bold',
+  fontSize: '3rem',
+  background: `linear-gradient(
+    90deg,
+    ${theme.palette.secondary.light},
+    ${theme.palette.secondary.main},
+    ${theme.palette.primary.main}
+  )`,
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  color: 'transparent',
+  backgroundSize: '200% auto',
+  animation: `${shine} 4s linear infinite, ${fadeIn} 2s ease-out`,
+  display: 'inline-block',
+  letterSpacing: '0.05em',
+}));
+
+// Styled component for animating the "Learn More" button with vertical shake
+const ShakingMotionButton = styled(motion(Button))(({ theme }) => ({
+  borderRadius: '50px',
+  boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
+  fontSize: '1.2rem',
+  padding: theme.spacing(1.5, 6),
+  marginTop: theme.spacing(8),
+}));
+
+// Styled component for the accordion content
+const AccordionContent = styled(motion(Box))(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  padding: theme.spacing(4),
+  borderRadius: '15px',
+  background: theme.palette.background.paper,
+  boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
+}));
+
+// Styled component for social media icons
+const SocialIcons = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(2),
+}));
+
+// Styled component for additional action buttons within the accordion
+const ActionButtons = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(2),
+}));
+
+// Styled component for the framed image within the accordion
+const FramedImage = styled(motion.img)(({ theme }) => ({
+  width: '250px',
+  height: '250px',
+  borderRadius: '50%',
+  border: `5px solid ${theme.palette.primary.main}`,
+  objectFit: 'cover',
+  boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
+  marginTop: theme.spacing(4),
+}));
+
 const AboutSection = forwardRef((props, ref) => {
   const theme = useTheme();
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   // Animation variants for Framer Motion
   const containerVariants = {
@@ -176,10 +251,33 @@ const AboutSection = forwardRef((props, ref) => {
     },
   };
 
+  const accordionVariants = {
+    closed: {
+      height: 0,
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeInOut',
+      },
+    },
+    open: {
+      height: 'auto',
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: 'easeInOut',
+      },
+    },
+  };
+
+  const toggleAccordion = () => {
+    setIsAccordionOpen((prev) => !prev);
+  };
+
   return (
     <CommonBackground>
       <Box
-       ref={ref}
+        ref={ref}
         sx={{
           position: 'relative',
           overflow: 'hidden',
@@ -306,6 +404,170 @@ const AboutSection = forwardRef((props, ref) => {
               </motion.div>
             </Grid>
           </Grid>
+
+          {/* Learn More Button with Vertical Shake */}
+          <ShakingMotionButton
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={toggleAccordion}
+            sx={{
+              mt: 8,
+              px: 6,
+              py: 1.5,
+              borderRadius: '50px',
+            }}
+            animate={{
+              y: [0, -2, 2, -2, 2, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: 'loop',
+            }}
+          >
+            {isAccordionOpen ? 'Hide' : 'Learn More'}
+          </ShakingMotionButton>
+
+          {/* Accordion Content */}
+          <AnimatePresence>
+            {isAccordionOpen && (
+              <AccordionContent
+                variants={accordionVariants}
+                initial="closed"
+                animate="open"
+                exit="closed"
+                layout
+              >
+                {/* Title */}
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: 'bold', mb: 2 }}
+                >
+                  <StylishText variant="h4">Hi, I am Anjan Mandal</StylishText>
+                </Typography>
+
+                {/* Introduction Text */}
+                <Typography
+                  variant="body1"
+                  sx={{ color: theme.palette.text.secondary, mb: 4 }}
+                >
+                  Welcome to my personal space! Connect with me on social media to stay updated with my latest projects and insights.
+                </Typography>
+
+                {/* Grid Layout for Accordion Content */}
+                <Grid container spacing={4} alignItems="center">
+                  {/* Textual Content */}
+                  <Grid item xs={12} md={6}>
+                    {/* Social Media Icons */}
+                    <SocialIcons>
+                      <IconButton
+                        aria-label="Facebook"
+                        color="primary"
+                        href="https://www.facebook.com/yourprofile" 
+                        target="_blank"
+                        rel="noopener"
+                        component={motion.a}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <FacebookIcon fontSize="large" />
+                      </IconButton>
+                      <IconButton
+                        aria-label="Instagram"
+                        color="secondary"
+                        href="https://www.instagram.com/yourprofile" 
+                        target="_blank"
+                        rel="noopener"
+                        component={motion.a}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <InstagramIcon fontSize="large" />
+                      </IconButton>
+                      <IconButton
+                        aria-label="LinkedIn"
+                        sx={{ color: '#0A66C2' }}
+                        href="https://www.linkedin.com/in/madalak/" 
+                        target="_blank"
+                        rel="noopener"
+                        component={motion.a}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <LinkedInIcon fontSize="large" />
+                      </IconButton>
+                    </SocialIcons>
+
+                    {/* Download Resume Button */}
+                    <ActionButtons>
+                      <Button
+                        variant="outlined"
+                        startIcon={<DownloadIcon />}
+                        href="/files/Anjan_Resume_2025.pdf" 
+                        download
+                        sx={{
+                          borderRadius: '10px',
+                          textTransform: 'none',
+                          fontSize: '1rem',
+                          borderColor: theme.palette.primary.main,
+                          color: theme.palette.primary.main,
+                          '&:hover': {
+                            backgroundColor: theme.palette.primary.light,
+                            borderColor: theme.palette.primary.main,
+                          },
+                        }}
+                      >
+                        Download Resume
+                      </Button>
+                    </ActionButtons>
+
+                    {/* Contact Information */}
+                    <Box sx={{ marginTop: theme.spacing(4) }}>
+                      <Typography
+                        variant="h5"
+                        sx={{ fontWeight: 'bold', mb: 2 }}
+                      >
+                        Contact Me
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                        <IconButton
+                          aria-label="Email"
+                          href="mailto:anjanmandal2076@gmail.com" 
+                          color="primary"
+                          component={motion.a}
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <EmailIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="Phone"
+                          href="tel:+3186907227" // Replace with your phone number
+                          color="primary"
+                          component={motion.a}
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <PhoneIcon />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                  </Grid>
+
+                  {/* Image Within Accordion */}
+                  <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <FramedImage
+                      src="/images/anjan-profile.jpeg" // Replace with your actual image path
+                      alt="Additional Picture"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    />
+                  </Grid>
+                </Grid>
+              </AccordionContent>
+            )}
+          </AnimatePresence>
         </Container>
       </Box>
     </CommonBackground>
