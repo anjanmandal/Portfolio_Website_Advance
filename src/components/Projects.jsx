@@ -21,6 +21,42 @@ import Carousel from 'react-material-ui-carousel'; // Optional: For image carous
 // Sample data for projects
 const cardData = [
   {
+    img: '/images/dashboard.png',
+    tag: 'Full-Stack Development',
+    title: 'HelpHub',
+    description:
+      'HelpHub is a dynamic web application designed to bridge the gap between individuals seeking assistance and professionals offering their expertise. Whether you need help with household tasks, project management, or specialized services, HelpHub provides a seamless platform to connect, collaborate, and achieve your goals efficiently.',
+    collaborators: [{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
+    details: {
+      images: ['/images/bid.png', '/images/request.png','/images/mybids.png'],
+      link: 'https://github.com/anjanmandal/HelpHub.git',
+      additionalInfo:
+        `This platform also includes features like event scheduling, notification systems, and integration with LinkedIn for seamless professional networking. HelpHub's bid system is thoughtfully designed to create a balanced marketplace where affordability meets quality. By implementing strategic bid adjustments and prioritizing the smallest original bids, HelpHub ensures that both requesters and professionals derive maximum value from their interactions, fostering a thriving community of assistance and support.
+        Affordability for Requesters: Maintains reasonable costs for those seeking help, preventing overpayment.
+
+Encourages Quality and Competition: By adjusting bids based on the Promised Amount, the system incentivizes professionals to offer both competitive and quality services.
+
+Transparency and Trust: Clear bid adjustments and selection criteria foster trust between requesters and professionals.
+
+Efficient Matching: Automatically identifying the most suitable bid streamlines the process of connecting requesters with the right professionals.`,
+    },
+  },
+  {
+    img: '/images/L&L.png',
+    tag: 'Full-Stack Development',
+    title: 'AI-L&L-VIDEO-GENERATOR',
+    description:
+      'A full-stack application that generates video content from a text prompt. This project consists of a backend built with Node.js and Express that handles text generation and video processing, and a frontend built with React, providing a user-friendly interface with dark mode and 3D visual effects.',
+    collaborators: [{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
+    details: {
+      images: ['/images/L&L.png', '/images/L&L2.png','/images/L&L3.png'],
+      link: 'https://github.com/anjanmandal/L-L.git',
+      additionalInfo:
+        `A full-stack application that generates video content from a text prompt. This project consists of a backend built with Node.js and Express that handles text generation and video processing, and a frontend built with React, providing a user-friendly interface with dark mode and 3D visual effects.
+        AI-Powered Text Generation: Generates responses to user prompts using AI. Text-to-Speech and Video Creation: Converts text responses into speech and combines them with dynamic subtitles to create video content. Dark Mode Support: Toggle dark/light themes for the interface. Three.js Visual Effects: 3D star background for a visually engaging experience. Submitting a Prompt Enter a prompt in the text field. Click "Generate Video". Wait for the video to be generated and displayed below. How It Works Frontend: The user enters a text prompt, which is sent to the backend. Backend: Generates a text response with AI. Converts the response text to audio. Creates a video.`,
+    },
+  },
+  {
     img: '/images/project_alumni.png',
     tag: 'Full-Stack Development',
     title: 'Alumni Platform',
@@ -40,7 +76,7 @@ const cardData = [
     title: 'Lost and Found Website',
     description:
       'A robust serverless web application designed to streamline the process of reporting and recovering lost items. Built with React.js, Node.js, and MongoDB, this platform offers user-friendly interfaces for uploading lost items, searching for found items, and facilitating real-time communication between users through integrated chat functionality.',
-    collaborators: [{ name: 'Aavash Kuikel', avatar: '/static/images/avatar/2.jpg' },{ name: 'Pradeep Poudel', avatar: '/static/images/avatar/2.jpg' },{ name: 'Beepin Sapkota', avatar: '/static/images/avatar/2.jpg' }],
+    collaborators: [{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
     details: {
       images: ['/images/lost_found1.png', '/images/lost_found2.png'],
       link: 'https://github.com/anjanmandal/Lost-and-Found-website-.git',

@@ -9,7 +9,7 @@ const experiences = [
       logo: '/images/squareplanit-icon.jpg',
       mainImage: '/images/s-3.jpeg', // New field for a main image
       content: [
-        'Developing and maintaining web applications using React.js.',
+        'Developing and maintaining web applications using React.js, Laravel, Node.js and many other languages.',
         'Collaborating with cross-functional teams including designers and product managers.',
         'Implementing responsive design and ensuring cross-browser compatibility.',
       ],

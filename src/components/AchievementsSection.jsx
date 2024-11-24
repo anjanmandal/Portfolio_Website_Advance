@@ -97,7 +97,7 @@ const AchievementsSection = forwardRef((props, ref) => {
     },
     {
       icon: <EmojiEvents />,
-      title: 'ULM Wakathon Winner',
+      title: 'ULM Hawkathon Winner',
       description:
         'Anjan Mandal and Team DebugDynasty, proudly secured the runner-up position at the recent ULM Hackathon, hosted by GDSC ULM and ACM Student Chapter. Their project, a Lost and Found website, provides a streamlined platform for communities to reconnect lost items with their owners.',
       details:
