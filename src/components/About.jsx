@@ -224,6 +224,12 @@ const FramedImage = styled(motion.img)(({ theme }) => ({
   marginTop: theme.spacing(4),
 }));
 
+// **New**: Styled component for highlighting text
+const Highlight = styled('span')(({ theme }) => ({
+  color: theme.palette.primary.main,
+  fontWeight: 'bold',
+}));
+
 const AboutSection = forwardRef((props, ref) => {
   const theme = useTheme();
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -373,9 +379,14 @@ const AboutSection = forwardRef((props, ref) => {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ color: theme.palette.text.secondary }}
+                      sx={{ color: theme.palette.text.secondary, lineHeight: 1.6 }}
                     >
-                      I am Anjan Mandal, a passionate Full Stack Developer, dedicated to software development, engineering, and creating innovative solutions that make a meaningful impact. With a strong background in both front-end and back-end technologies and a keen eye for design, I strive to bring cutting-edge ideas to life.
+                      I am <Highlight>Anjan Mandal</Highlight>, a passionate{' '}
+                      <Highlight>Full Stack Developer</Highlight> committed to delivering{' '}
+                      innovative software solutions and driving meaningful
+                      impact through technology. With a solid foundation in{' '}
+                      <Highlight>front-end and back-end development</Highlight> and a strong focus on{' '}
+                      <Highlight>user-centered design</Highlight>.
                     </Typography>
                   </motion.div>
 
@@ -393,11 +404,13 @@ const AboutSection = forwardRef((props, ref) => {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ color: theme.palette.text.secondary }}
+                      sx={{ color: theme.palette.text.secondary, lineHeight: 1.6 }}
                     >
-                      My journey into the world of technology began during my childhood when a neighbor purchased a laptop. One day, I had the opportunity to use it, sparking a deep curiosity about how technology shapes our world. This early experience ignited my passion for learning and exploring the vast possibilities within the tech landscape.
-
-                      Over the years, I have cultivated my skills in both front-end and back-end development, working on several projects that challenge conventional thinking and push the boundaries of innovation.
+                      My journey into the world of <Highlight>technology</Highlight>began during my childhood when a
+                      neighbor purchased a laptop. One day, I had the opportunity to use it,
+                      sparking a deep <Highlight>curiosity</Highlight> about how technology shapes our world. This early
+                      experience ignited my passion for <Highlight>learning</Highlight> and <Highlight>exploring</Highlight> the vast possibilities
+                      within the tech landscape.
                     </Typography>
                   </motion.div>
                 </Box>
@@ -450,9 +463,10 @@ const AboutSection = forwardRef((props, ref) => {
                 {/* Introduction Text */}
                 <Typography
                   variant="body1"
-                  sx={{ color: theme.palette.text.secondary, mb: 4 }}
+                  sx={{ color: theme.palette.text.secondary, mb: 4, lineHeight: 1.6 }}
                 >
-                  Welcome to my personal space! Connect with me on social media to stay updated with my latest projects and insights.
+                  Welcome to my personal space! Connect with me on social media to stay updated
+                  with my latest projects and insights.
                 </Typography>
 
                 {/* Grid Layout for Accordion Content */}
