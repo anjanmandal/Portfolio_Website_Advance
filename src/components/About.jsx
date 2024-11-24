@@ -224,11 +224,27 @@ const FramedImage = styled(motion.img)(({ theme }) => ({
   marginTop: theme.spacing(4),
 }));
 
-// **New**: Styled component for highlighting text
 const Highlight = styled('span')(({ theme }) => ({
+  position: 'relative',
   color: theme.palette.primary.main,
   fontWeight: 'bold',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    bottom: -2,
+    width: '100%',
+    height: '3px',
+    background: theme.palette.primary.main,
+    transform: 'scaleX(0)',
+    transformOrigin: 'left',
+    transition: 'transform 0.3s ease',
+  },
+  '&:hover::after': {
+    transform: 'scaleX(1)',
+  },
 }));
+
 
 const AboutSection = forwardRef((props, ref) => {
   const theme = useTheme();
@@ -385,7 +401,7 @@ const AboutSection = forwardRef((props, ref) => {
                       <Highlight>Full Stack Developer</Highlight> committed to delivering{' '}
                       innovative software solutions and driving meaningful
                       impact through technology. With a solid foundation in{' '}
-                      <Highlight>front-end and back-end development</Highlight> and a strong focus on{' '}
+                      <Highlight>front-end</Highlight> and <Highlight>back-end </Highlight>development and a strong focus on{' '}
                       <Highlight>user-centered design</Highlight>.
                     </Typography>
                   </motion.div>
@@ -406,7 +422,7 @@ const AboutSection = forwardRef((props, ref) => {
                       variant="body1"
                       sx={{ color: theme.palette.text.secondary, lineHeight: 1.6 }}
                     >
-                      My journey into the world of <Highlight>technology</Highlight>began during my childhood when a
+                      My journey into the world of <Highlight>technology</Highlight> began during my childhood when a
                       neighbor purchased a laptop. One day, I had the opportunity to use it,
                       sparking a deep <Highlight>curiosity</Highlight> about how technology shapes our world. This early
                       experience ignited my passion for <Highlight>learning</Highlight> and <Highlight>exploring</Highlight> the vast possibilities
