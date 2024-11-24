@@ -149,7 +149,7 @@ const AchievementsSection = forwardRef((props, ref) => {
         position: 'relative',
         overflow: 'hidden',
         py: 10,
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: 'transparent',
       }}
     >
       {/* 3D Trophy in the Background */}

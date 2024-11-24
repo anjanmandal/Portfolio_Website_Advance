@@ -108,7 +108,7 @@ const EducationSection = forwardRef((props, ref) => {
         position: 'relative',
         overflow: 'hidden',
         py: { xs: 8, md: 12 },
-        backgroundColor: theme.palette.background.default,
+        backgroundColor:'transparent',
       }}
     >
       {/* Floating Shapes with Framer Motion */}
