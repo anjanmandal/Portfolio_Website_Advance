@@ -306,42 +306,7 @@ const AboutSection = forwardRef((props, ref) => {
           py: 15,
         }}
       >
-        {/* Background Shapes */}
-        <Particle
-          color={theme.palette.primary.main}
-          size={10}
-          top="40%"
-          left="20%"
-          delay="0s"
-        />
-        <Particle
-          color={theme.palette.secondary.main}
-          size={6}
-          top="30%"
-          left="60%"
-          delay="1s"
-        />
-        <Particle
-          color={theme.palette.primary.light}
-          size={8}
-          top="70%"
-          left="80%"
-          delay="1.5s"
-        />
-        <Particle
-          color={theme.palette.secondary.light}
-          size={12}
-          top="20%"
-          left="40%"
-          delay="2s"
-        />
-        <Particle
-          color={theme.palette.primary.dark}
-          size={5}
-          top="60%"
-          left="70%"
-          delay="2.5s"
-        />
+       
 
         <Container
           maxWidth="lg"
@@ -494,7 +459,7 @@ const AboutSection = forwardRef((props, ref) => {
                       <IconButton
                         aria-label="Facebook"
                         color="primary"
-                        href="https://www.facebook.com/yourprofile" 
+                        href="https://www.facebook.com/people/Anjan-Mandal/100015478332685/" 
                         target="_blank"
                         rel="noopener"
                         component={motion.a}
@@ -502,18 +467,6 @@ const AboutSection = forwardRef((props, ref) => {
                         whileTap={{ scale: 0.9 }}
                       >
                         <FacebookIcon fontSize="large" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="Instagram"
-                        color="secondary"
-                        href="https://www.instagram.com/yourprofile" 
-                        target="_blank"
-                        rel="noopener"
-                        component={motion.a}
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <InstagramIcon fontSize="large" />
                       </IconButton>
                       <IconButton
                         aria-label="LinkedIn"
@@ -534,7 +487,7 @@ const AboutSection = forwardRef((props, ref) => {
                       <Button
                         variant="outlined"
                         startIcon={<DownloadIcon />}
-                        href="/files/Anjan_Resume_2025.pdf" 
+                        href="/files/Anjan_Mandal_Resume_2025_ULM.pdf" 
                         download
                         sx={{
                           borderRadius: '10px',

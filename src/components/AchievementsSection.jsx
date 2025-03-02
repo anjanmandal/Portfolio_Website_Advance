@@ -189,14 +189,14 @@ const AchievementsSection = forwardRef((props, ref) => {
       />
 
       {/* Floating Particles with Framer Motion */}
-      <MotionParticle
+      {/* <MotionParticle
         size={8}
         color={theme.palette.primary.main}
         top="35%"
         left="15%"
         delay={0}
-      />
-      <MotionParticle
+      /> */}
+      {/* <MotionParticle
         size={6}
         color={theme.palette.secondary.main}
         top="25%"
@@ -223,7 +223,7 @@ const AchievementsSection = forwardRef((props, ref) => {
         top="55%"
         left="65%"
         delay={2}
-      />
+      /> */}
 
       <Container
         maxWidth="lg"

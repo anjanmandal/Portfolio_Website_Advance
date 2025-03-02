@@ -208,10 +208,10 @@ const InvolvementSection = forwardRef((props, ref) => {
   return (
     <Box ref={ref} sx={{ p: 4, position: 'relative', overflow: 'hidden' }}>
       {/* Floating Particles */}
-      <Particle top="10%" left="15%" size="8px" />
+      {/* <Particle top="10%" left="15%" size="8px" />
       <Particle top="30%" left="80%" size="12px" />
       <Particle top="50%" left="40%" size="10px" />
-      <Particle top="80%" left="20%" size="6px" />
+      <Particle top="80%" left="20%" size="6px" /> */}
 
       {/* Heading */}
       <Box

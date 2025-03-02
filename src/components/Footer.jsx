@@ -85,7 +85,7 @@ export default function Footer({sections}) {
                   variant="contained"
                   color="primary"
                   startIcon={<DownloadIcon />}
-                  href="./files/Anjan_Resume_2025.pdf"
+                  href="./files/Anjan_Mandal_Resume_2025_ULM.pdf"
                   sx={{
                     borderRadius: 2,
                     py: 1.5,
@@ -186,7 +186,7 @@ export default function Footer({sections}) {
             <IconButton
               color="inherit"
               size="small"
-              href="https://github.com/mui"
+              href="https://github.com/anjanmandal"
               aria-label="GitHub"
               sx={{ alignSelf: 'center' }}
             >
@@ -195,16 +195,7 @@ export default function Footer({sections}) {
             <IconButton
               color="inherit"
               size="small"
-              href="https://x.com/MaterialUI"
-              aria-label="X"
-              sx={{ alignSelf: 'center' }}
-            >
-              <TwitterIcon />
-            </IconButton>
-            <IconButton
-              color="inherit"
-              size="small"
-              href="https://www.linkedin.com/company/mui/"
+              href="https://www.linkedin.com/in/madalak/"
               aria-label="LinkedIn"
               sx={{ alignSelf: 'center' }}
             >

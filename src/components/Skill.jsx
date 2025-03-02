@@ -140,10 +140,10 @@ const SkillCategories = forwardRef((props, ref) => {
   return (
     <Box ref={ref} sx={{ width: '100%', color: '#fff', p: 3, position: 'relative', overflow: 'hidden' }}>
       {/* Floating Particles */}
-      <Particle top="10%" left="20%" size="8px" />
+      {/* <Particle top="10%" left="20%" size="8px" />
       <Particle top="40%" left="70%" size="12px" />
       <Particle top="75%" left="35%" size="10px" />
-      <Particle top="90%" left="15%" size="6px" />
+      <Particle top="90%" left="15%" size="6px" /> */}
 
       {/* Shiny Text Heading */}
       <Box sx={{ textAlign: 'center', mb: 4 }}>
