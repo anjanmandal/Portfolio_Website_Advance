@@ -18,6 +18,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DownloadIcon from '@mui/icons-material/Download';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
+import ModernStatsSection from './ModernStatsSection';
 
 // Keyframes for floating shapes (circles)
 const float = keyframes`
@@ -303,7 +304,7 @@ const AboutSection = forwardRef((props, ref) => {
         sx={{
           position: 'relative',
           overflow: 'hidden',
-          py: 15,
+          py: 5,
         }}
       >
        
@@ -548,8 +549,11 @@ const AboutSection = forwardRef((props, ref) => {
                     />
                   </Grid>
                 </Grid>
+                <ModernStatsSection />
+                
               </AccordionContent>
             )}
+
           </AnimatePresence>
         </Container>
       </Box>
