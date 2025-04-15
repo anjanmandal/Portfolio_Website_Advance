@@ -5,7 +5,7 @@ const experiences = [
       id: 1,
       year: '2024-Present',
       company: 'SquarePlanIT',
-      title: 'Software Engineering Intern',
+      title: 'Lead Software Engineering Intern',
       logo: '/images/squareplanit-icon.jpg',
       mainImage: '/images/s-3.jpeg', // New field for a main image
       content: [

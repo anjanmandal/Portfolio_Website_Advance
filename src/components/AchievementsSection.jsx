@@ -83,21 +83,21 @@ const AchievementsSection = forwardRef((props, ref) => {
   // Sample Achievements Data with Multiple Images
   const achievements = [
     {
-      icon: <Star />,
-      title: 'Featured on ULM Website',
-      description:
-        'ULM Honors Program students, including Anjan Mandal, gained invaluable hands-on experience this summer through internships and research. These opportunities allowed students to apply their academic knowledge in real-world settings, enhancing their skills and preparing them for future careers.',
-      details:
-        'Anjan Mandal, a dedicated ULM Honors Program student, honed their skills in software development through a series of immersive internships and research projects over the summer. These real-world experiences enabled Anjan to apply theoretical knowledge in practical settings, developing solutions to real challenges and collaborating closely with industry professionals. Working on diverse projects that spanned from full-stack development to advanced data analysis, Anjan gained a deeper understanding of software engineering principles and best practices.',
-      images: [
-        '/images/honor-program-ulm.png',
-        '/images/honor-program-ulm.png',
-        '/images/honor-program-ulm.png',
-      ], // Array of image paths
+      "icon": <EmojiEvents />,
+      "title": "ULM Hawkathon Winner 2025",
+      "description": "Team PixelPioneers, including Pradeep and Sabin GR, secured 3rd position at Hawkathon 2025, 'Made with AI',ULM, with their impactful project: Autism Speak AI. This innovative tool is designed to support individuals with autism in developing and enhancing their communication skills through AI-powered interactions.",
+      "details": "Our project, Autism Speak AI, leverages advanced artificial intelligence to create an interactive learning platform that empowers people with autism to overcome communication challenges. Throughout Hawkathon 2025 at ULM, our team PixelPioneers demonstrated creativity, technical excellence, and determination under the invaluable guidance of Dharmendra Sharma. This milestone not only reflects our commitment to using technology for social good but also serves as motivation to continue improving and refining our solution for the community. We are proud of our achievement and excited about the future possibilities for Autism Speak AI.",
+      "images": [
+        "/images/hackathon_1_2025.jpeg",
+        "/images/hackathon_2_2025.jpg",
+        "/images/hackathon_3_2025.jpg",
+        "/images/hackathon_4_2025.jpeg",
+        "/images/hackathon_5_2025.jpeg",
+      ]
     },
     {
       icon: <EmojiEvents />,
-      title: 'ULM Hawkathon Winner',
+      title: 'ULM Hawkathon Winner 2024',
       description:
         'Anjan Mandal and Team DebugDynasty, proudly secured the runner-up position at the recent ULM Hackathon, hosted by GDSC ULM and ACM Student Chapter. Their project, a Lost and Found website, provides a streamlined platform for communities to reconnect lost items with their owners.',
       details:
@@ -109,6 +109,19 @@ const AchievementsSection = forwardRef((props, ref) => {
         '/images/wakathone2.jpg',
         '/images/wakathone3.jpg',
       ],
+    },
+    {
+      icon: <Star />,
+      title: 'Featured on ULM Website',
+      description:
+        'ULM Honors Program students, including Anjan Mandal, gained invaluable hands-on experience this summer through internships and research. These opportunities allowed students to apply their academic knowledge in real-world settings, enhancing their skills and preparing them for future careers.',
+      details:
+        'Anjan Mandal, a dedicated ULM Honors Program student, honed their skills in software development through a series of immersive internships and research projects over the summer. These real-world experiences enabled Anjan to apply theoretical knowledge in practical settings, developing solutions to real challenges and collaborating closely with industry professionals. Working on diverse projects that spanned from full-stack development to advanced data analysis, Anjan gained a deeper understanding of software engineering principles and best practices.',
+      images: [
+        '/images/honor-program-ulm.png',
+        '/images/honor-program-ulm.png',
+        '/images/honor-program-ulm.png',
+      ], // Array of image paths
     },
     {
       icon: <Code />,
