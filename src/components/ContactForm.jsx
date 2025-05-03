@@ -190,7 +190,6 @@ const ContactForm = React.forwardRef((props, ref) => {
       sx={{
         overflow: 'hidden',
         minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
         display: 'flex',
         alignItems: 'center',
@@ -208,7 +207,7 @@ const ContactForm = React.forwardRef((props, ref) => {
       {/* Grid Layout */}
       <Grid container spacing={4} sx={{ width: '100%', height: '100%' }}>
         {/* Left Section - Contact Form */}
-        <Grid item xs={12} md={6}>
+        <Grid item size={{xs:12, md:6}}>
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -368,7 +367,7 @@ const ContactForm = React.forwardRef((props, ref) => {
         </Grid>
 
         {/* Right Section - 3D Model */}
-        <Grid item xs={12} md={6} sx={{ display: { display: 'block' } }}>
+        <Grid item size={{xs:12, md:6}} sx={{ display: { display: 'block' } }}>
           <Box
             sx={{
               width: '100%',

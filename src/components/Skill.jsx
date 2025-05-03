@@ -161,8 +161,8 @@ const SkillCategories = forwardRef((props, ref) => {
       <TabPanel value={value} index={0}>
         <Grid container spacing={3}>
           {skills.languages.map((skill, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <StyledCard>
+            <Grid item  size={{ xs: 12, sm: 6, md: 4 }} fullwidth key={index}>
+              <StyledCard  >
                 <Avatar alt={skill.name} src={skill.icon} sx={{ width: 56, height: 56, mr: 2 }} />
                 <CardContent>
                   <Typography variant="h6" color="theme.palette.text.primary">

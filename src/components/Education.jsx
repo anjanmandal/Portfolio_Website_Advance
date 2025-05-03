@@ -3,302 +3,189 @@
 import React, { forwardRef, memo } from 'react';
 import {
   Box,
-  Grid,
-  Typography,
   Container,
+  Typography,
+  useTheme,
+  Avatar,
+  Paper,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   Card,
-  CardContent,
+  Button,
 } from '@mui/material';
-import { styled, useTheme,keyframes } from '@mui/material/styles';
+import {
+  Timeline,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineConnector,
+  TimelineContent,
+  TimelineOppositeContent,
+  TimelineDot,
+} from '@mui/lab';
 import { motion, useReducedMotion } from 'framer-motion';
+import { styled, keyframes } from '@mui/material/styles';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-// Motion Variants
-const floatVariants = {
-  animate: {
-    y: [0, -20, 0],
-    transition: {
-      y: {
-        repeat: Infinity,
-        duration: 6,
-        ease: 'easeInOut',
-      },
-    },
-  },
-};
+// Import your logos
+import ulmLogo from '/images/ulm-logo.png';
+import nicLogo from '/images/ni-logo.png';
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      delay: i * 0.2,
-      ease: 'easeOut',
-    },
-  }),
-};
+// Gradient shine keyframes for title
+const shine = keyframes`
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+`;
 
-const EducationCardMotion = motion(Card);
-
-// Styled component for the section title
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 'bold',
-  fontSize: '2.5rem',
-  textAlign: 'center',
-  color: theme.palette.text.primary,
-  marginBottom: theme.spacing(4),
-}));
-
-// Styled component for the timeline connector and points
-const TimelineConnector = styled(Box)(({ theme }) => ({
-  width: '2px',
-  flexGrow: 1,
-  backgroundColor: theme.palette.divider,
-}));
-
-const TimelinePoint = styled(Box)(({ theme }) => ({
-  width: '12px',
-  height: '12px',
-  borderRadius: '50%',
-  backgroundColor: theme.palette.primary.main,
-}));
-
-// Styled component for floating shapes using Framer Motion
-const FloatingShape = styled(motion.div)(({ theme, size, top, left }) => ({
-  position: 'absolute',
-  borderRadius: '50%',
-  background: `radial-gradient(circle, ${theme.palette.primary.light}, ${theme.palette.primary.dark})`,
-  opacity: 0.1,
-  width: size || 150,
-  height: size || 150,
-  top: top || '50%',
-  left: left || '50%',
-  zIndex: 0,
-}));
-
-const ShinyText = styled(Typography)(({ theme }) => ({
+// Animated gradient title
+const AnimatedTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   fontSize: '3rem',
   background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  backgroundClip: 'text',
-  textFillColor: 'transparent',
+  WebkitBackgroundClip: 'text',
+  color: 'transparent',
   backgroundSize: '200% auto',
-  display: 'inline-block',
-  letterSpacing: '0.05em',
-  animation: `shine 3s linear infinite`,
+  animation: `${shine} 4s linear infinite`,
+  textAlign: 'center',
+  marginBottom: theme.spacing(2),
 }));
 
-// Animation for text shining effect
-const shine = keyframes`
-  0% { background-position: 0% }
-  100% { background-position: 200% }
-`;
+// Education entries now include bullet points
+const educationEntries = [
+  {
+    id: 'bsc',
+    period: '2022 - 2025',
+    title: 'B.Sc. Computer Science',
+    institution: 'University of Louisiana Monroe',
+    logo: ulmLogo,
+    bullets: [
+      'Focused on software development, data structures, algorithms, and AI.',
+      'Maintained a 3.96 GPA with research projects in Machine Learning and Data Science.',
+    ],
+  },
+  {
+    id: 'hs',
+    period: '2019 - 2021',
+    title: 'High School Diploma',
+    institution: 'National Infotech College',
+    logo: nicLogo,
+    bullets: [
+      'Excelled in computer science and mathematics.',
+      'Led coding competitions and STEM clubs.',
+    ],
+  },
+];
 
-const EducationSection = forwardRef((props, ref) => {
+// Framer Motion fade-in variants
+const fadeInVariant = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.2, duration: 0.6, ease: 'easeOut' },
+  }),
+};
+
+const EducationSection = forwardRef((_, ref) => {
   const theme = useTheme();
   const prefersReducedMotion = useReducedMotion();
-
-  const shouldAnimate = !prefersReducedMotion;
 
   return (
     <Box
       ref={ref}
-      sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        py: { xs: 8, md: 12 },
-        backgroundColor:'transparent',
-      }}
+      component={motion.section}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      sx={{ py: { xs: 6, md: 12 }, backgroundColor: 'transparent', overflow: 'hidden' }}
     >
-      {/* Floating Shapes with Framer Motion */}
-      {shouldAnimate && (
-        <>
-          <FloatingShape
-            size={300}
-            top="5%"
-            left="10%"
-            variants={floatVariants}
-            animate="animate"
-          />
-          <FloatingShape
-            size={200}
-            top="80%"
-            left="80%"
-            variants={floatVariants}
-            animate="animate"
-          />
-        </>
-      )}
-
-      <Container
-        maxWidth="lg"
-        sx={{
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        {/* Centered Section Title */}
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <ShinyText variant="h3">Education</ShinyText>
-      </Box>
-
-        {/* Timeline and Education Cards */}
-        <Grid container spacing={6}>
-          {/* Timeline Connector */}
-          <Grid
-            item
-            xs={1}
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              flexDirection: 'column',
-              alignItems: 'center',
-              mt: 2,
-            }}
-          >
-            <TimelinePoint />
-            <TimelineConnector sx={{ flexGrow: 1 }} />
-            <TimelinePoint />
-            <TimelineConnector sx={{ flexGrow: 1 }} />
-            <TimelinePoint />
-          </Grid>
-
-          {/* Education Milestones */}
-          <Grid item xs={12} md={11}>
-            {/* First Education Card */}
-            <EducationCardMotion
-              custom={0}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              whileHover={{
-                scale: 1.02,
-                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
-              }}
-              transition={{ duration: 0.3 }}
-              sx={{
-                mb: 4,
-                backgroundColor: theme.palette.background.paper,
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
-                borderRadius: '16px',
-                overflow: 'hidden',
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}
-                >
-                  B.Sc. Computer Science
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ color: theme.palette.text.secondary, mb: 1 }}
-                >
-                  University of Louisiana Monroe | 2022 - 2025
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ color: theme.palette.text.secondary }}
-                >
-                  Focused on software development, data structures, algorithms, and artificial intelligence. Currently maintaining a 3.96 GPA with multiple research projects in AI.
-                </Typography>
-              </CardContent>
-            </EducationCardMotion>
-
-            {/* Second Education Card */}
-            <EducationCardMotion
-              custom={1}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              whileHover={{
-                scale: 1.02,
-                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
-              }}
-              transition={{ duration: 0.3 }}
-              sx={{
-                mb: 4,
-                backgroundColor: theme.palette.background.paper,
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
-                borderRadius: '16px',
-                overflow: 'hidden',
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  sx={{
-                    fontWeight: 'bold',
-                    color: theme.palette.secondary.main,
-                  }}
-                >
-                  High School Diploma
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ color: theme.palette.text.secondary, mb: 1 }}
-                >
-                  National Infotech College | 2019 - 2021
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ color: theme.palette.text.secondary }}
-                >
-                  Excelled in computer science and mathematics, developing a passion for technology and software development, leading to numerous coding competitions.
-                </Typography>
-              </CardContent>
-            </EducationCardMotion>
-
-            {/* Third Education Card */}
-            <EducationCardMotion
-              custom={2}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              whileHover={{
-                scale: 1.02,
-                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
-              }}
-              transition={{ duration: 0.3 }}
-              sx={{
-                mb: 4,
-                backgroundColor: theme.palette.background.paper,
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
-                borderRadius: '16px',
-                overflow: 'hidden',
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  sx={{
-                    fontWeight: 'bold',
-                    color: theme.palette.primary.dark,
-                  }}
-                >
-                  Online Courses & Certifications
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ color: theme.palette.text.secondary, mb: 1 }}
-                >
-                  Various Platforms | 2021 - Present
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ color: theme.palette.text.secondary }}
-                >
-                  Completed certifications in Full-Stack Development, Machine Learning, and Cloud Computing through platforms like Coursera and Udemy to enhance professional skills.
-                </Typography>
-              </CardContent>
-            </EducationCardMotion>
-          </Grid>
-        </Grid>
+      <Container maxWidth="lg" sx={{ textAlign: 'center', mb: 6 }}>
+        <AnimatedTitle component="div">Education</AnimatedTitle>
+        <Typography variant="subtitle1" color="text.secondary">
+          My academic journey and continuous learning path
+        </Typography>
       </Container>
+
+      <Timeline position="alternate">
+        {educationEntries.map((entry, idx) => (
+          <TimelineItem
+            key={entry.id}
+            component={motion.div}
+            variants={fadeInVariant}
+            custom={idx}
+          >
+            <TimelineOppositeContent
+              sx={{
+                m: 'auto 0',
+                textAlign: { xs: 'left', md: idx % 2 === 0 ? 'right' : 'left' },
+              }}
+              variant="body2"
+              color="text.secondary"
+            >
+              {entry.period}
+            </TimelineOppositeContent>
+
+            <TimelineSeparator>
+    
+
+              <TimelineDot sx={{ p: 0, bgcolor: 'transparent' }}>
+                <Avatar
+                  src={entry.logo}
+                  alt={entry.title}
+                  variant="rounded"
+                  sx={{ width: 56, height: 56, boxShadow: theme.shadows[3] }}
+                />
+              </TimelineDot>
+
+              {idx < educationEntries.length - 1 && <TimelineConnector />}
+            </TimelineSeparator>
+
+            <TimelineContent sx={{ py: '12px', px: 2}}>
+              <Card variant="outlined"
+                sx={{ p: 2 }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Avatar
+                    src={entry.logo}
+                    alt={entry.title}
+                    variant="rounded"
+                    sx={{ width: 40, height: 40, mr: 1 }}
+                  />
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                      {entry.title}
+                    </Typography>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      {entry.institution}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <List dense>
+                  {entry.bullets.map((bullet, i) => (
+                    <ListItem key={i} disableGutters>
+                      <ListItemIcon>
+                        <CheckCircleOutlineIcon color="primary" />
+                      </ListItemIcon>
+                      <ListItemText primary={bullet} />
+                    </ListItem>
+                  ))}
+                </List>
+
+                {/* Optional: details button */}
+                {/*
+                <Box sx={{ textAlign: 'right', mt: 1 }}>
+                  <Button variant="contained" size="small">
+                    View Details
+                  </Button>
+                </Box>
+                */}
+              </Card>
+            </TimelineContent>
+          </TimelineItem>
+        ))}
+      </Timeline>
     </Box>
   );
 });

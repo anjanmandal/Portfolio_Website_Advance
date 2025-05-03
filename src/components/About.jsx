@@ -69,8 +69,8 @@ const pulse = keyframes`
 // Styled component for the Smart Frame around the image
 const SmartFrame = styled(Box)(({ theme }) => ({
   position: 'relative',
-  width: theme.spacing(50),
-  height: theme.spacing(50),
+  width: theme.spacing(45),
+  height: theme.spacing(45),
   borderRadius: '20%',
   display: 'flex',
   alignItems: 'center',
@@ -246,7 +246,6 @@ const Highlight = styled('span')(({ theme }) => ({
   },
 }));
 
-
 const AboutSection = forwardRef((props, ref) => {
   const theme = useTheme();
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -298,20 +297,28 @@ const AboutSection = forwardRef((props, ref) => {
   };
 
   return (
-    <CommonBackground>
+
       <Box
         ref={ref}
-        sx={{
+        sx={(theme) => ({
           position: 'relative',
           overflow: 'hidden',
           py: 5,
-        }}
+          mt:5,
+          width: '100%',
+          backgroundRepeat: 'no-repeat',
+          backgroundImage:
+            'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)',
+          ...theme.applyStyles('dark', {
+            backgroundImage:
+              'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
+            }),
+          })}
       >
-       
-
         <Container
           maxWidth="lg"
           sx={{
+            width:'100%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -325,9 +332,9 @@ const AboutSection = forwardRef((props, ref) => {
             {/* Image Section with Smart Animated Frame */}
             <Grid
               item
-              xs={12}
-              md={6}
-              sx={{ display: 'flex', justifyContent: 'center' }}
+              size={{xs:12, md:6}}
+            
+              sx={{ display: 'flex', justifyContent: 'center'  }}
             >
               <SmartFrame>
                 <StyledImage alt="Anjan's Profile" src="/images/Anjan.jpg" />
@@ -335,7 +342,7 @@ const AboutSection = forwardRef((props, ref) => {
             </Grid>
 
             {/* About and Story Section with Animation */}
-            <Grid item xs={12} md={6}>
+            <Grid item  size={{xs:12, md:6}}>
               <motion.div
                 variants={containerVariants}
                 initial="hidden"
@@ -454,7 +461,7 @@ const AboutSection = forwardRef((props, ref) => {
                 {/* Grid Layout for Accordion Content */}
                 <Grid container spacing={4} alignItems="center">
                   {/* Textual Content */}
-                  <Grid item xs={12} md={6}>
+                  <Grid item  size={{xs:12, md:6}}>
                     {/* Social Media Icons */}
                     <SocialIcons>
                       <IconButton
@@ -540,7 +547,7 @@ const AboutSection = forwardRef((props, ref) => {
                   </Grid>
 
                   {/* Image Within Accordion */}
-                  <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Grid item  size={{xs:12, md:6}} sx={{ display: 'flex', justifyContent: 'center'}}>
                     <FramedImage
                       src="/images/anjan-profile.jpeg" // Replace with your actual image path
                       alt="Additional Picture"
@@ -557,7 +564,7 @@ const AboutSection = forwardRef((props, ref) => {
           </AnimatePresence>
         </Container>
       </Box>
-    </CommonBackground>
+  
   );
 });
 
