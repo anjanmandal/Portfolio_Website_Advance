@@ -8,6 +8,8 @@ import {
   Container,
   IconButton,
   Button,
+  Card,
+  Collapse
 } from '@mui/material';
 import { styled, keyframes, useTheme } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -191,12 +193,12 @@ const ShakingMotionButton = styled(motion(Button))(({ theme }) => ({
   marginTop: theme.spacing(8),
 }));
 
-// Styled component for the accordion content
-const AccordionContent = styled(motion(Box))(({ theme }) => ({
+// Accordion content wrapper
+const AccordionContentBox = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(4),
   padding: theme.spacing(4),
   borderRadius: '15px',
-  background: theme.palette.background.paper,
+
   boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)',
 }));
 
@@ -269,25 +271,6 @@ const AboutSection = forwardRef((props, ref) => {
       transition: {
         duration: 0.6,
         ease: 'easeOut',
-      },
-    },
-  };
-
-  const accordionVariants = {
-    closed: {
-      height: 0,
-      opacity: 0,
-      transition: {
-        duration: 0.5,
-        ease: 'easeInOut',
-      },
-    },
-    open: {
-      height: 'auto',
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: 'easeInOut',
       },
     },
   };
@@ -432,136 +415,102 @@ const AboutSection = forwardRef((props, ref) => {
           </ShakingMotionButton>
 
           {/* Accordion Content */}
-          <AnimatePresence>
-            {isAccordionOpen && (
-              <AccordionContent
-                variants={accordionVariants}
-                initial="closed"
-                animate="open"
-                exit="closed"
-                layout
-              >
-                {/* Title */}
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: 'bold', mb: 2 }}
-                >
-                  <StylishText variant="h4">Hi, I am Anjan Mandal</StylishText>
-                </Typography>
+          <Collapse in={isAccordionOpen} timeout="auto" unmountOnExit>
+          <AccordionContentBox>
+            {/* Heading */}
+            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+              <StylishText>Hi, I am Anjan Mandal</StylishText>
+            </Typography>
 
-                {/* Introduction Text */}
-                <Typography
-                  variant="body1"
-                  sx={{ color: theme.palette.text.secondary, mb: 4, lineHeight: 1.6 }}
-                >
-                  Welcome to my personal space! Connect with me on social media to stay updated
-                  with my latest projects and insights.
-                </Typography>
+            {/* Intro line */}
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 4, lineHeight: 1.6 }}>
+              Welcome to my personal space! Connect with me on social media to stay updated
+              with my latest projects and insights.
+            </Typography>
 
-                {/* Grid Layout for Accordion Content */}
-                <Grid container spacing={4} alignItems="center">
-                  {/* Textual Content */}
-                  <Grid item  size={{xs:12, md:6}}>
-                    {/* Social Media Icons */}
-                    <SocialIcons>
-                      <IconButton
-                        aria-label="Facebook"
-                        color="primary"
-                        href="https://www.facebook.com/people/Anjan-Mandal/100015478332685/" 
-                        target="_blank"
-                        rel="noopener"
-                        component={motion.a}
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <FacebookIcon fontSize="large" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="LinkedIn"
-                        sx={{ color: '#0A66C2' }}
-                        href="https://www.linkedin.com/in/madalak/" 
-                        target="_blank"
-                        rel="noopener"
-                        component={motion.a}
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <LinkedInIcon fontSize="large" />
-                      </IconButton>
-                    </SocialIcons>
+            <Grid container spacing={4} alignItems="center">
+              {/* left: social / contact */}
+              <Grid item xs={12} md={6}>
+                <SocialIcons>
+                  <IconButton
+                    aria-label="Facebook"
+                    href="https://facebook.com/Anjan-Mandal"
+                    target="_blank"
+                    rel="noopener"
+                    color="primary"
+                  >
+                    <FacebookIcon fontSize="large" />
+                  </IconButton>
+                  <IconButton
+                    aria-label="LinkedIn"
+                    href="https://linkedin.com/in/madalak"
+                    target="_blank"
+                    rel="noopener"
+                    sx={{ color: '#0A66C2' }}
+                  >
+                    <LinkedInIcon fontSize="large" />
+                  </IconButton>
+                </SocialIcons>
 
-                    {/* Download Resume Button */}
-                    <ActionButtons>
-                      <Button
-                        variant="outlined"
-                        startIcon={<DownloadIcon />}
-                        href="/files/Anjan_Mandal_Resume_2025_ULM.pdf" 
-                        download
-                        sx={{
-                          borderRadius: '10px',
-                          textTransform: 'none',
-                          fontSize: '1rem',
-                          borderColor: theme.palette.primary.main,
-                          color: theme.palette.primary.main,
-                          '&:hover': {
-                            backgroundColor: theme.palette.primary.light,
-                            borderColor: theme.palette.primary.main,
-                          },
-                        }}
-                      >
-                        Download Resume
-                      </Button>
-                    </ActionButtons>
+                <ActionButtons>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DownloadIcon />}
+                    href="/files/Anjan_Mandal_Resume_2025_ULM.pdf"
+                    download
+                    sx={{
+                      borderRadius: '10px',
+                      textTransform: 'none',
+                      fontSize: '1rem',
+                      borderColor: theme.palette.primary.main,
+                      color: theme.palette.primary.main,
+                      '&:hover': {
+                        backgroundColor: theme.palette.primary.light,
+                      },
+                    }}
+                  >
+                    Download Resume
+                  </Button>
+                </ActionButtons>
 
-                    {/* Contact Information */}
-                    <Box sx={{ marginTop: theme.spacing(4) }}>
-                      <Typography
-                        variant="h5"
-                        sx={{ fontWeight: 'bold', mb: 2 }}
-                      >
-                        Contact Me
-                      </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                        <IconButton
-                          aria-label="Email"
-                          href="mailto:anjanmandal2076@gmail.com" 
-                          color="primary"
-                          component={motion.a}
-                          whileHover={{ scale: 1.2 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <EmailIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="Phone"
-                          href="tel:+3186907227" // Replace with your phone number
-                          color="primary"
-                          component={motion.a}
-                          whileHover={{ scale: 1.2 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <PhoneIcon />
-                        </IconButton>
-                      </Box>
-                    </Box>
-                  </Grid>
+                <Box sx={{ mt: 4 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    Contact Me
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                    <IconButton aria-label="Email" href="mailto:anjanmandal2076@gmail.com">
+                      <EmailIcon />
+                    </IconButton>
+                    <IconButton aria-label="Phone" href="tel:+3186907227">
+                      <PhoneIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Grid>
 
-                  {/* Image Within Accordion */}
-                  <Grid item  size={{xs:12, md:6}} sx={{ display: 'flex', justifyContent: 'center'}}>
-                    <FramedImage
-                      src="/images/anjan-profile.jpeg" // Replace with your actual image path
-                      alt="Additional Picture"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    />
-                  </Grid>
-                </Grid>
-                <ModernStatsSection />
-                
-              </AccordionContent>
-            )}
+              {/* right: extra image */}
+              <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box
+                  component="img"
+                  src="/images/anjan-profile.jpeg"
+                  alt="Anjan additional"
+                  sx={{
+                    width: 250,
+                    height: 250,
+                    borderRadius: '50%',
+                    border: `5px solid ${theme.palette.primary.main}`,
+                    objectFit: 'cover',
+                    boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
+                  }}
+                />
+              </Grid>
+            </Grid>
 
-          </AnimatePresence>
+            <Box sx={{ mt: 4 }}>
+              <ModernStatsSection />
+            </Box>
+          </AccordionContentBox>
+        </Collapse>
         </Container>
       </Box>
   

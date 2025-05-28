@@ -36,13 +36,13 @@ export default function ModernStatsSection() {
 
   // ====== Example stats for the LeetCode card ======
   const totalQuestions = 3474;
-  const easyCount = 36;
-  const mediumCount = 20;
-  const hardCount = 6;
+  const easyCount = 44;
+  const mediumCount = 34;
+  const hardCount = 7;
   const attemptingCount = 2;
 
   // ====== Example stats for the GitHub card ======
-  const githubRepos = 15;
+  const githubRepos = 22;
 
   // ====== Helper functions for the segmented ring (LeetCode) ======
   function polarToCartesian(cx, cy, r, angleInDegrees) {

@@ -20,6 +20,7 @@ import AchievementsSection from './components/AchievementsSection';
 import ContactForm from './components/ContactForm';
 import InvolvementSection from './components/Involvement';
 import CommonBackground from './components/CommonBackground';
+import AchievementsDetail from './components/AchievementsDetail';
 
 
 export default function App() {
@@ -107,6 +108,10 @@ export default function App() {
             />
             {/* Experience Detail Page */}
             <Route path="/experience/:id" element={<ExperienceDetail />} />
+             <Route
+              path="/achievements/:slug"
+              element={<AchievementsDetail />}
+            />
           </Routes>
         </Container>
         <Footer sections={sections} />

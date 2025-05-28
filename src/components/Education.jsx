@@ -7,13 +7,11 @@ import {
   Typography,
   useTheme,
   Avatar,
-  Paper,
+  Card,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Card,
-  Button,
 } from '@mui/material';
 import {
   Timeline,
@@ -38,7 +36,6 @@ const shine = keyframes`
   100% { background-position: 200% center; }
 `;
 
-// Animated gradient title
 const AnimatedTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   fontSize: '3rem',
@@ -51,11 +48,11 @@ const AnimatedTitle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-// Education entries now include bullet points
+// Education entries
 const educationEntries = [
   {
     id: 'bsc',
-    period: '2022 - 2025',
+    period: '2022 – 2025',
     title: 'B.Sc. Computer Science',
     institution: 'University of Louisiana Monroe',
     logo: ulmLogo,
@@ -66,7 +63,7 @@ const educationEntries = [
   },
   {
     id: 'hs',
-    period: '2019 - 2021',
+    period: '2019 – 2021',
     title: 'High School Diploma',
     institution: 'National Infotech College',
     logo: nicLogo,
@@ -98,7 +95,7 @@ const EducationSection = forwardRef((_, ref) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
-      sx={{ py: { xs: 6, md: 12 }, backgroundColor: 'transparent', overflow: 'hidden' }}
+      sx={{ py: { xs: 6, md: 12 } }}
     >
       <Container maxWidth="lg" sx={{ textAlign: 'center', mb: 6 }}>
         <AnimatedTitle component="div">Education</AnimatedTitle>
@@ -108,83 +105,97 @@ const EducationSection = forwardRef((_, ref) => {
       </Container>
 
       <Timeline position="alternate">
-        {educationEntries.map((entry, idx) => (
-          <TimelineItem
-            key={entry.id}
-            component={motion.div}
-            variants={fadeInVariant}
-            custom={idx}
-          >
-            <TimelineOppositeContent
-              sx={{
-                m: 'auto 0',
-                textAlign: { xs: 'left', md: idx % 2 === 0 ? 'right' : 'left' },
-              }}
-              variant="body2"
-              color="text.secondary"
+        {educationEntries.map((entry, idx) => {
+          const isOnRight = idx % 2 === 0;
+
+          return (
+            <TimelineItem
+              key={entry.id}
+              component={motion.div}
+              variants={fadeInVariant}
+              custom={idx}
             >
-              {entry.period}
-            </TimelineOppositeContent>
-
-            <TimelineSeparator>
-    
-
-              <TimelineDot sx={{ p: 0, bgcolor: 'transparent' }}>
-                <Avatar
-                  src={entry.logo}
-                  alt={entry.title}
-                  variant="rounded"
-                  sx={{ width: 56, height: 56, boxShadow: theme.shadows[3] }}
-                />
-              </TimelineDot>
-
-              {idx < educationEntries.length - 1 && <TimelineConnector />}
-            </TimelineSeparator>
-
-            <TimelineContent sx={{ py: '12px', px: 2}}>
-              <Card variant="outlined"
-                sx={{ p: 2 }}
+              <TimelineOppositeContent
+                sx={{
+                  m: 'auto 0',
+          
+                }}
+                variant="body2"
+                color="text.secondary"
               >
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                {entry.period}
+              </TimelineOppositeContent>
+
+              <TimelineSeparator>
+                <TimelineDot sx={{ p: 0, bgcolor: 'transparent' }}>
                   <Avatar
                     src={entry.logo}
                     alt={entry.title}
                     variant="rounded"
-                    sx={{ width: 40, height: 40, mr: 1 }}
+                    sx={{ width: 56, height: 56, boxShadow: theme.shadows[3] }}
                   />
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                      {entry.title}
-                    </Typography>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      {entry.institution}
-                    </Typography>
+                </TimelineDot>
+                {idx < educationEntries.length - 1 && <TimelineConnector />}
+              </TimelineSeparator>
+
+              <TimelineContent
+                sx={{
+                  display: 'flex',
+                  justifyContent: isOnRight ? 'flex-start' : 'flex-end',
+                  py: '12px',
+                  px: 2,
+                }}
+              >
+                <Card
+                  variant="outlined"
+                  elevation={3}
+                  sx={{
+                    maxWidth: 360,
+                    width: '100%',
+                    p: 2,
+                    textAlign: isOnRight ? 'left' : 'right',
+                  }}
+                >
+                  {/* Header: logo + title */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: 1,
+                    }}
+                  >
+                    <Avatar
+                      src={entry.logo}
+                      alt={entry.title}
+                      variant="rounded"
+                      sx={{ width: 40, height: 40, mr: 1 }}
+                    />
+                    <Box>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                        {entry.title}
+                      </Typography>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        {entry.institution}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
 
-                <List dense>
-                  {entry.bullets.map((bullet, i) => (
-                    <ListItem key={i} disableGutters>
-                      <ListItemIcon>
-                        <CheckCircleOutlineIcon color="primary" />
-                      </ListItemIcon>
-                      <ListItemText primary={bullet} />
-                    </ListItem>
-                  ))}
-                </List>
-
-                {/* Optional: details button */}
-                {/*
-                <Box sx={{ textAlign: 'right', mt: 1 }}>
-                  <Button variant="contained" size="small">
-                    View Details
-                  </Button>
-                </Box>
-                */}
-              </Card>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
+                  {/* Bullets */}
+                  <List dense>
+                    {entry.bullets.map((bullet, i) => (
+                      <ListItem key={i} disableGutters>
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary={bullet} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Card>
+              </TimelineContent>
+            </TimelineItem>
+          );
+        })}
       </Timeline>
     </Box>
   );
