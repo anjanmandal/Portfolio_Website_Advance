@@ -71,8 +71,9 @@ const pulse = keyframes`
 // Styled component for the Smart Frame around the image
 const SmartFrame = styled(Box)(({ theme }) => ({
   position: 'relative',
-  width: theme.spacing(45),
-  height: theme.spacing(45),
+  width: '100%',
+  maxWidth: theme.spacing(45),
+  maxHeight: theme.spacing(45),
   borderRadius: '20%',
   display: 'flex',
   alignItems: 'center',
@@ -322,7 +323,7 @@ const AboutSection = forwardRef((props, ref) => {
 >
 
         <Container
-          maxWidth="lg"
+          maxWidth="md"
           sx={{
             width:'100%',
             display: 'flex',

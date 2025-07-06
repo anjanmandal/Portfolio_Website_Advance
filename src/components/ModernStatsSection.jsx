@@ -36,8 +36,8 @@ export default function ModernStatsSection() {
 
   // ====== Example stats for the LeetCode card ======
   const totalQuestions = 3474;
-  const easyCount = 44;
-  const mediumCount = 34;
+  const easyCount = 54;
+  const mediumCount = 35;
   const hardCount = 7;
   const attemptingCount = 2;
 
