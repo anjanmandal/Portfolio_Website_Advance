@@ -1,51 +1,54 @@
-import { useState,forwardRef } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { Box, Tabs, Tab, Grid, Card, CardContent, Typography, Avatar } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
-import CssIcon from '/images/css-icon.png'; // Update with actual paths
+
+// Icon imports (update paths as needed)
+import CssIcon from '/images/css-icon.png';
 import JavaScriptIcon from '/images/javaScript.png';
 import ReactIcon from '/images/react-logo.png';
 import NodeIcon from '/images/nodejs-logo.png';
-import DevOpsIcon from '/images/php-logo.png';
 import SQLIcon from '/images/sql.png';
 import PythonIcon from '/images/python.png';
-import VBNETIcon from '/images/vb_net.png';
-import PHPIcon from '/images/php.png'
+import PHPIcon from '/images/php.png';
 import CSharpIcon from '/images/cSharp.png';
 import JavaIcon from '/images/java-icon.png';
+import VBNETIcon from '/images/vb_net.png';
+import TypeScriptIcon from '/images/typescript.png';
 import MUIcon from '/images/material_ui.png';
-import TailWindCssIcon from '/images/tailwind-logo.png';
+import TailwindIcon from '/images/tailwind-logo.png';
 import AngularIcon from '/images/angular.png';
-import ExpressIcon from '/images/express.png';
+import PostgresqlIcon from '/images/postgresql.png';
+import MysqlIcon from '/images/mysql.png';
+import MongodbIcon from '/images/mongoDB.png';
+import SqlServerIcon from '/images/sql_server.png';
+import RedisIcon from '/images/redis.png';
 import AspNETIcon from '/images/asp_net.png';
+import NextjsIcon from '/images/nextjs.png';
+import JestIcon from '/images/jest.png';
+import FirebaseIcon from '/images/firebase.png';
+import DjangoIcon from '/images/django.png';
+import GraphQLIcon from '/images/graphql.png';
+import PrismaIcon from '/images/prisma.png';
+import ReactNativeIcon from '/images/reactNative.png';
 import LaravelIcon from '/images/laravel-logo.png';
 import GitIcon from '/images/git.png';
 import AwsIcon from '/images/aws.png';
+import TerraformIcon from '/images/terraform.png';
+import NginxIcon from '/images/nginx.png';
+import LinuxIcon from '/images/linux.png';
+import DockerIcon from '/images/docker.png';
+import KubernetesIcon from '/images/kubernetes.png';
+import GitHubIcon from '/images/github.png';
+import JenkinsIcon from '/images/jenkins.png';
 
-
-
-
-
-// Animation for floating particles
+// Animation keyframes
 const float = keyframes`
   0% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0); }
 `;
 
-// Styled component for floating particles
-const Particle = styled(Box)(({ theme, size, top, left }) => ({
-  position: 'absolute',
-  width: size || '10px',
-  height: size || '10px',
-  borderRadius: '50%',
-  backgroundColor: theme.palette.primary.main,
-  top: top || '50%',
-  left: left || '50%',
-  opacity: 0.7,
-  animation: `${float} 4s ease-in-out infinite`,
-}));
-
-// Shiny text style for headings
+// Shiny text style for heading
 const ShinyText = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   fontSize: '3rem',
@@ -58,15 +61,15 @@ const ShinyText = styled(Typography)(({ theme }) => ({
   animation: `shine 3s linear infinite`,
 }));
 
-// Animation for text shining effect
+// Text shine keyframes
 const shine = keyframes`
   0% { background-position: 0% }
   100% { background-position: 200% }
 `;
 
-// Styled Tab for matching the theme
+// Styled Tab
 const StyledTab = styled(Tab)(({ theme }) => ({
-  color: 'theme.palette.text.primary',
+  color: theme.palette.text.primary,
   '&.Mui-selected': {
     color: theme.palette.primary.main,
   },
@@ -75,7 +78,7 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   },
 }));
 
-// Styled Card with hover effect and gradient borders
+// Styled Card for skills
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: 12,
@@ -92,7 +95,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-// TabPanel component to display content for each tab
+// TabPanel component
 function TabPanel({ children, value, index }) {
   return (
     <div role="tabpanel" hidden={value !== index}>
@@ -102,115 +105,89 @@ function TabPanel({ children, value, index }) {
 }
 
 const SkillCategories = forwardRef((props, ref) => {
-
   const [value, setValue] = useState(0);
+  const handleChange = (_, newVal) => setValue(newVal);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
+  // Skill definitions
   const skills = {
-    languages: [
+    Languages: [
       { name: 'CSS', icon: CssIcon },
       { name: 'JavaScript', icon: JavaScriptIcon },
-      { name: 'SQL', icon: SQLIcon },
+      { name: 'TypeScript', icon: TypeScriptIcon },
       { name: 'Python', icon: PythonIcon },
-      { name: 'PHP', icon:PHPIcon },
+      { name: 'PHP', icon: PHPIcon },
       { name: 'C#', icon: CSharpIcon },
       { name: 'Java', icon: JavaIcon },
-      { name: 'VB.NET', icon: VBNETIcon }
+      { name: 'VB.NET', icon: VBNETIcon },
+      { name: 'SQL', icon: SQLIcon },
     ],
-    frameworks: [
-      { name: 'Node.js', icon: NodeIcon },
+    Frameworks: [
       { name: 'React.js', icon: ReactIcon },
-      { name: 'Tailwind CSS', icon: TailWindCssIcon },
-      { name: 'Material UI', icon: MUIcon },
-      { name: 'Angular', icon: AngularIcon},
-      { name: 'Express.js', icon: ExpressIcon },
-      { name: 'ASP.NET', icon: AspNETIcon },
+      { name: 'Next.js', icon: NextjsIcon },
+      { name: 'Angular', icon: AngularIcon },
+      { name: 'Node.js (Express)', icon: NodeIcon },
+      { name: 'ASP.NET Core', icon: AspNETIcon },
+      { name: 'Django', icon: DjangoIcon },
       { name: 'Laravel', icon: LaravelIcon },
-
+      { name: 'Tailwind CSS', icon: TailwindIcon },
+      { name: 'Material UI', icon: MUIcon },
+      { name: 'GraphQL', icon: GraphQLIcon },
+      { name: 'Prisma', icon: PrismaIcon },
+      { name: 'Firebase', icon: FirebaseIcon },
+      { name: 'Jest', icon: JestIcon },
+      { name: 'React Native', icon: ReactNativeIcon },
     ],
-    devops: [
+    DevOps: [
       { name: 'Git', icon: GitIcon },
-      { name: 'AWS', icon: AwsIcon }
+      { name: 'GitHub Actions', icon: GitHubIcon },
+      { name: 'Jenkins', icon: JenkinsIcon },
+      { name: 'Docker', icon: DockerIcon },
+      { name: 'Kubernetes', icon: KubernetesIcon },
+      { name: 'Terraform', icon: TerraformIcon },
+      { name: 'AWS (EKS, Lambda, S3)', icon: AwsIcon },
+      { name: 'Nginx', icon: NginxIcon },
+      { name: 'Linux', icon: LinuxIcon },
     ],
+      Databases: [
+      { name: 'PostgreSQL', icon: PostgresqlIcon },
+      { name: 'MySQL', icon: MysqlIcon },
+      { name: 'MongoDB', icon: MongodbIcon },
+      { name: 'Microsoft SQL Server', icon: SqlServerIcon },
+      { name: 'Redis', icon: RedisIcon },
+    ]
   };
 
-  return (
-    <Box ref={ref} sx={{ width: '100%', color: '#fff', p: 3, position: 'relative', overflow: 'hidden' }}>
-      {/* Floating Particles */}
-      {/* <Particle top="10%" left="20%" size="8px" />
-      <Particle top="40%" left="70%" size="12px" />
-      <Particle top="75%" left="35%" size="10px" />
-      <Particle top="90%" left="15%" size="6px" /> */}
+  // Convert to array of [category, items]
+  const categories = Object.entries(skills);
 
-      {/* Shiny Text Heading */}
+  return (
+    <Box ref={ref} sx={{ width: '100%', p: 3, position: 'relative', overflow: 'hidden' }}>
       <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <ShinyText variant="h3">Skill</ShinyText>
+        <ShinyText variant="h3">Skills</ShinyText>
       </Box>
 
-      {/* Tabs for switching categories */}
       <Tabs value={value} onChange={handleChange} centered>
-        <StyledTab label="Languages" />
-        <StyledTab label="Frameworks" />
-        <StyledTab label="DevOps" />
+        {categories.map(([catName], idx) => (
+          <StyledTab key={catName} label={catName} />
+        ))}
       </Tabs>
 
-      {/* Tab Panels */}
-      <TabPanel value={value} index={0}>
-        <Grid container spacing={3}>
-          {skills.languages.map((skill, index) => (
-            <Grid item  size={{ xs: 12, sm: 6, md: 4 }} fullwidth key={index}>
-              <StyledCard  >
-                <Avatar alt={skill.name} src={skill.icon} sx={{ width: 56, height: 56, mr: 2 }} />
-                <CardContent>
-                  <Typography variant="h6" color="theme.palette.text.primary">
-                    {skill.name}
-                  </Typography>
-                
-                </CardContent>
-              </StyledCard>
-            </Grid>
-          ))}
-        </Grid>
-      </TabPanel>
-
-      <TabPanel value={value} index={1}>
-        <Grid container spacing={3}>
-          {skills.frameworks.map((skill, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <StyledCard>
-                <Avatar alt={skill.name} src={skill.icon} sx={{ width: 56, height: 56, mr: 2 }} />
-                <CardContent>
-                  <Typography variant="h6" color="theme.palette.text.primary">
-                    {skill.name}
-                  </Typography>
-                
-                </CardContent>
-              </StyledCard>
-            </Grid>
-          ))}
-        </Grid>
-      </TabPanel>
-
-      <TabPanel value={value} index={2}>
-        <Grid container spacing={3}>
-          {skills.devops.map((skill, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <StyledCard>
-                <Avatar alt={skill.name} src={skill.icon} sx={{ width: 56, height: 56, mr: 2 }} />
-                <CardContent>
-                  <Typography variant="h6" color="theme.palette.text.primary">
-                    {skill.name}
-                  </Typography>
-              
-                </CardContent>
-              </StyledCard>
-            </Grid>
-          ))}
-        </Grid>
-      </TabPanel>
+      {categories.map(([catName, items], idx) => (
+        <TabPanel key={catName} value={value} index={idx}>
+          <Grid container spacing={3}>
+            {items.map((skill, i) => (
+              <Grid item size={{xs:12, sm:6, md:4}} key={i}>
+                <StyledCard>
+                  <Avatar alt={skill.name} src={skill.icon} sx={{ width: 56, height: 56, mr: 2 }} />
+                  <CardContent>
+                    <Typography variant="h6">{skill.name}</Typography>
+                  </CardContent>
+                </StyledCard>
+              </Grid>
+            ))}
+          </Grid>
+        </TabPanel>
+      ))}
     </Box>
   );
 });

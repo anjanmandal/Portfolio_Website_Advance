@@ -22,7 +22,31 @@ import { motion } from 'framer-motion';
 
 /* ——— All achievements now in this array ——— */
 const achievements = [
- {
+  {
+  title: 'Nexus Technology Cup Finalist 2025',
+  dateline: 'Baton Rouge, LA • March 15, 2025',
+  byline: 'By Anjan Mandal',
+  lead:
+    'Autism Speaks AI earned a top-4 finalist position in the College Track at Nexus Technology Cup 2025, showcasing an AI-powered platform designed to support individuals on the autism spectrum with transitions and improved social communication skills.',
+  quotes: [
+    {
+      text: '“Placing among the top four at Nexus validated our mission of using technology for inclusion and empowerment.”',
+      speaker: '— Anjan Mandal'
+    }
+  ],
+  body: [
+    'The project leverages cutting-edge AI to create an adaptive platform that delivers personalized learning and communication support for autistic individuals, fostering independence and confidence.',
+    'Special recognition goes to Pradeep Poudel for his outstanding technical expertise and collaboration that helped bring Autism Speaks AI to life.',
+    'The competition, organized by Nexus Louisiana at The Water Campus in Baton Rouge, brought together innovative teams from across the region to demonstrate how technology can drive meaningful social change.'
+  ],
+  images: [
+    '/images/NexusTechCup_4081.JPG',
+    '/images/NexusTechCup_660.JPG',
+    '/images/NexusTechCup_3584.JPG',
+    '/images/NexusTechCup_3596.JPG',
+    '/images/NexusTechCup_3750.JPG'
+  ]
+}, {
     title: 'ULM Hawkathon Winner 2025',
     dateline: 'Monroe, LA • May 27, 2025',
     byline: 'By Anjan Mandal',

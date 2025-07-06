@@ -238,7 +238,7 @@ const Highlight = styled('span')(({ theme }) => ({
     bottom: -2,
     width: '100%',
     height: '3px',
-    background: theme.palette.primary.main,
+    background: theme.palette.text.warning,
     transform: 'scaleX(0)',
     transformOrigin: 'left',
     transition: 'transform 0.3s ease',
@@ -281,23 +281,46 @@ const AboutSection = forwardRef((props, ref) => {
 
   return (
 
-      <Box
-        ref={ref}
-        sx={(theme) => ({
-          position: 'relative',
-          overflow: 'hidden',
-          py: 5,
-          mt:5,
-          width: '100%',
-          backgroundRepeat: 'no-repeat',
-          backgroundImage:
-            'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)',
-          ...theme.applyStyles('dark', {
-            backgroundImage:
-              'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
-            }),
-          })}
-      >
+ <Box
+  ref={ref}
+  sx={(theme) => ({
+        position: 'relative',
+    /* existing backgroundImage lines stay here */
+
+    /* ↓ Overlay: same for light & dark, tweak alpha as you like */
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      backgroundColor: theme.palette.mode === 'dark'
+        ? 'rgba(0,0,0,0.7)'   // darker overlay in dark mode
+        : 'rgba(255,255,255,0.6)', // light veil in light mode
+      zIndex: 0,                 // sits above the photo
+    },
+    /* Raise the main container above the overlay */
+    '& > .MuiContainer-root': { zIndex: 1 },
+    overflow: 'hidden',
+    py: 5,
+    mt: 5,
+    width: '100%',
+    /* 1️⃣  Put the photo first, gradient second  */
+    backgroundImage: `
+      url("/images/NexusTechCup_3605.JPG"),
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)
+    `,
+    backgroundSize: 'cover, cover',        // photo and gradient
+    backgroundPosition: 'center, center',
+    backgroundRepeat: 'no-repeat, no-repeat',
+    /* 2️⃣  Dark-mode override keeps the gradient while reusing the same picture */
+    ...theme.applyStyles('dark', {
+      backgroundImage: `
+        url("/images/NexusTechCup_3750.JPG"),
+        radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)
+      `,
+    }),
+  })}
+>
+
         <Container
           maxWidth="lg"
           sx={{
@@ -320,7 +343,7 @@ const AboutSection = forwardRef((props, ref) => {
               sx={{ display: 'flex', justifyContent: 'center'  }}
             >
               <SmartFrame>
-                <StyledImage alt="Anjan's Profile" src="/images/Anjan.jpg" />
+                <StyledImage alt="Anjan's Profile" src="/images/NexusTechCup_3755.JPG" />
               </SmartFrame>
             </Grid>
 
@@ -351,7 +374,7 @@ const AboutSection = forwardRef((props, ref) => {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ color: theme.palette.text.secondary, lineHeight: 1.6 }}
+                      sx={{ color: theme.palette.text.primary, lineHeight: 1.6 }}
                     >
                       I am <Highlight>Anjan Mandal</Highlight>, a passionate{' '}
                       <Highlight>Full Stack Developer</Highlight> committed to delivering{' '}
@@ -376,7 +399,7 @@ const AboutSection = forwardRef((props, ref) => {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ color: theme.palette.text.secondary, lineHeight: 1.6 }}
+                      sx={{ color: theme.palette.text.primary, lineHeight: 1.6 }}
                     >
                       My journey into the world of <Highlight>technology</Highlight> began during my childhood when a
                       neighbor purchased a laptop. One day, I had the opportunity to use it,
@@ -492,7 +515,7 @@ const AboutSection = forwardRef((props, ref) => {
               <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Box
                   component="img"
-                  src="/images/anjan-profile.jpeg"
+                  src="/images/NexusTechCup_682.JPG"
                   alt="Anjan additional"
                   sx={{
                     width: 250,

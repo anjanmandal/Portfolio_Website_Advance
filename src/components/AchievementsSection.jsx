@@ -42,6 +42,15 @@ const ShinyText = styled(Typography)(({ theme }) => ({
 /* ——— Your data — include date, description, images… ——— */
 const achievements = [
   {
+  title: 'Nexus Technology Cup Finalist 2025',
+  date: 'June 18, 2025',
+  description:
+    'Autism Speaks AI achieved a top-4 finalist position at Nexus Technology Cup 2025 with their innovative AI platform supporting individuals on the autism spectrum.',
+  details:
+    'The project showcased at The Water Campus in Baton Rouge demonstrated how advanced AI can deliver personalized learning and communication tools for autistic individuals. Special recognition goes to Pradeep Poudel for his technical expertise and collaboration during the competition.',
+  images: ['/images/NexusTechCup_3751.JPG']
+},
+  {
     title: 'ULM Hawkathon Winner 2025',
     date: 'April 15, 2025',
     description:

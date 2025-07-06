@@ -37,8 +37,13 @@ const involvementData = [
     ],
     details: {
       images: ['/images/nsa_ulm_1.jpg', '/images/nsa_ulm_2.jpg'],
-      additionalInfo:
-        `Organized cultural events to promote Nepalese heritage on campus. Facilitated workshops and seminars …`,
+      additionalInfo: `
+  As Vice President of Cultural Affairs, I spearheaded planning and execution of ULM’s largest cultural events, including the Dashain & Tihar Banquet and Nepali Night, which drew 300+ attendees from diverse backgrounds.  
+  I coordinated with performers, vendors, and campus organizations to showcase Nepalese music, dance, and cuisine, fostering cultural exchange and community engagement.  
+  Managed logistics such as venue booking, budgeting, marketing, and volunteer recruitment to ensure smooth operations.  
+  Also facilitated cultural workshops, language sessions, and outreach programs to promote Nepalese heritage and strengthen ties between international and local students on campus.
+`,
+
     },
   },
   {
@@ -50,8 +55,14 @@ const involvementData = [
     collaborators: [{ name: 'ULM Honors Program', avatar: '/static/images/avatar/3.jpg' }],
     details: {
       images: ['/images/honors_ulm.jpg', '/images/honors_ulm1.jpeg'],
-      additionalInfo:
-        `Maintained a high GPA, presented research findings at academic conferences …`,
+      additionalInfo: `
+  Maintained a high GPA and secured the Honors scholarship through consistent academic excellence.  
+  Participated in advanced interdisciplinary coursework designed to challenge critical thinking and problem-solving skills.  
+  Presented original research findings at academic conferences and campus symposiums, contributing to discussions on innovative solutions in technology and social impact.  
+  Engaged in community service and leadership activities as part of the program’s emphasis on holistic development.  
+  Collaborated with peers and faculty mentors to complete a capstone project that explored the intersection of AI and accessibility, further reinforcing the program’s commitment to research and real-world application.
+`,
+
     },
   },
 ];
