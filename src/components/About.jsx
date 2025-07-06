@@ -454,7 +454,7 @@ const AboutSection = forwardRef((props, ref) => {
 
             <Grid container spacing={4} alignItems="center">
               {/* left: social / contact */}
-              <Grid item xs={12} md={6}>
+              <Grid item size={{xs:12, md:6}}>
                 <SocialIcons>
                   <IconButton
                     aria-label="Facebook"
@@ -513,7 +513,7 @@ const AboutSection = forwardRef((props, ref) => {
               </Grid>
 
               {/* right: extra image */}
-              <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Grid item size={{xs:12, md:6}} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Box
                   component="img"
                   src="/images/NexusTechCup_682.JPG"
