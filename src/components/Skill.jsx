@@ -19,7 +19,6 @@ import TailwindIcon from '/images/tailwind-logo.png';
 import AngularIcon from '/images/angular.png';
 import PostgresqlIcon from '/images/postgresql.png';
 import MysqlIcon from '/images/mysql.png';
-import MongodbIcon from '/images/mongoDB.png';
 import SqlServerIcon from '/images/sql_server.png';
 import RedisIcon from '/images/redis.png';
 import AspNETIcon from '/images/asp_net.png';
@@ -40,7 +39,7 @@ import DockerIcon from '/images/docker.png';
 import KubernetesIcon from '/images/kubernetes.png';
 import GitHubIcon from '/images/github.png';
 import JenkinsIcon from '/images/jenkins.png';
-
+import MongodbIcon from '/images/mongodb.png';
 // Animation keyframes
 const float = keyframes`
   0% { transform: translateY(0); }
