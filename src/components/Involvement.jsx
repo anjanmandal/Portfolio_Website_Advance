@@ -13,9 +13,10 @@ import {
   IconButton,
   Link,
 } from '@mui/material';
-import { styled, keyframes, useTheme } from '@mui/material/styles';
+import { styled, useTheme, alpha } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { motion } from 'framer-motion';
+import SectionFrame from './SectionFrame';
 
 /* --- Swiper --- */
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -69,29 +70,17 @@ const involvementData = [
 
 /* ------------------------  styled helpers  -------------------- */
 // (same helpers you already had – shortened here for brevity)
-const shine = keyframes`
-  0% { background-position:-200% 0 }
-  100%{ background-position:200% 0 }
-`;
-const ShinyText = styled(Typography)(({ theme }) => ({
-  fontWeight: 'bold',
-  fontSize: '3rem',
-  background: `linear-gradient(90deg,${theme.palette.primary.light},${theme.palette.primary.main},${theme.palette.secondary.main})`,
-  backgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundSize: '200% auto',
-  animation: `${shine} 3s linear infinite`,
-}));
-
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
   transition: 'transform .3s, box-shadow .3s',
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: alpha(theme.palette.background.paper, 0.9),
+  borderRadius: 24,
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
   '&:hover': {
     transform: 'translateY(-8px)',
-    boxShadow: theme.shadows[6],
+    boxShadow: theme.shadows[8],
     cursor: 'pointer',
   },
 }));
@@ -136,10 +125,10 @@ const BackdropContent = styled(Box)(({ theme }) => ({
   maxWidth: 800,
   maxHeight: '80vh',
   overflowY: 'auto',
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: alpha(theme.palette.background.paper, 0.95),
   padding: theme.spacing(4),
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[5],
+  borderRadius: theme.shape.borderRadius * 2,
+  boxShadow: theme.shadows[8],
   outline: 'none',
 }));
 
@@ -149,15 +138,15 @@ const InvolvementSection = forwardRef((_, ref) => {
   const [current, setCurrent] = useState(null);
 
   return (
-    <Box ref={ref} sx={{ p: 4, position: 'relative', overflow: 'hidden' }}>
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
-        <ShinyText variant="h3">Involvement</ShinyText>
-      </Box>
-
-      {/* cards */}
+    <SectionFrame
+      ref={ref}
+      eyebrow="Community"
+      title="Involvement"
+      subtitle="Organizations, leadership roles, and events that amplify impact beyond code."
+    >
       <Grid container spacing={3} justifyContent="center">
         {involvementData.map((inv, i) => (
-          <Grid key={i} size={{ xs: 12, sm: 6, md: 4 }}>
+          <Grid key={i} item xs={12} sm={6} md={4}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -243,7 +232,7 @@ const InvolvementSection = forwardRef((_, ref) => {
           </BackdropContent>
         )}
       </Backdrop>
-    </Box>
+    </SectionFrame>
   );
 });
 

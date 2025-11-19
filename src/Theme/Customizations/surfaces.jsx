@@ -12,14 +12,18 @@ export const surfacesCustomizations = {
       root: ({ theme }) => ({
         padding: 4,
         overflow: 'clip',
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: theme.shape.borderRadius,
         border: '1px solid',
         borderColor: theme.palette.divider,
+        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        boxShadow: theme.shadows[1],
         ':before': {
           backgroundColor: 'transparent',
         },
         '&:not(:last-of-type)': {
           borderBottom: 'none',
+          marginBottom: theme.spacing(2),
         },
         '&:first-of-type': {
           borderTopLeftRadius: theme.shape.borderRadius,
@@ -29,6 +33,9 @@ export const surfacesCustomizations = {
           borderBottomLeftRadius: theme.shape.borderRadius,
           borderBottomRightRadius: theme.shape.borderRadius,
         },
+        '&:hover': {
+          boxShadow: theme.shadows[4],
+        },
       }),
     },
   },
@@ -36,12 +43,15 @@ export const surfacesCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         border: 'none',
-        borderRadius: 8,
-        '&:hover': { backgroundColor: gray[50] },
-        '&:focus-visible': { backgroundColor: 'transparent' },
-        ...theme.applyStyles('dark', {
-          '&:hover': { backgroundColor: gray[800] },
-        }),
+        borderRadius: theme.shape.borderRadius,
+        transition: 'all 200ms ease',
+        '&:hover': { 
+          backgroundColor: alpha(theme.palette.primary.main, 0.05),
+        },
+        '&:focus-visible': { 
+          outline: `2px solid ${alpha(theme.palette.primary.main, 0.5)}`,
+          outlineOffset: 2,
+        },
       }),
     },
   },
@@ -54,33 +64,45 @@ export const surfacesCustomizations = {
     defaultProps: {
       elevation: 0,
     },
+    styleOverrides: {
+      root: ({ theme }) => ({
+        backgroundImage: 'none',
+        transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+      }),
+    },
   },
   MuiCard: {
     styleOverrides: {
       root: ({ theme }) => {
         return {
-          width:'100%',
-          padding: 16,
-          gap: 16,
-          transition: 'all 100ms ease',
-          backgroundColor: gray[50],
+          width: '100%',
+          padding: theme.spacing(3),
+          gap: theme.spacing(2),
+          transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+          backgroundColor: theme.palette.background.paper,
           borderRadius: theme.shape.borderRadius,
-          border: `1px solid ${theme.palette.divider}`,
-          boxShadow: 'none',
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+          boxShadow: theme.shadows[2],
+          backdropFilter: 'blur(20px)',
           ...theme.applyStyles('dark', {
-            backgroundColor: gray[800],
+            backgroundColor: alpha(theme.palette.background.paper, 0.8),
           }),
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: theme.shadows[8],
+            borderColor: alpha(theme.palette.primary.main, 0.3),
+          },
           variants: [
             {
               props: {
                 variant: 'outlined',
               },
               style: {
-                border: `1px solid ${theme.palette.divider}`,
-                boxShadow: 'none',
-                background: 'hsl(0, 0%, 100%)',
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                boxShadow: theme.shadows[1],
+                background: theme.palette.background.paper,
                 ...theme.applyStyles('dark', {
-                  background: alpha(gray[900], 0.4),
+                  background: alpha(theme.palette.background.paper, 0.6),
                 }),
               },
             },

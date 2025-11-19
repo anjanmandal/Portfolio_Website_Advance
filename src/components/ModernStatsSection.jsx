@@ -4,9 +4,8 @@ import {
   Typography,
   Grid,
   Card,
-  useTheme
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CodeIcon from '@mui/icons-material/Code'; // LeetCode icon placeholder
@@ -15,24 +14,36 @@ import { motion } from 'framer-motion';
 /**
  * Glassmorphism Card styling with no background color
  */
+const cardBg = (theme) =>
+  theme.palette.mode === 'dark'
+    ? 'linear-gradient(135deg, rgba(3,7,18,0.85), rgba(5,12,35,0.65))'
+    : 'linear-gradient(135deg, rgba(248,250,255,0.9), rgba(237,243,255,0.95))';
+
 const GlassCard = styled(motion(Card))(({ theme }) => ({
-  padding: theme.spacing(3),
-  borderRadius: '20px',
-  backgroundColor: 'transparent', // Removed background color
-  backdropFilter: 'blur(8px)',
-  border: '1px solid rgba(255, 255, 255, 0.3)',
-  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+  padding: theme.spacing(4),
+  borderRadius: 28,
+  background: cardBg(theme),
+  border: `1px solid ${alpha(
+    theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.primary.light,
+    0.2
+  )}`,
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0 30px 60px rgba(3,7,18,0.55)'
+      : '0 18px 35px rgba(15,23,42,0.12)',
   display: 'flex',
   flexDirection: 'column',
-  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+  gap: theme.spacing(2.5),
+  transition: 'transform 0.4s ease, border-color 0.4s ease',
   '&:hover': {
-    transform: 'translateY(-2px) scale(1.02)',
-    boxShadow: '0 8px 40px rgba(0, 0, 0, 0.2)',
+    transform: 'translateY(-6px)',
+    borderColor: alpha(theme.palette.secondary.main, 0.5),
   },
 }));
 
 export default function ModernStatsSection() {
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
 
   // ====== Example stats for the LeetCode card ======
   const totalQuestions = 3474;
@@ -99,12 +110,12 @@ export default function ModernStatsSection() {
 
   function getColorForValue(value) {
     switch (value) {
-      case 0: return '#ebedf0';  // light gray
-      case 1: return '#c6e48b';  // light green
-      case 2: return '#7bc96f';  // medium green
-      case 3: return '#239a3b';  // dark green
-      case 4: return '#196127';  // darkest green
-      default: return '#ebedf0';
+      case 0: return 'rgba(255,255,255,0.08)';
+      case 1: return '#38bdf8';
+      case 2: return '#0ea5e9';
+      case 3: return '#0f766e';
+      case 4: return '#0d9488';
+      default: return 'rgba(255,255,255,0.08)';
     }
   }
 
@@ -125,8 +136,7 @@ export default function ModernStatsSection() {
         {/* ==================== LeetCode Card ==================== */}
         <Grid item xs={12} md={6}>
           <GlassCard>
-            {/* LeetCode icon (clickable) + title */}
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
               <motion.a
                 href="https://leetcode.com/"
                 target="_blank"
@@ -138,12 +148,17 @@ export default function ModernStatsSection() {
                   alignItems: 'center',
                   textDecoration: 'none',
                   color: 'inherit',
-                  marginRight: '8px'
+                  padding: '10px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg,#22d3ee,#0ea5e9)',
                 }}
               >
                 <CodeIcon fontSize="large" />
               </motion.a>
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 800, letterSpacing: 0.5, color: isDark ? '#fff' : '#0f172a' }}
+              >
                 LeetCode Progress
               </Typography>
             </Box>
@@ -190,12 +205,12 @@ export default function ModernStatsSection() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: theme.palette.text.primary,
+                    color: isDark ? '#fff' : '#0f172a',
                   }}
                 >
-                  <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-                    {solved}/{totalQuestions}
-                  </Typography>
+              <Typography variant="h6" component="div" sx={{ fontWeight: 800 }}>
+                {solved}/{totalQuestions}
+              </Typography>
 
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <CheckCircleIcon sx={{ color: 'success.main', fontSize: 18 }} />
@@ -222,9 +237,12 @@ export default function ModernStatsSection() {
                       backgroundColor: '#00b8a3',
                     }}
                   />
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                    Easy {easyCount}/863
-                  </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontWeight: 'bold', color: isDark ? '#fff' : '#0f172a' }}
+                    >
+                      Easy {easyCount}/863
+                    </Typography>
                 </Box>
 
                 {/* Medium */}
@@ -237,9 +255,12 @@ export default function ModernStatsSection() {
                       backgroundColor: '#ffb400',
                     }}
                   />
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                    Med. {mediumCount}/1805
-                  </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontWeight: 'bold', color: isDark ? '#fff' : '#0f172a' }}
+                    >
+                      Med. {mediumCount}/1805
+                    </Typography>
                 </Box>
 
                 {/* Hard */}
@@ -252,9 +273,12 @@ export default function ModernStatsSection() {
                       backgroundColor: '#ef476f',
                     }}
                   />
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                    Hard {hardCount}/806
-                  </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontWeight: 'bold', color: isDark ? '#fff' : '#0f172a' }}
+                    >
+                      Hard {hardCount}/806
+                    </Typography>
                 </Box>
               </Box>
             </Box>
@@ -265,9 +289,9 @@ export default function ModernStatsSection() {
         <Grid item xs={12} md={6}>
           <GlassCard>
             {/* Clickable GitHub icon */}
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
               <motion.a
-                href="https://github.com/madalak"
+                href="https://github.com/anjanmandal"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1 }}
@@ -277,18 +301,32 @@ export default function ModernStatsSection() {
                   alignItems: 'center', 
                   textDecoration: 'none', 
                   color: 'inherit',
-                  marginRight: '8px'
+                  padding: '10px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg,#7c3aed,#22d3ee)',
                 }}
               >
                 <GitHubIcon fontSize="large" />
               </motion.a>
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                GitHub Repositories
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 800, letterSpacing: 0.5, color: isDark ? '#fff' : '#0f172a' }}
+              >
+                GitHub Activity
               </Typography>
             </Box>
 
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              <strong>{githubRepos}</strong> Public Repositories
+            <Typography
+              variant="body1"
+              sx={{
+                mb: 3,
+                color: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(15,23,42,0.8)',
+              }}
+            >
+              <Box component="span" sx={{ fontWeight: 700, color: '#38bdf8' }}>
+                {githubRepos}
+              </Box>{' '}
+              public repositories · 300+ contributions over the last year.
             </Typography>
 
             {/* ==================== Contribution Grid ==================== */}
@@ -315,7 +353,14 @@ export default function ModernStatsSection() {
               </Box>
 
               {/* Legend */}
-              <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  mt: 2,
+                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(15,23,42,0.6)',
+                }}
+              >
                 <Typography variant="caption" sx={{ mr: 1 }}>
                   Less
                 </Typography>

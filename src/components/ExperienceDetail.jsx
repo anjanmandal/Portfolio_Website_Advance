@@ -1,34 +1,29 @@
-// src/components/ExperienceDetail.js
+// src/components/ExperienceDetail.jsx
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
+  Container,
+  Grid,
+  Stack,
   Typography,
   Avatar,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+  Paper,
   Button,
-  useTheme,
-  Grid,
+  Chip,
 } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import InfoOutlined from '@mui/icons-material/InfoOutlined';
-import experiences from './Experience'; // Update the import path if necessary
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
-import { styled } from '@mui/material/styles';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import experiences from './Experience';
 
-// Styled component for the main image with parallax effect
 const ParallaxImage = styled(motion.div)(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
-  borderRadius: theme.spacing(2),
-  boxShadow: theme.shadows[5],
-  marginBottom: theme.spacing(4),
+  borderRadius: theme.spacing(3),
+  boxShadow: theme.shadows[6],
   '& img': {
     width: '100%',
     height: 'auto',
@@ -37,35 +32,28 @@ const ParallaxImage = styled(motion.div)(({ theme }) => ({
   },
 }));
 
-// Styled component for the overlay with glassmorphism effect
 const Overlay = styled(motion.div)(({ theme }) => ({
   position: 'absolute',
   bottom: theme.spacing(2),
   right: theme.spacing(2),
-  background: 'rgba(255, 255, 255, 0.25)', // Semi-transparent white
+  background: alpha(theme.palette.background.paper, 0.6),
   color: theme.palette.text.primary,
   padding: theme.spacing(1, 2),
-  borderRadius: theme.spacing(1),
-  backdropFilter: 'blur(10px)', // Frosted glass effect
-  boxShadow: theme.shadows[1],
+  borderRadius: theme.spacing(1.5),
+  backdropFilter: 'blur(10px)',
+  boxShadow: theme.shadows[2],
   display: 'flex',
   alignItems: 'center',
 }));
 
-// Motion variants for the overlay animation
 const overlayVariants = {
-  rest: { opacity: 0.8, y: 0 },
-  hover: { opacity: 1, y: -5 },
+  rest: { opacity: 0.85, y: 0 },
+  hover: { opacity: 1, y: -6 },
 };
 
-// Motion variants for container and list items
-const containerVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1 },
-  },
+const heroVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
 const listItemVariants = {
@@ -73,19 +61,9 @@ const listItemVariants = {
   visible: (i) => ({
     opacity: 1,
     x: 0,
-    transition: { delay: i * 0.2 },
+    transition: { delay: i * 0.1 },
   }),
 };
-
-// 3D Background Component
-function BackgroundAnimation() {
-  return (
-    <>
-      {/* Add stars or other 3D elements */}
-      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade />
-    </>
-  );
-}
 
 const ExperienceDetail = () => {
   const { id } = useParams();
@@ -96,168 +74,134 @@ const ExperienceDetail = () => {
 
   if (!experience) {
     return (
-      <Box sx={{ padding: 4, textAlign: 'center' }}>
+      <Box sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h4" color="error">
           Experience Not Found
         </Typography>
-        <Button variant="contained" color="primary" onClick={() => navigate(-1)} sx={{ mt: 2 }}>
+        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate(-1)}>
           Go Back
         </Button>
       </Box>
     );
   }
 
-  // Parallax effect handler
-  const handleMouseMove = (e) => {
-    const { currentTarget: target } = e;
-    const rect = target.getBoundingClientRect();
-    const xPos = e.clientX - rect.left;
-    const yPos = e.clientY - rect.top;
-
-    target.style.setProperty('--mouse-x', `${xPos}px`);
-    target.style.setProperty('--mouse-y', `${yPos}px`);
-  };
+  const infoChips = [
+    { label: 'Timeline', value: experience.year },
+    { label: 'Company', value: experience.company },
+    { label: 'Focus', value: (experience.tags && experience.tags.join(' · ')) || 'Security · AI · DX' },
+  ];
 
   return (
     <Box
       sx={{
         position: 'relative',
-        overflow: 'hidden',
         minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
+        background:
+          theme.palette.mode === 'dark'
+            ? 'linear-gradient(135deg, #020b1d 0%, #041637 55%, #020816 100%)'
+            : 'linear-gradient(135deg, #f8fbff 0%, #eef2ff 60%, #f1f5ff 100%)',
         color: theme.palette.text.primary,
+        pb: 6,
       }}
     >
-      {/* 3D Background */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: -1,
-        }}
-      >
-        <Canvas camera={{ position: [0, 0, 5] }}>
-          <Suspense fallback={null}>
-            <BackgroundAnimation />
-            <ambientLight intensity={0.5} />
-            <OrbitControls enableZoom={false} enablePan={false} />
-          </Suspense>
-        </Canvas>
-      </Box>
-
-      {/* Main Content */}
-      <Box
-        sx={{
-          padding: { xs: 2, md: 4 },
-          maxWidth: 1200,
-          margin: 'auto',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        {/* Animate the main content */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Header Section at the Top */}
-          <Grid container spacing={4} alignItems="center" sx={{ mb: 4 }}>
-            <Grid item xs={12} md={3}>
-              <Avatar
-                src={experience.logo}
-                alt={experience.company}
-                sx={{
-                  width: { xs: 80, md: 120 },
-                  height: { xs: 80, md: 120 },
-                  margin: 'auto',
-                  boxShadow: theme.shadows[4],
-                }}
-              />
+      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
+        <Stack spacing={4} component={motion.div} variants={heroVariants} initial="hidden" animate="visible">
+          <Paper
+            sx={{
+              borderRadius: 5,
+              p: { xs: 3, md: 4 },
+              border: (t) => `1px solid ${alpha(t.palette.primary.main, 0.15)}`,
+            }}
+          >
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={4}>
+                <Stack spacing={1} alignItems="center">
+                  <Avatar src={experience.logo} alt={experience.company} sx={{ width: 96, height: 96 }} />
+                  <Typography variant="subtitle2" color="text.secondary">
+                    {experience.year}
+                  </Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={12} md={8}>
+                <Typography variant="h4" sx={{ fontWeight: 900 }}>
+                  {experience.title}
+                </Typography>
+                <Typography variant="h6" color="text.secondary">
+                  {experience.company}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+                  {experience.description}
+                </Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 2 }}>
+                  {infoChips.map((chip) => (
+                    <Chip key={chip.label} label={`${chip.label}: ${chip.value}`} size="small" variant="outlined" />
+                  ))}
+                </Stack>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={9}>
-              <Typography
-                variant="h3"
-                sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}
-              >
-                {experience.title}
-              </Typography>
-              <Typography variant="h5" color="text.secondary" sx={{ mb: 1 }}>
-                {experience.company}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                {experience.year}
-              </Typography>
+          </Paper>
+
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={7}>
+              <Paper sx={{ borderRadius: 5, p: { xs: 2.5, md: 3 }, border: (t) => `1px solid ${alpha(t.palette.primary.main, 0.12)}` }}>
+                <Typography variant="h5" sx={{ fontWeight: 800, mb: 2 }}>
+                  Impact highlights
+                </Typography>
+                <Stack spacing={2}>
+                  {experience.content.map((item, idx) => (
+                    <Stack
+                      key={idx}
+                      component={motion.div}
+                      variants={listItemVariants}
+                      custom={idx}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.4 }}
+                      direction="row"
+                      spacing={1.5}
+                    >
+                      <CheckCircleOutlineIcon color="primary" />
+                      <Typography variant="body2" color="text.secondary">
+                        {item}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <Stack spacing={3}>
+                <ParallaxImage initial="rest" animate="rest" whileHover="hover">
+                  <img src={experience.mainImage} alt={`${experience.company} main`} />
+                  <Overlay variants={overlayVariants}>
+                    <InfoOutlined sx={{ mr: 1 }} />
+                    <Typography variant="body2">
+                      {experience.imageDescription || 'Behind-the-scenes capture.'}
+                    </Typography>
+                  </Overlay>
+                </ParallaxImage>
+                <Paper sx={{ borderRadius: 5, p: 3, border: (t) => `1px solid ${alpha(t.palette.primary.main, 0.12)}` }}>
+                  <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
+                    Toolbox & focus
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Tech stack: {experience.stack || 'React, Node.js, AWS, SQL'}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    Primary objectives: reliability, accessibility, and developer mentorship.
+                  </Typography>
+                </Paper>
+              </Stack>
             </Grid>
           </Grid>
 
-          {/* Parallax Image with Overlay */}
-          <ParallaxImage
-            onMouseMove={handleMouseMove}
-            initial="rest"
-            animate="rest"
-            whileHover="hover"
-          >
-            <img
-              src={experience.mainImage}
-              alt={`${experience.company} main`}
-              style={{
-                transformOrigin: 'center center',
-              }}
-            />
-            {/* Overlay with description */}
-            <Overlay variants={overlayVariants}>
-              <InfoOutlined sx={{ mr: 1 }} />
-              <Typography variant="body2">
-                {experience.imageDescription || 'Description of the picture.'}
-              </Typography>
-            </Overlay>
-          </ParallaxImage>
-
-          {/* Description */}
-          <Typography variant="body1" sx={{ my: 4, lineHeight: 1.7 }}>
-            {experience.description}
-          </Typography>
-
-          {/* Responsibilities */}
-          <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
-            Responsibilities
-          </Typography>
-          <List>
-            {experience.content.map((item, idx) => (
-              <motion.div
-                key={idx}
-                variants={listItemVariants}
-                custom={idx}
-                initial="hidden"
-                animate="visible"
-              >
-                <ListItem>
-                  <ListItemIcon>
-                    <CheckCircleOutlineIcon color="primary" />
-                  </ListItemIcon>
-                  <ListItemText primary={item} />
-                </ListItem>
-              </motion.div>
-            ))}
-          </List>
-
-          {/* Back Button */}
-          <Box sx={{ textAlign: 'center', mt: 6 }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => navigate(-1)}
-              size="large"
-            >
+          <Box textAlign="center" mt={4}>
+            <Button variant="contained" color="primary" onClick={() => navigate(-1)} size="large">
               Back to Experiences
             </Button>
           </Box>
-        </motion.div>
-      </Box>
+        </Stack>
+      </Container>
     </Box>
   );
 };

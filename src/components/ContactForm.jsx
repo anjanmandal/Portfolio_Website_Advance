@@ -1,6 +1,6 @@
 // src/components/ContactForm.jsx
 
-import React, { useState, Suspense,forwardRef } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -11,50 +11,33 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
+  Stack,
 } from '@mui/material';
-import { useTheme, styled } from '@mui/material/styles';
+import { useTheme, styled, alpha } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import SubjectIcon from '@mui/icons-material/Subject';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import SectionFrame from './SectionFrame';
 
 // Import your 3D boy model (Ensure you have this component)
-import { BoyModel } from './BoyModel'; // Replace with your actual model
-
 // Styled components for modern design
 const GlassCard = styled(Box)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(15px)',
+  background: theme.palette.background.glass
+    ? theme.palette.background.glass
+    : alpha(theme.palette.background.paper, 0.7),
+  backdropFilter: 'blur(20px)',
   borderRadius: theme.spacing(3),
   padding: theme.spacing(4),
-  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
+  boxShadow: theme.shadows[1],
   color: theme.palette.text.primary,
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(2),
-  },
-}));
-
-const ShinyText = styled(Typography)(({ theme }) => ({
-  fontWeight: 'bold',
-  fontSize: '3rem',
-  background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  backgroundClip: 'text',
-  WebkitBackgroundClip: 'text',
-  color: 'transparent',
-  backgroundSize: '200% auto',
-  animation: 'shine 4s linear infinite',
-  '@keyframes shine': {
-    '0%': { backgroundPosition: '0% 50%' },
-    '100%': { backgroundPosition: '200% 50%' },
-  },
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '2rem',
   },
 }));
 
@@ -108,24 +91,38 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const Particle = styled(Box)(({ theme, size, top, left }) => ({
-  position: 'absolute',
-  width: size || '10px',
-  height: size || '10px',
-  borderRadius: '50%',
-  backgroundColor: theme.palette.primary.main,
-  top: top || '50%',
-  left: left || '50%',
-  opacity: 0.7,
-  animation: 'float 6s ease-in-out infinite',
-  '@keyframes float': {
-    '0%': { transform: 'translateY(0)' },
-    '50%': { transform: 'translateY(-20px)' },
-    '100%': { transform: 'translateY(0)' },
-  },
+const MotionTextField = motion(StyledTextField);
+
+const InsightCard = styled(Box)(({ theme }) => ({
+  borderRadius: theme.spacing(3),
+  padding: theme.spacing(4),
+  height: '100%',
+  background:
+    theme.palette.mode === 'dark'
+      ? 'linear-gradient(135deg, rgba(15,23,42,0.8), rgba(59,130,246,0.2))'
+      : 'linear-gradient(135deg, rgba(238,244,255,0.95), rgba(186,230,253,0.8))',
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+  boxShadow: theme.shadows[2],
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(3),
 }));
 
-const MotionTextField = motion(StyledTextField);
+const Highlight = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderRadius: theme.spacing(2),
+  border: `1px dashed ${alpha(theme.palette.primary.main, 0.3)}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.primary.main, 0.08)
+      : alpha(theme.palette.primary.main, 0.05),
+}));
+
+const highlightItems = [
+  { label: 'Availability', value: 'Open for internships & freelance projects' },
+  { label: 'Response time', value: 'Typically replies within 24 hours' },
+  { label: 'Location', value: 'Monroe, LA • Remote-friendly' },
+];
 
 const ContactForm = React.forwardRef((props, ref) => {
   const theme = useTheme();
@@ -185,39 +182,22 @@ const ContactForm = React.forwardRef((props, ref) => {
   };
 
   return (
-    <Box
-    ref={ref}
-      sx={{
-        overflow: 'hidden',
-        minHeight: '100vh',
-        color: theme.palette.text.primary,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 2,
-        position: 'relative',
-      }}
+    <SectionFrame
+      ref={ref}
+      eyebrow="Let's collaborate"
+      title="Contact"
+      subtitle="Share a challenge, spark an idea, or just say hi. I typically respond within 24 hours."
+      contentSpacing={4}
     >
-      {/* Floating Particles */}
-      <Particle top="10%" left="15%" size="8px" />
-      <Particle top="30%" left="80%" size="12px" />
-      <Particle top="50%" left="40%" size="10px" />
-      <Particle top="80%" left="20%" size="6px" />
-
-      {/* Grid Layout */}
-      <Grid container spacing={4} sx={{ width: '100%', height: '100%' }}>
+      <Grid container spacing={4} alignItems="stretch">
         {/* Left Section - Contact Form */}
-        <Grid item size={{xs:12, md:6}}>
+        <Grid item xs={12} md={6}>
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
           >
             <GlassCard>
-              {/* Shiny Heading */}
-              <ShinyText variant="h3" component="h1" gutterBottom sx={{ textAlign: 'center' }}>
-                Contact Me
-              </ShinyText>
               <Typography
                 variant="body1"
                 sx={{ textAlign: 'center', mb: 4, color: theme.palette.text.primary }}
@@ -366,23 +346,44 @@ const ContactForm = React.forwardRef((props, ref) => {
           </motion.div>
         </Grid>
 
-        {/* Right Section - 3D Model */}
-        <Grid item size={{xs:12, md:6}} sx={{ display: { display: 'block' } }}>
-          <Box
-            sx={{
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            <Canvas camera={{ position: [0, 0, 5] }}>
-              <ambientLight intensity={0.7} />
-              <directionalLight position={[7, 5, 5]} intensity={2} />
-              <OrbitControls enableZoom={false} enablePan={false} />
-              <Suspense fallback={null}>
-                <BoyModel scale={[2, 2, 2]} /> {/* Replace with your actual model */}
-              </Suspense>
-            </Canvas>
-          </Box>
+        {/* Right Section - Highlights */}
+        <Grid item xs={12} md={6}>
+          <InsightCard>
+            <Box>
+              <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                Let’s build something meaningful.
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                I’m always excited to partner on bold ideas—from rapid MVPs to research-heavy
+                initiatives. Here’s what to expect when you reach out.
+              </Typography>
+            </Box>
+            <Stack spacing={2}>
+              {highlightItems.map((item) => (
+                <Highlight key={item.label}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    {item.label}
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                    {item.value}
+                  </Typography>
+                </Highlight>
+              ))}
+            </Stack>
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+                Prefer email?
+              </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                endIcon={<SendIcon />}
+                href="mailto:anjanmandalwork@gmail.com"
+              >
+                anjanmandalwork@gmail.com
+              </Button>
+            </Box>
+          </InsightCard>
         </Grid>
       </Grid>
 
@@ -401,7 +402,7 @@ const ContactForm = React.forwardRef((props, ref) => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
-    </Box>
+    </SectionFrame>
   );
 });
 

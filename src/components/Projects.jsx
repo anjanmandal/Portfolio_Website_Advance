@@ -1,124 +1,29 @@
-// src/components/ProjectSection.jsx
-import React, { useState, forwardRef } from 'react';
-import {
-  Avatar,
-  AvatarGroup,
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-  Backdrop,
-  IconButton,
-  Link,
-} from '@mui/material';
-import { styled, keyframes, useTheme } from '@mui/material/styles';
-import CloseIcon from '@mui/icons-material/Close';
+// src/components/Projects.jsx
+import React, { forwardRef } from 'react';
+import { Box, Typography, Button, Chip, Stack } from '@mui/material';
+import { styled, keyframes, alpha } from '@mui/material/styles';
+import CodeIcon from '@mui/icons-material/Code';
+import WebIcon from '@mui/icons-material/Web';
+import MobileIcon from '@mui/icons-material/PhoneAndroid';
+import StorageIcon from '@mui/icons-material/Storage';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { useNavigate } from 'react-router-dom';
+import SectionFrame from './SectionFrame';
 
-/* --- Swiper imports (Carousel) --- */
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-/* ----------------- sample data (unchanged) ------------------ */
-const cardData = [
-  {
-    img: '/images/dashboard.png',
-    tag: 'Full-Stack Development',
-    title: 'HelpHub',
-    description:
-      'HelpHub is a dynamic web application designed to bridge the gap between individuals seeking assistance and professionals offering their expertise. Whether you need help with household tasks, project management, or specialized services, HelpHub provides a seamless platform to connect, collaborate, and achieve your goals efficiently.',
-    collaborators: [{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
-    details: {
-      images: ['/images/bid.png', '/images/request.png','/images/mybids.png'],
-      link: 'https://github.com/anjanmandal/HelpHub.git',
-      additionalInfo:
-        `This platform also includes features like event scheduling, notification systems, and integration with LinkedIn for seamless professional networking. HelpHub's bid system is thoughtfully designed to create a balanced marketplace where affordability meets quality. By implementing strategic bid adjustments and prioritizing the smallest original bids, HelpHub ensures that both requesters and professionals derive maximum value from their interactions, fostering a thriving community of assistance and support.
-        Affordability for Requesters: Maintains reasonable costs for those seeking help, preventing overpayment.
-
-Encourages Quality and Competition: By adjusting bids based on the Promised Amount, the system incentivizes professionals to offer both competitive and quality services.
-
-Transparency and Trust: Clear bid adjustments and selection criteria foster trust between requesters and professionals.
-
-Efficient Matching: Automatically identifying the most suitable bid streamlines the process of connecting requesters with the right professionals.`,
-    },
-  },
-  {
-    img: '/images/L&L.png',
-    tag: 'Full-Stack Development',
-    title: 'AI-L&L-VIDEO-GENERATOR',
-    description:
-      'A full-stack application that generates video content from a text prompt. This project consists of a backend built with Node.js and Express that handles text generation and video processing, and a frontend built with React, providing a user-friendly interface with dark mode and 3D visual effects.',
-    collaborators: [{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
-    details: {
-      images: ['/images/L&L.png', '/images/L&L2.png','/images/L&L3.png'],
-      link: 'https://github.com/anjanmandal/L-L.git',
-      additionalInfo:
-        `A full-stack application that generates video content from a text prompt. This project consists of a backend built with Node.js and Express that handles text generation and video processing, and a frontend built with React, providing a user-friendly interface with dark mode and 3D visual effects.
-        AI-Powered Text Generation: Generates responses to user prompts using AI. Text-to-Speech and Video Creation: Converts text responses into speech and combines them with dynamic subtitles to create video content. Dark Mode Support: Toggle dark/light themes for the interface. Three.js Visual Effects: 3D star background for a visually engaging experience. Submitting a Prompt Enter a prompt in the text field. Click "Generate Video". Wait for the video to be generated and displayed below. How It Works Frontend: The user enters a text prompt, which is sent to the backend. Backend: Generates a text response with AI. Converts the response text to audio. Creates a video.`,
-    },
-  },
-  {
-    img: '/images/project_alumni.png',
-    tag: 'Full-Stack Development',
-    title: 'Alumni Platform',
-    description:
-      'An interactive platform designed to connect alumni and current students in real-time. Built with React.js, Node.js, and MongoDB, it features real-time chat functionality, allowing users to network with alumni, receive updates on job opportunities, and stay informed about upcoming events and workshops. The platform fosters a supportive community that enhances career growth and engagement.',
-    collaborators: [{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
-    details: {
-      images: ['/images/project_alumni.png', '/images/project_alumni2.png','/images/project_alumni3.png'],
-      link: 'https://github.com/anjanmandal/ULM_Alumni_Search_Dashboard.git',
-      additionalInfo:
-        'This platform also includes features like event scheduling, notification systems, and integration with LinkedIn for seamless professional networking.',
-    },
-  },
-  {
-    img: '/images/lost_found3.png',
-    tag: 'Full-Stack Development',
-    title: 'Lost and Found Website',
-    description:
-      'A robust serverless web application designed to streamline the process of reporting and recovering lost items. Built with React.js, Node.js, and MongoDB, this platform offers user-friendly interfaces for uploading lost items, searching for found items, and facilitating real-time communication between users through integrated chat functionality.',
-    collaborators: [{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
-    details: {
-      images: ['/images/lost_found1.png', '/images/lost_found2.png'],
-      link: 'https://github.com/anjanmandal/Lost-and-Found-website-.git',
-      additionalInfo:
-      `This Lost and Found platform provides a comprehensive solution for communities to report and locate lost items. Key features include:
-        Real-Time Chat and Notifications**: Leveraging WebSocket technology, the platform provides real-time messaging between users. This allows individuals who have lost items and those who have found items to communicate instantly, facilitating timely resolutions. Users also receive instant notifications when new items matching their search criteria are posted. Role-based access control is enforced to protect user information, ensuring only authorized users can view or edit sensitive data. Advanced Search and Filtering: Users can search and filter items based on multiple criteria, such as location, date, category, and keywords, ensuring they find relevant results quickly. The platform uses DynamoDB’s indexing capabilities for fast and efficient querying of items. Cross-Platform Compatibility: Developed with a responsive design using React.js and Material-UI, the platform provides an optimal experience across mobile, tablet, and desktop devices. Compatibility with all major browsers and devices ensures users can access the platform wherever they are.`
-   ,
-    },
-  },
-  {
-    img: '/images/okay_journey2.jpeg',
-    tag: 'Full-Stack Development',
-    title: 'Okay Journey',
-    description:
-      'This Bus Ticketing Website offers a comprehensive and user-friendly platform for travelers to search for, book, and manage their bus tickets online. ',
-    collaborators: [{ name: 'National Innovation Center', avatar: '/static/images/avatar/2.jpg' },{ name: 'Anjan Mandal', avatar: '/static/images/avatar/2.jpg' }],
-    details: {
-      images: ['/images/okay_journey3.jpg', '/images/okay_journey.png'],
-      link: 'https://www.okayjourney.com',
-      additionalInfo:
-     `This Bus Ticketing Website offers a comprehensive and user-friendly platform for travelers to search for, book, and manage their bus tickets online. Users can effortlessly search for available bus routes by entering their origin, destination, and travel dates, with the ability to filter results based on price, travel time, and bus amenities. The website features real-time seat availability, allowing passengers to select their preferred seats via an interactive seat map. Upon booking, users receive immediate confirmation and an electronic ticket (e-ticket) sent directly to their email, ensuring a smooth and efficient booking process. The platform integrates a secure payment gateway, supporting various payment methods such as credit/debit cards, net banking, digital wallets, and UPI, all protected by SSL encryption and compliant with PCI-DSS standards to safeguard user data. It caters to a global audience by offering multi-language and multi-currency support, making the booking process accessible and convenient for international travelers. Registered users can access their personal accounts to view their booking history, download past e-tickets, and manage their profiles, facilitating easy repeat bookings. The website also features dynamic pricing that adjusts ticket costs based on demand and seasonality, along with promotional codes and seasonal discounts to provide users with the best possible fares.`
-   ,
-    },
-  },
-  // Add other projects similarly...
-  // ...
-];
-
-/* -----------------  styled helpers (unchanged) -------------- */
+/* ——— Shiny "Projects" header ——— */
 const shine = keyframes`
-  0% { background-position:-200% 0 }
-  100%{ background-position:200% 0 }
+  0%   { background-position:-200% 0 }
+  100% { background-position:200% 0 }
 `;
 const ShinyText = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   fontSize: '3rem',
-  background: `linear-gradient(90deg,${theme.palette.primary.light},${theme.palette.primary.main},${theme.palette.secondary.main})`,
+  background: `linear-gradient(
+    90deg,
+    ${theme.palette.primary.light},
+    ${theme.palette.primary.main},
+    ${theme.palette.secondary.main}
+  )`,
   backgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
   backgroundSize: '200% auto',
@@ -126,154 +31,272 @@ const ShinyText = styled(Typography)(({ theme }) => ({
   letterSpacing: '0.05em',
   animation: `${shine} 3s linear infinite`,
 }));
-const StyledCard = styled(Card)(({ theme }) => ({
+
+const SectionBlock = styled('section')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: 24,
+  padding: theme.spacing(4),
+  minHeight: 280,
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? 'linear-gradient(135deg, rgba(15,23,42,0.8), rgba(8,14,30,0.75))'
+      : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,255,0.9))',
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0 20px 60px rgba(0,0,0,0.4)'
+      : '0 20px 60px rgba(0,0,0,0.08)',
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
-  transition: 'transform .3s, box-shadow .3s',
+  gap: theme.spacing(4),
+  transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
   '&:hover': {
-    cursor: 'pointer',
-    transform: 'translateY(-8px)',
-    boxShadow: theme.shadows[6],
+    transform: 'translateY(-4px)',
+    boxShadow:
+      theme.palette.mode === 'dark'
+        ? '0 24px 72px rgba(0,0,0,0.5)'
+        : '0 24px 72px rgba(0,0,0,0.12)',
+    borderColor: alpha(theme.palette.primary.main, 0.3),
+  },
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
   },
 }));
-const StyledCardContent = styled(CardContent)({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 4,
-  padding: 16,
-  flexGrow: 1,
-  '&:last-child': { paddingBottom: 16 },
-});
-const StyledTypography = styled(Typography)({
-  display: '-webkit-box',
-  WebkitBoxOrient: 'vertical',
-  WebkitLineClamp: 2,
+
+const Thumbnail = styled(Box)(({ src, theme }) => ({
+  borderRadius: 20,
+  minHeight: 220,
+  flex: 1,
+  minWidth: 240,
+  backgroundImage: theme.palette.mode === 'dark'
+    ? `linear-gradient(135deg, rgba(2,6,23,0.5), rgba(2,6,23,0.2)), url(${src})`
+    : `linear-gradient(135deg, rgba(255,255,255,0.3), rgba(248,250,255,0.2)), url(${src})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  position: 'relative',
   overflow: 'hidden',
-});
-const BackdropContent = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '80%',
-  maxWidth: 800,
-  maxHeight: '80vh',
-  overflowY: 'auto',
-  background: theme.palette.background.paper,
-  padding: theme.spacing(4),
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[5],
-  outline: 'none',
+  transition: 'all 300ms ease',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    borderRadius: 20,
+    border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+  },
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, transparent)`,
+    opacity: 0,
+    transition: 'opacity 300ms ease',
+  },
+  [`${SectionBlock}:hover &::before`]: {
+    opacity: 1,
+  },
 }));
 
-/* collaborators badge */
-const Collaborators = ({ collaborators }) => (
-  <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', p: 2 }}>
-    <AvatarGroup max={3}>
-      {collaborators.map((c, i) => (
-        <Avatar key={i} src={c.avatar} alt={c.name} sx={{ width: 24, height: 24 }} />
-      ))}
-    </AvatarGroup>
-    <Typography variant="caption">
-      {collaborators.map((c) => c.name).join(', ')}
-    </Typography>
-  </Box>
-);
+const accentColors = ['#6366F1', '#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6'];
 
-/* ================  component  ==================== */
-const ProjectSection = forwardRef((_, ref) => {
-  const theme = useTheme();
-  const [current, setCurrent] = useState(null);
+/* ——— Project data ——— */
+const projects = [
+  {
+    title: 'HelpHub',
+    date: '2024',
+    category: 'Full-Stack Development',
+    description:
+      'HelpHub is a dynamic web application designed to bridge the gap between individuals seeking assistance and professionals offering their expertise. Whether you need help with household tasks, project management, or specialized services, HelpHub provides a seamless platform to connect, collaborate, and achieve your goals efficiently.',
+    details: 'Bid system • Real-time notifications • LinkedIn integration',
+    icon: WebIcon,
+    images: ['/images/dashboard.png'],
+    tag: 'Full-Stack Development',
+    link: 'https://github.com/anjanmandal/HelpHub.git',
+    additionalInfo:
+      'This platform also includes features like event scheduling, notification systems, and integration with LinkedIn for seamless professional networking. HelpHub\'s bid system is thoughtfully designed to create a balanced marketplace where affordability meets quality.',
+  },
+  {
+    title: 'LA.CO₂ – Louisiana Carbon Platform',
+    date: '2025',
+    category: 'Climate Data Platform',
+    description:
+      'LA.CO₂ centralizes carbon emission tracking, CCUS compliance, and public transparency for Louisiana’s carbon storage initiatives. Operators, regulators, and the public share one source of truth backed by AI explanations.',
+    details: 'Operator portal • Regulator QA/QC dashboard • Public transparency hub',
+    icon: StorageIcon,
+    images: [
+
+      '/images/laco2-2.png',
+      '/images/laco2-3.png',
+      '/images/laco2-4.png',
+      '/images/laco2-5.png',
+      '/images/laco2-6.png',
+    ],
+    tag: 'ClimateTech',
+    link: 'https://github.com/anjanmandal/LA.CO-.git',
+    additionalInfo:
+      'Operator portal supports CSV/XLSX uploads with automated validation and integration-ready APIs. Regulators review reports against ClimateTrace/EPA datasets, run QA/QC tools, and export inspection briefs. The public portal exposes an interactive CCUS map, emissions/capture trend charts, downloadable datasets, and AI-generated summaries powered by OpenAI.',
+  },
+  {
+    title: 'PivotProof',
+    date: '2025',
+    category: 'Sports Science Platform',
+    description:
+      'PivotProof is an ACL prevention and recovery solution tailored for Louisiana\'s young athletes. It blends context logging, movement verification, AI-driven coaching, and public health data to reduce ACL risk statewide.',
+    details: 'Daily Risk log • Movement Coach • Counterfactual planner • N-of-1 biomechanical twins',
+    icon: MobileIcon,
+    images: ['/images/dashboard.png'],
+    tag: 'Sports Science',
+    link: 'https://github.com/anjanmandal/LA.CO-.git',
+    additionalInfo:
+      'Daily Risk 2.0 captures fatigue, surface, menstrual phase, and heat. Movement Coach analyzes 3-5s clips, issues instant cues, and assigns micro-plans. Counterfactual Coach simulates workload tweaks for coaches, and an N-of-1 Movement Twin personalizes risk priors for every athlete.',
+  },
+  {
+    title: 'AI-L&L-VIDEO-GENERATOR',
+    date: '2024',
+    category: 'AI & Full-Stack',
+    description:
+      'A full-stack application that generates video content from a text prompt. This project consists of a backend built with Node.js and Express that handles text generation and video processing, and a frontend built with React, providing a user-friendly interface with dark mode and 3D visual effects.',
+    details: 'AI text generation • Text-to-speech • Video creation • 3D effects',
+    icon: CodeIcon,
+    images: ['/images/L&L.png'],
+    tag: 'Full-Stack Development',
+    link: 'https://github.com/anjanmandal/L-L.git',
+    additionalInfo:
+      'AI-Powered Text Generation: Generates responses to user prompts using AI. Text-to-Speech and Video Creation: Converts text responses into speech and combines them with dynamic subtitles to create video content. Dark Mode Support: Toggle dark/light themes for the interface. Three.js Visual Effects: 3D star background for a visually engaging experience.',
+  },
+  {
+    title: 'Alumni Platform',
+    date: '2024',
+    category: 'Full-Stack Development',
+    description:
+      'An interactive platform designed to connect alumni and current students in real-time. Built with React.js, Node.js, and MongoDB, it features real-time chat functionality, allowing users to network with alumni, receive updates on job opportunities, and stay informed about upcoming events and workshops.',
+    details: 'Real-time chat • Event scheduling • Job opportunities',
+    icon: StorageIcon,
+    images: ['/images/project_alumni.png'],
+    tag: 'Full-Stack Development',
+    link: 'https://github.com/anjanmandal/ULM_Alumni_Search_Dashboard.git',
+    additionalInfo:
+      'This platform also includes features like event scheduling, notification systems, and integration with LinkedIn for seamless professional networking.',
+  },
+  {
+    title: 'Lost and Found Website',
+    date: '2024',
+    category: 'Full-Stack Development',
+    description:
+      'A robust serverless web application designed to streamline the process of reporting and recovering lost items. Built with React.js, Node.js, and MongoDB, this platform offers user-friendly interfaces for uploading lost items, searching for found items, and facilitating real-time communication between users through integrated chat functionality.',
+    details: 'Real-time chat • Advanced search • Geotagging • WebSocket',
+    icon: MobileIcon,
+    images: ['/images/lost_found3.png'],
+    tag: 'Full-Stack Development',
+    link: 'https://github.com/anjanmandal/Lost-and-Found-website-.git',
+    additionalInfo:
+      'This Lost and Found platform provides a comprehensive solution for communities to report and locate lost items. Key features include: Real-Time Chat and Notifications: Leveraging WebSocket technology, the platform provides real-time messaging between users. Advanced Search and Filtering: Users can search and filter items based on multiple criteria, such as location, date, category, and keywords.',
+  },
+  {
+    title: 'Okay Journey',
+    date: '2024',
+    category: 'Full-Stack Development',
+    description:
+      'This Bus Ticketing Website offers a comprehensive and user-friendly platform for travelers to search for, book, and manage their bus tickets online.',
+    details: 'E-ticketing • Payment gateway • Multi-language • Dynamic pricing',
+    icon: WebIcon,
+    images: ['/images/okay_journey2.jpeg'],
+    tag: 'Full-Stack Development',
+    link: 'https://www.okayjourney.com',
+    additionalInfo:
+      'This Bus Ticketing Website offers a comprehensive and user-friendly platform for travelers to search for, book, and manage their bus tickets online. Users can effortlessly search for available bus routes by entering their origin, destination, and travel dates, with the ability to filter results based on price, travel time, and bus amenities.',
+  },
+];
+
+const ProjectsSection = forwardRef((_, ref) => {
+  const navigate = useNavigate();
 
   return (
-    <Box ref={ref} sx={{ p: 4, position: 'relative' }}>
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
-        <ShinyText variant="h3">Projects</ShinyText>
-      </Box>
-
-      {/* cards */}
-      <Grid container spacing={3} justifyContent="center">
-        {cardData.map((proj, i) => (
-          <Grid key={i} size={{ xs: 12, sm: 6, md: 4 }}>
-            <StyledCard onClick={() => setCurrent(proj)} tabIndex={0}>
-              <CardMedia component="img" height="140" image={proj.img} alt={proj.title} />
-              <StyledCardContent>
-                <Typography variant="caption" gutterBottom>{proj.tag}</Typography>
-                <Typography variant="h6">{proj.title}</Typography>
-                <StyledTypography variant="body2" color="text.secondary">
-                  {proj.description}
-                </StyledTypography>
-              </StyledCardContent>
-              <Collaborators collaborators={proj.collaborators} />
-            </StyledCard>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* modal */}
-      <Backdrop
-        open={Boolean(current)}
-        onClick={() => setCurrent(null)}
-        sx={{ zIndex: (t) => t.zIndex.drawer + 1 }}
+    <SectionFrame
+      ref={ref}
+      eyebrow="Build log"
+      title="Highlighted Projects"
+      subtitle="Production builds, research explorations, and hackathon prototypes."
+      contentSx={{ p: { xs: 1, sm: 2 }, pt: { xs: 2, md: 3 } }}
+    >
+      <Box
+        sx={{
+          position: 'relative',
+          maxWidth: 1120,
+          mx: 'auto',
+          pl: { xs: 0, sm: 5 },
+        }}
       >
-        {current && (
-          <BackdropContent onClick={(e) => e.stopPropagation()}>
-            <IconButton
-              onClick={() => setCurrent(null)}
-              sx={{ position: 'absolute', top: 8, right: 8 }}
-            >
-              <CloseIcon />
-            </IconButton>
+        <Box
+          sx={{
+            position: 'absolute',
+            left: { xs: 8, sm: 16 },
+            top: 0,
+            bottom: 0,
+            width: 2,
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.2),
+            display: { xs: 'none', sm: 'block' },
+          }}
+        />
 
-            <Typography variant="h4" gutterBottom color="text.primary">
-              {current.title}
-            </Typography>
+        <Stack spacing={4}>
+          {projects.map((proj, idx) => {
+            const slug = proj.title.toLowerCase().replace(/[^\w]+/g, '-');
+            const accent = accentColors[idx % accentColors.length];
+            const IconComponent = proj.icon || CodeIcon;
 
-            {/* Swiper carousel */}
-            {current.details.images?.length > 0 && (
-              <Box mb={2}>
-                <Swiper
-                  modules={[Navigation, Pagination]}
-                  spaceBetween={16}
-                  slidesPerView={1}
-                  navigation
-                  pagination={{ clickable: true }}
-                >
-                  {current.details.images.map((src, idx) => (
-                    <SwiperSlide key={idx}>
-                      <Box
-                        component="img"
-                        src={src}
-                        alt={`${current.title} ${idx + 1}`}
-                        sx={{ width: '100%', height: 300, objectFit: 'contain' }}
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </Box>
-            )}
-
-            <Typography variant="body1" paragraph color="text.secondary">
-              {current.description}
-            </Typography>
-
-            {current.details.additionalInfo && (
-              <Typography variant="body2" paragraph color="text.secondary">
-                {current.details.additionalInfo}
-              </Typography>
-            )}
-
-            {current.details.link && (
-              <Link href={current.details.link} target="_blank" rel="noopener">
-                View Project
-              </Link>
-            )}
-          </BackdropContent>
-        )}
-      </Backdrop>
-    </Box>
+            return (
+              <SectionBlock key={proj.title}>
+                <Box sx={{ flex: 1.1 }}>
+                  <Stack direction="row" spacing={2} alignItems="center" mb={2} flexWrap="wrap">
+                    <Chip
+                      icon={<IconComponent fontSize="small" />}
+                      label={proj.category}
+                      size="small"
+                      sx={{
+                        bgcolor: alpha(accent, 0.15),
+                        color: accent,
+                        borderColor: alpha(accent, 0.3),
+                      }}
+                      variant="outlined"
+                    />
+                    <Typography variant="caption" color="text.secondary">
+                      {proj.date}
+                    </Typography>
+                  </Stack>
+                  <Typography variant="h4" sx={{ fontWeight: 700, mb: 1.5 }}>
+                    {proj.title}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary" sx={{ mt: 1.5, mb: 2 }}>
+                    {proj.description}
+                  </Typography>
+                  <Stack direction="row" spacing={2} sx={{ mt: 3 }} flexWrap="wrap">
+                    <Chip
+                      label={proj.details}
+                      size="small"
+                      sx={{
+                        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+                        color: 'text.primary',
+                      }}
+                    />
+                    <Button
+                      variant="text"
+                      endIcon={<ArrowOutwardIcon />}
+                      sx={{ color: accent }}
+                      onClick={() => navigate(`/projects/${slug}`)}
+                    >
+                      View full details
+                    </Button>
+                  </Stack>
+                </Box>
+                <Thumbnail src={proj.images[0]} />
+              </SectionBlock>
+            );
+          })}
+        </Stack>
+      </Box>
+    </SectionFrame>
   );
 });
 
-export default ProjectSection;
+export default ProjectsSection;

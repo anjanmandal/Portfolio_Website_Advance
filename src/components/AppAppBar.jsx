@@ -20,19 +20,30 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
+  borderRadius: theme.shape.borderRadius * 1.25,
   backdropFilter: 'blur(24px)',
   border: '1px solid',
-  borderColor: (theme.vars || theme).palette.divider,
-  backgroundColor: theme.vars
-    ? `rgba(${theme.vars.palette.background.defaultChannel} / 0.4)`
-    : alpha(theme.palette.background.default, 0.4),
-  boxShadow: (theme.vars || theme).shadows[1],
-  padding: '8px 12px',
+  borderColor: alpha(theme.palette.common.white, theme.palette.mode === 'dark' ? 0.08 : 0.12),
+  backgroundColor: alpha(
+    theme.palette.mode === 'dark' ? theme.palette.background.paper : theme.palette.background.default,
+    theme.palette.mode === 'dark' ? 0.75 : 0.85
+  ),
+  boxShadow: theme.shadows[1],
+  padding: theme.spacing(1.25, 2),
 }));
 
 export default function AppAppBar({ sections }) {
   const [open, setOpen] = React.useState(false);
+  const navItems = [
+    { label: 'About', key: 'about' },
+    { label: 'Education', key: 'education' },
+    { label: 'Skills', key: 'skills' },
+    { label: 'Experience', key: 'experience' },
+    { label: 'Projects', key: 'projects' },
+    { label: 'Achievements', key: 'achievements' },
+    { label: 'Involvements', key: 'involvements' },
+    { label: 'Contact', key: 'contact' },
+  ];
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -56,31 +67,28 @@ export default function AppAppBar({ sections }) {
         <StyledToolbar variant="dense" disableGutters>
           {/* Navigation Buttons for Desktop */}
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.about)}>
-                About
-              </Button>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.education)}>
-                Education
-              </Button>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.skills)}>
-                Skills
-              </Button>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.experience)}>
-                Experience
-              </Button>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.projects)}>
-                Projects
-              </Button>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.achievements)}>
-                Achievements
-              </Button>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.involvements)}>
-                Involvements
-              </Button>
-              <Button variant="text" color="info" size="small" onClick={() => scrollToSection(sections.contact)}>
-                Contact
-              </Button>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.key}
+                  variant="text"
+                  size="small"
+                  onClick={() => scrollToSection(sections[item.key])}
+                  sx={{
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    color: 'text.primary',
+                    letterSpacing: 0.3,
+                    opacity: 0.85,
+                    '&:hover': {
+                      opacity: 1,
+                      color: 'primary.light',
+                    },
+                  }}
+                >
+                  {item.label}
+                </Button>
+              ))}
             </Box>
           </Box>
 
@@ -95,7 +103,7 @@ export default function AppAppBar({ sections }) {
               <MenuIcon />
             </IconButton>
             <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
-              <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
+              <Box sx={{ p: 2, backgroundColor: 'background.paper', minHeight: '100vh' }}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -108,9 +116,13 @@ export default function AppAppBar({ sections }) {
                   </IconButton>
                 </Box>
                 <Divider sx={{ my: 3 }} />
-                {Object.keys(sections).map((key) => (
-                  <MenuItem key={key} onClick={() => scrollToSection(sections[key])}>
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                {navItems.map((item) => (
+                  <MenuItem
+                    key={item.key}
+                    onClick={() => scrollToSection(sections[item.key])}
+                    sx={{ fontWeight: 600, letterSpacing: 0.3 }}
+                  >
+                    {item.label}
                   </MenuItem>
                 ))}
                 <MenuItem>

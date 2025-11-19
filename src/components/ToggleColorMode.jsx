@@ -11,19 +11,22 @@ import { keyframes } from '@emotion/react';
 
 // Define the shake animation using keyframes
 const shake = keyframes`
-  0% { transform: translateY(1px); }
-
- 
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
 `;
 
 // Create a styled IconButton with the shake animation
 const AnimatedIconButton = styled(IconButton)(({ theme }) => ({
-  animation: `${shake} 2s ease infinite`,// Adjust duration and iteration as needed
-  backgroundColor: 'rgba(255, 255, 255, 0.7)', // Semi-transparent background
+  animation: `${shake} 4s ease-in-out infinite`,
+  backgroundImage: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+  color: theme.palette.common.white,
+  borderRadius: 999,
+  boxShadow: theme.shadows[1],
   '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Darker on hover
+    backgroundImage: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.secondary.light})`,
+    boxShadow: theme.shadows[8],
   },
-  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)', // Optional: Add a subtle shadow
 }));
 
 function ToggleColorMode({ mode, toggleColorMode, ...props }) {

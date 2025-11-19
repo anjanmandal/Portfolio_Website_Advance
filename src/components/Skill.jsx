@@ -1,6 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 import { Box, Tabs, Tab, Grid, Card, CardContent, Typography, Avatar } from '@mui/material';
-import { styled, keyframes } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
+import SectionFrame from './SectionFrame';
 
 // Icon imports (update paths as needed)
 import CssIcon from '/images/css-icon.png';
@@ -40,32 +41,6 @@ import KubernetesIcon from '/images/kubernetes.png';
 import GitHubIcon from '/images/github.png';
 import JenkinsIcon from '/images/jenkins.png';
 import MongodbIcon from '/images/mongodb.png';
-// Animation keyframes
-const float = keyframes`
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-`;
-
-// Shiny text style for heading
-const ShinyText = styled(Typography)(({ theme }) => ({
-  fontWeight: 'bold',
-  fontSize: '3rem',
-  background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  backgroundClip: 'text',
-  textFillColor: 'transparent',
-  backgroundSize: '200% auto',
-  display: 'inline-block',
-  letterSpacing: '0.05em',
-  animation: `shine 3s linear infinite`,
-}));
-
-// Text shine keyframes
-const shine = keyframes`
-  0% { background-position: 0% }
-  100% { background-position: 200% }
-`;
-
 // Styled Tab
 const StyledTab = styled(Tab)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -79,18 +54,19 @@ const StyledTab = styled(Tab)(({ theme }) => ({
 
 // Styled Card for skills
 const StyledCard = styled(Card)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: 12,
+  backgroundColor: alpha(theme.palette.background.paper, 0.85),
+  borderRadius: 18,
   padding: theme.spacing(2),
   display: 'flex',
   alignItems: 'center',
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
   transition: 'transform 0.3s, box-shadow 0.3s',
   '&:hover': {
-    transform: 'scale(1.05)',
-    boxShadow: `0 0 20px ${theme.palette.primary.main}`,
+    transform: 'translateY(-4px)',
+    boxShadow: theme.shadows[8],
   },
   '&:focus-visible': {
-    outline: `3px solid ${theme.palette.primary.main}`,
+    outline: `3px solid ${alpha(theme.palette.primary.main, 0.4)}`,
   },
 }));
 
@@ -160,13 +136,28 @@ const SkillCategories = forwardRef((props, ref) => {
   const categories = Object.entries(skills);
 
   return (
-    <Box ref={ref} sx={{ width: '100%', p: 3, position: 'relative', overflow: 'hidden' }}>
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <ShinyText variant="h3">Skills</ShinyText>
-      </Box>
-
-      <Tabs value={value} onChange={handleChange} centered>
-        {categories.map(([catName], idx) => (
+    <SectionFrame
+      ref={ref}
+      eyebrow="Stack"
+      title="Skills arsenal"
+      subtitle="Tooling, languages, and platforms I rely on to ship production-grade software."
+      contentSpacing={3}
+    >
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        centered
+        sx={{
+          '& .MuiTabs-indicator': {
+            height: 4,
+            borderRadius: 999,
+            backgroundImage: (theme) =>
+              `linear-gradient(120deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+          },
+          mb: 2,
+        }}
+      >
+        {categories.map(([catName]) => (
           <StyledTab key={catName} label={catName} />
         ))}
       </Tabs>
@@ -174,12 +165,15 @@ const SkillCategories = forwardRef((props, ref) => {
       {categories.map(([catName, items], idx) => (
         <TabPanel key={catName} value={value} index={idx}>
           <Grid container spacing={3}>
-            {items.map((skill, i) => (
-              <Grid item size={{xs:12, sm:6, md:4}} key={i}>
+            {items.map((skill) => (
+              <Grid item xs={12} sm={6} md={4} key={skill.name}>
                 <StyledCard>
                   <Avatar alt={skill.name} src={skill.icon} sx={{ width: 56, height: 56, mr: 2 }} />
-                  <CardContent>
+                  <CardContent sx={{ p: 0 }}>
                     <Typography variant="h6">{skill.name}</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {catName}
+                    </Typography>
                   </CardContent>
                 </StyledCard>
               </Grid>
@@ -187,7 +181,7 @@ const SkillCategories = forwardRef((props, ref) => {
           </Grid>
         </TabPanel>
       ))}
-    </Box>
+    </SectionFrame>
   );
 });
 
