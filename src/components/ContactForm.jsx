@@ -31,6 +31,8 @@ const topicOptions = [
   { label: 'Internship / freelance', subject: 'Internship or freelance opportunity' },
 ];
 
+const MOBILE_SAFE_VIEWPORT = { once: true, amount: 0.12 };
+
 const ContactShell = styled(Box)(({ theme }) => ({
   width: '100%',
   maxWidth: 980,
@@ -252,7 +254,7 @@ const ContactForm = forwardRef((props, ref) => {
           component={motion.div}
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={MOBILE_SAFE_VIEWPORT}
           transition={{ duration: 0.55, ease: 'easeOut', delay: 0.08 }}
         >
           <Stack
@@ -342,7 +344,7 @@ const ContactForm = forwardRef((props, ref) => {
                 }}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={MOBILE_SAFE_VIEWPORT}
                 transition={{ duration: 0.28 }}
               />
 
@@ -368,7 +370,7 @@ const ContactForm = forwardRef((props, ref) => {
                 }}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={MOBILE_SAFE_VIEWPORT}
                 transition={{ duration: 0.28, delay: 0.04 }}
               />
             </Box>
@@ -394,7 +396,7 @@ const ContactForm = forwardRef((props, ref) => {
               }}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={MOBILE_SAFE_VIEWPORT}
               transition={{ duration: 0.28, delay: 0.08 }}
             />
 
@@ -402,7 +404,7 @@ const ContactForm = forwardRef((props, ref) => {
               component={motion.div}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={MOBILE_SAFE_VIEWPORT}
               transition={{ duration: 0.28, delay: 0.12 }}
             >
               <MessageFieldShell>

@@ -54,6 +54,8 @@ const heroSignals = [
   },
 ];
 
+const MOBILE_SAFE_VIEWPORT = { once: true, amount: 0.12 };
+
 const HeroCard = styled(Box)(({ theme }) => ({
   borderRadius: 30,
   padding: theme.spacing(4),
@@ -229,7 +231,7 @@ const ExperienceTimeline = forwardRef((props, ref) => {
         component={motion.div}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.4 }}
+        viewport={MOBILE_SAFE_VIEWPORT}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         <Stack spacing={3}>
@@ -312,7 +314,7 @@ const ExperienceTimeline = forwardRef((props, ref) => {
                 component={motion.div}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
+                viewport={MOBILE_SAFE_VIEWPORT}
               >
                 <TimelineCard>
                   <Stack spacing={2.3}>

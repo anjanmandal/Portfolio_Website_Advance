@@ -108,6 +108,8 @@ const latestUpdates = [
   },
 ];
 
+const MOBILE_SAFE_VIEWPORT = { once: true, amount: 0.08 };
+
 const HeroSurface = styled(Box)(({ theme }) => ({
   borderRadius: 32,
   padding: theme.spacing(5),
@@ -350,7 +352,7 @@ const AboutSection = forwardRef((_, ref) => {
       component={motion.section}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={MOBILE_SAFE_VIEWPORT}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       sx={{ py: { xs: 3, md: 5 } }}
     >
@@ -359,7 +361,7 @@ const AboutSection = forwardRef((_, ref) => {
           component={motion.div}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
+          viewport={MOBILE_SAFE_VIEWPORT}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <Stack spacing={4}>
@@ -368,7 +370,7 @@ const AboutSection = forwardRef((_, ref) => {
               component={motion.div}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
+              viewport={MOBILE_SAFE_VIEWPORT}
               transition={{ duration: 0.5 }}
             >
               <Chip icon={<TimelineIcon />} label="About" size="small" sx={{ width: 'fit-content' }} />
@@ -411,7 +413,7 @@ const AboutSection = forwardRef((_, ref) => {
               component={motion.div}
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
+              viewport={MOBILE_SAFE_VIEWPORT}
               transition={{ duration: 0.5 }}
             >
               <Stack spacing={0.6}>
@@ -467,10 +469,10 @@ const AboutSection = forwardRef((_, ref) => {
                 component={motion.div}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.4 }}
+                viewport={MOBILE_SAFE_VIEWPORT}
                 transition={{ duration: 0.6 }}
               />
-              <Grid container spacing={2} component={motion.div} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }}>
+              <Grid container spacing={2} component={motion.div} initial="hidden" whileInView="visible" viewport={MOBILE_SAFE_VIEWPORT} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }}>
                 {heroMetrics.map((metric) => (
                   <Grid size={{ xs: 12, sm: 4 }} key={metric.label} component={motion.div} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
                     <MetricTile
@@ -492,7 +494,7 @@ const AboutSection = forwardRef((_, ref) => {
           component={motion.div}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
+          viewport={MOBILE_SAFE_VIEWPORT}
           transition={{ duration: 0.5 }}
         >
           <Stack
