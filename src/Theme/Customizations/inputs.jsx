@@ -18,7 +18,7 @@ export const inputsCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         boxSizing: 'border-box',
-        transition: 'all 100ms ease-in',
+        transition: 'all 160ms ease',
         '&:focus-visible': {
           outline: `3px solid ${alpha(theme.palette.primary.main, 0.5)}`,
           outlineOffset: '2px',
@@ -30,7 +30,7 @@ export const inputsCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         boxShadow: 'none',
-        borderRadius: theme.shape.borderRadius,
+        borderRadius: 999,
         textTransform: 'none',
         variants: [
           {
@@ -38,8 +38,8 @@ export const inputsCustomizations = {
               size: 'small',
             },
             style: {
-              height: '2.25rem',
-              padding: '8px 12px',
+              height: '2.35rem',
+              padding: '10px 14px',
             },
           },
           {
@@ -47,7 +47,8 @@ export const inputsCustomizations = {
               size: 'medium',
             },
             style: {
-              height: '2.5rem', // 40px
+              height: '2.75rem',
+              padding: '0 18px',
             },
           },
           {
@@ -57,33 +58,17 @@ export const inputsCustomizations = {
             },
             style: {
               color: 'white',
-              backgroundColor: gray[900],
-              backgroundImage: `linear-gradient(to bottom, ${gray[700]}, ${gray[800]})`,
-              boxShadow: `inset 0 1px 0 ${gray[600]}, inset 0 -1px 0 1px hsl(220, 0%, 0%)`,
-              border: `1px solid ${gray[700]}`,
+              backgroundColor: theme.palette.primary.main,
+              backgroundImage: 'none',
+              border: `1px solid ${alpha(theme.palette.primary.dark, 0.28)}`,
+              boxShadow: `0 8px 18px ${alpha(theme.palette.primary.main, 0.14)}`,
               '&:hover': {
-                backgroundImage: 'none',
-                backgroundColor: gray[700],
-                boxShadow: 'none',
+                backgroundColor: theme.palette.primary.dark,
+                boxShadow: `0 10px 20px ${alpha(theme.palette.primary.main, 0.16)}`,
               },
               '&:active': {
-                backgroundColor: gray[800],
+                boxShadow: `0 6px 14px ${alpha(theme.palette.primary.main, 0.12)}`,
               },
-              ...theme.applyStyles('dark', {
-                color: 'black',
-                backgroundColor: gray[50],
-                backgroundImage: `linear-gradient(to bottom, ${gray[100]}, ${gray[50]})`,
-                boxShadow: 'inset 0 -1px 0  hsl(220, 30%, 80%)',
-                border: `1px solid ${gray[50]}`,
-                '&:hover': {
-                  backgroundImage: 'none',
-                  backgroundColor: gray[300],
-                  boxShadow: 'none',
-                },
-                '&:active': {
-                  backgroundColor: gray[400],
-                },
-              }),
             },
           },
           {
@@ -92,18 +77,22 @@ export const inputsCustomizations = {
               variant: 'contained',
             },
             style: {
-              color: 'white',
-              backgroundColor: brand[300],
-              backgroundImage: `linear-gradient(to bottom, ${alpha(brand[400], 0.8)}, ${brand[500]})`,
-              boxShadow: `inset 0 2px 0 ${alpha(brand[200], 0.2)}, inset 0 -2px 0 ${alpha(brand[700], 0.4)}`,
-              border: `1px solid ${brand[500]}`,
+              color: theme.palette.text.primary,
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.common.white, 0.08)
+                  : alpha(theme.palette.common.white, 0.86),
+              backgroundImage: 'none',
+              border: `1px solid ${theme.palette.divider}`,
+              boxShadow: 'none',
               '&:hover': {
-                backgroundColor: brand[700],
-                boxShadow: 'none',
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.common.white, 0.12)
+                    : alpha(theme.palette.common.white, 0.96),
               },
               '&:active': {
-                backgroundColor: brand[700],
-                backgroundImage: 'none',
+                backgroundColor: alpha(theme.palette.primary.main, 0.08),
               },
             },
           },
@@ -114,26 +103,22 @@ export const inputsCustomizations = {
             style: {
               color: theme.palette.text.primary,
               border: '1px solid',
-              borderColor: gray[200],
-              backgroundColor: alpha(gray[50], 0.3),
+              borderColor: alpha(theme.palette.primary.main, 0.18),
+              backgroundColor: alpha(
+                theme.palette.background.paper,
+                theme.palette.mode === 'dark' ? 0.82 : 0.74
+              ),
+              backdropFilter: 'blur(12px)',
               '&:hover': {
-                backgroundColor: gray[100],
-                borderColor: gray[300],
+                backgroundColor: alpha(
+                  theme.palette.background.paper,
+                  theme.palette.mode === 'dark' ? 0.92 : 0.88
+                ),
+                borderColor: alpha(theme.palette.primary.main, 0.26),
               },
               '&:active': {
-                backgroundColor: gray[200],
+                backgroundColor: alpha(theme.palette.primary.main, 0.08),
               },
-              ...theme.applyStyles('dark', {
-                backgroundColor: gray[800],
-                borderColor: gray[700],
-                '&:hover': {
-                  backgroundColor: gray[900],
-                  borderColor: gray[600],
-                },
-                '&:active': {
-                  backgroundColor: gray[900],
-                },
-              }),
             },
           },
           {
@@ -142,30 +127,24 @@ export const inputsCustomizations = {
               variant: 'outlined',
             },
             style: {
-              color: brand[700],
+              color: theme.palette.secondary.dark,
               border: '1px solid',
-              borderColor: brand[200],
-              backgroundColor: brand[50],
+              borderColor: alpha(theme.palette.secondary.main, 0.22),
+              backgroundColor: alpha(
+                theme.palette.secondary.main,
+                theme.palette.mode === 'dark' ? 0.1 : 0.06
+              ),
+              backdropFilter: 'blur(12px)',
               '&:hover': {
-                backgroundColor: brand[100],
-                borderColor: brand[400],
+                backgroundColor: alpha(
+                  theme.palette.secondary.main,
+                  theme.palette.mode === 'dark' ? 0.16 : 0.1
+                ),
+                borderColor: alpha(theme.palette.secondary.main, 0.28),
               },
               '&:active': {
-                backgroundColor: alpha(brand[200], 0.7),
+                backgroundColor: alpha(theme.palette.secondary.main, 0.18),
               },
-              ...theme.applyStyles('dark', {
-                color: brand[50],
-                border: '1px solid',
-                borderColor: brand[900],
-                backgroundColor: alpha(brand[900], 0.3),
-                '&:hover': {
-                  borderColor: brand[700],
-                  backgroundColor: alpha(brand[900], 0.6),
-                },
-                '&:active': {
-                  backgroundColor: alpha(brand[900], 0.5),
-                },
-              }),
             },
           },
           {
@@ -173,22 +152,13 @@ export const inputsCustomizations = {
               variant: 'text',
             },
             style: {
-              color: gray[600],
+              color: theme.palette.text.primary,
               '&:hover': {
-                backgroundColor: gray[100],
+                backgroundColor: alpha(theme.palette.primary.main, 0.08),
               },
               '&:active': {
-                backgroundColor: gray[200],
+                backgroundColor: alpha(theme.palette.primary.main, 0.12),
               },
-              ...theme.applyStyles('dark', {
-                color: gray[50],
-                '&:hover': {
-                  backgroundColor: gray[700],
-                },
-                '&:active': {
-                  backgroundColor: alpha(gray[700], 0.7),
-                },
-              }),
             },
           },
           {
@@ -197,22 +167,13 @@ export const inputsCustomizations = {
               variant: 'text',
             },
             style: {
-              color: brand[700],
+              color: theme.palette.secondary.dark,
               '&:hover': {
-                backgroundColor: alpha(brand[100], 0.5),
+                backgroundColor: alpha(theme.palette.secondary.main, 0.12),
               },
               '&:active': {
-                backgroundColor: alpha(brand[200], 0.7),
+                backgroundColor: alpha(theme.palette.secondary.main, 0.18),
               },
-              ...theme.applyStyles('dark', {
-                color: brand[100],
-                '&:hover': {
-                  backgroundColor: alpha(brand[900], 0.5),
-                },
-                '&:active': {
-                  backgroundColor: alpha(brand[900], 0.3),
-                },
-              }),
             },
           },
         ],
@@ -223,32 +184,29 @@ export const inputsCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         boxShadow: 'none',
-        borderRadius: theme.shape.borderRadius,
+        borderRadius: 999,
         textTransform: 'none',
         fontWeight: theme.typography.fontWeightMedium,
         letterSpacing: 0,
         color: theme.palette.text.primary,
         border: '1px solid ',
-        borderColor: gray[200],
-        backgroundColor: alpha(gray[50], 0.3),
+        borderColor: alpha(theme.palette.primary.main, 0.18),
+        backgroundColor: alpha(
+          theme.palette.background.paper,
+          theme.palette.mode === 'dark' ? 0.82 : 0.74
+        ),
+        backdropFilter: 'blur(12px)',
         '&:hover': {
-          backgroundColor: gray[100],
-          borderColor: gray[300],
+          backgroundColor: alpha(
+            theme.palette.background.paper,
+            theme.palette.mode === 'dark' ? 0.92 : 0.88
+          ),
+          borderColor: alpha(theme.palette.primary.main, 0.26),
+          boxShadow: `0 8px 18px ${alpha(theme.palette.primary.main, 0.08)}`,
         },
         '&:active': {
-          backgroundColor: gray[200],
+          backgroundColor: alpha(theme.palette.primary.main, 0.08),
         },
-        ...theme.applyStyles('dark', {
-          backgroundColor: gray[800],
-          borderColor: gray[700],
-          '&:hover': {
-            backgroundColor: gray[900],
-            borderColor: gray[600],
-          },
-          '&:active': {
-            backgroundColor: gray[900],
-          },
-        }),
         variants: [
           {
             props: {

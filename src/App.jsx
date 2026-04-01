@@ -2,7 +2,6 @@
 
 import React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, alpha } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -31,9 +30,6 @@ export default function App() {
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const blogTheme = createTheme(getBlogTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
-
-  // Determine dark mode flag
-  const isDark = mode === 'dark';
 
   // On mount, check system or localStorage preference
   React.useEffect(() => {
@@ -89,21 +85,12 @@ export default function App() {
             transition: 'background 600ms ease',
             position: 'relative',
             overflowX: 'hidden',
-            pt: { xs: 8, md: 10 },
+            pt: { xs: 7, md: 8 },
             pb: { xs: 6, md: 8 },
           })}
         >
           <Box
             sx={(theme) => {
-              const glowPrimary = alpha(
-                theme.palette.primary.main,
-                theme.palette.mode === 'dark' ? 0.45 : 0.22
-              );
-              const glowSecondary = alpha(
-                theme.palette.secondary.main,
-                theme.palette.mode === 'dark' ? 0.4 : 0.18
-              );
-
               return {
                 position: 'absolute',
                 inset: 0,
@@ -112,34 +99,36 @@ export default function App() {
                 '&::before': {
                   content: '""',
                   position: 'absolute',
-                  width: 400,
-                  height: 400,
-                  top: '-10%',
-                  right: '5%',
-                  background: `radial-gradient(circle, ${glowPrimary} 0%, transparent 70%)`,
-                  filter: 'blur(80px)',
-                  opacity: theme.palette.mode === 'dark' ? 0.65 : 0.35,
-                  animation: 'float 20s ease-in-out infinite',
+                  inset: 0,
+                  background: `radial-gradient(circle at 18% 10%, ${alpha(
+                    theme.palette.primary.main,
+                    theme.palette.mode === 'dark' ? 0.14 : 0.08
+                  )} 0%, transparent 24%), radial-gradient(circle at 84% 4%, ${alpha(
+                    theme.palette.common.white,
+                    theme.palette.mode === 'dark' ? 0.08 : 0.42
+                  )} 0%, transparent 18%), linear-gradient(180deg, ${alpha(
+                    theme.palette.common.white,
+                    theme.palette.mode === 'dark' ? 0.02 : 0.56
+                  )} 0%, transparent 32%)`,
                 },
                 '&::after': {
                   content: '""',
                   position: 'absolute',
-                  width: 450,
-                  height: 450,
-                  bottom: '-15%',
-                  left: '-5%',
-                  background: `radial-gradient(circle, ${glowSecondary} 0%, transparent 65%)`,
-                  filter: 'blur(100px)',
-                  opacity: theme.palette.mode === 'dark' ? 0.55 : 0.28,
-                  animation: 'float 25s ease-in-out infinite reverse',
-                },
-                '@keyframes float': {
-                  '0%, 100%': {
-                    transform: 'translate(0, 0) scale(1)',
-                  },
-                  '50%': {
-                    transform: 'translate(30px, -30px) scale(1.1)',
-                  },
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  height: '36%',
+                  backgroundImage: `linear-gradient(${alpha(
+                    theme.palette.common.white,
+                    theme.palette.mode === 'dark' ? 0.05 : 0.18
+                  )} 1px, transparent 1px), linear-gradient(90deg, ${alpha(
+                    theme.palette.common.white,
+                    theme.palette.mode === 'dark' ? 0.04 : 0.12
+                  )} 1px, transparent 1px)`,
+                  backgroundSize: '88px 88px',
+                  maskImage:
+                    'linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.22) 68%, transparent 100%)',
+                  opacity: theme.palette.mode === 'dark' ? 0.14 : 0.18,
                 },
               };
             }}
@@ -148,14 +137,14 @@ export default function App() {
           <Box sx={{ position: 'relative', zIndex: 1 }}>
             <AppAppBar sections={sections} />
             <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-            <Container
-              maxWidth="lg"
+            <Box
               component="main"
               sx={(theme) => ({
+                width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: theme.spacing(6),
-                py: { xs: 10, md: 14 },
+                py: { xs: 3, md: 4 },
               })}
             >
               <Routes>
@@ -179,7 +168,7 @@ export default function App() {
                 <Route path="/projects/:slug" element={<ProjectDetail />} />
                 <Route path="/certifications" element={<CertificationsPage />} />
               </Routes>
-            </Container>
+            </Box>
             <Footer sections={sections} />
           </Box>
         </Box>

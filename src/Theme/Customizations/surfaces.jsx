@@ -12,12 +12,16 @@ export const surfacesCustomizations = {
       root: ({ theme }) => ({
         padding: 4,
         overflow: 'clip',
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: theme.shape.borderRadius,
+        background:
+          theme.palette.mode === 'dark'
+            ? `linear-gradient(145deg, ${theme.palette.background.glass}, ${alpha(theme.palette.background.paper, 0.78)})`
+            : `linear-gradient(145deg, ${theme.palette.background.glass}, ${alpha(theme.palette.common.white, 0.76)})`,
+        borderRadius: theme.shape.borderRadius * 3,
         border: '1px solid',
         borderColor: theme.palette.divider,
         transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         boxShadow: theme.shadows[1],
+        backdropFilter: 'blur(18px)',
         ':before': {
           backgroundColor: 'transparent',
         },
@@ -34,7 +38,8 @@ export const surfacesCustomizations = {
           borderBottomRightRadius: theme.shape.borderRadius,
         },
         '&:hover': {
-          boxShadow: theme.shadows[4],
+          boxShadow: theme.shadows[2],
+          borderColor: alpha(theme.palette.primary.main, 0.18),
         },
       }),
     },
@@ -67,6 +72,7 @@ export const surfacesCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         backgroundImage: 'none',
+        backgroundColor: 'transparent',
         transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
       }),
     },
@@ -79,18 +85,18 @@ export const surfacesCustomizations = {
           padding: theme.spacing(3),
           gap: theme.spacing(2),
           transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: theme.shape.borderRadius,
-          border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+          background:
+            theme.palette.mode === 'dark'
+              ? `linear-gradient(145deg, ${theme.palette.background.glass}, ${alpha(theme.palette.background.paper, 0.82)})`
+              : `linear-gradient(145deg, ${alpha(theme.palette.common.white, 0.92)}, ${alpha(theme.palette.background.paper, 0.8)})`,
+          borderRadius: theme.shape.borderRadius * 3,
+          border: `1px solid ${theme.palette.divider}`,
           boxShadow: theme.shadows[2],
-          backdropFilter: 'blur(20px)',
-          ...theme.applyStyles('dark', {
-            backgroundColor: alpha(theme.palette.background.paper, 0.8),
-          }),
+          backdropFilter: 'blur(18px)',
           '&:hover': {
             transform: 'translateY(-2px)',
-            boxShadow: theme.shadows[8],
-            borderColor: alpha(theme.palette.primary.main, 0.3),
+            boxShadow: theme.shadows[4],
+            borderColor: alpha(theme.palette.primary.main, 0.18),
           },
           variants: [
             {
@@ -100,10 +106,10 @@ export const surfacesCustomizations = {
               style: {
                 border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
                 boxShadow: theme.shadows[1],
-                background: theme.palette.background.paper,
-                ...theme.applyStyles('dark', {
-                  background: alpha(theme.palette.background.paper, 0.6),
-                }),
+                background:
+                  theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.background.paper, 0.62)
+                    : alpha(theme.palette.common.white, 0.84),
               },
             },
           ],

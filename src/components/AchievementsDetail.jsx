@@ -26,9 +26,43 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
 import { motion } from 'framer-motion';
 import { alpha, styled } from '@mui/material/styles';
+import MetricTile from './MetricTile';
 
 /* ——— Story data enriched with tags/metrics/highlights ——— */
 const achievements = [
+  {
+    title: 'Pelican Cup Undergraduate Winner 2026',
+    dateline: 'Monroe, LA • March 26, 2026',
+    byline: 'By Anjan Mandal',
+    description:
+      'Social Bridge AI won first place and $25,000 in the undergraduate division of ULM’s 2026 Entrepreneurship Pelican Cup.',
+    lead:
+      'Social Bridge AI, led by Anjan Mandal with teammates Roshani Pathak and Pradeep Poudel, captured first place in the undergraduate division at the 2026 Entrepreneurship Pelican Cup at ULM.',
+    tags: ['Pelican Cup', 'Social Bridge AI', 'Entrepreneurship', 'Autism Support'],
+    highlights: [
+      'Won first place and a $25,000 prize in the new undergraduate division.',
+      'Presented an AI roleplay platform that helps autistic users practice communication and social skills.',
+      'Advanced through a 44-entry statewide competition spanning nine Louisiana schools.',
+    ],
+    metrics: [
+      { label: 'Outcome', value: '1st Place' },
+      { label: 'Prize', value: '$25,000' },
+      { label: 'Team', value: 'Social Bridge AI' },
+    ],
+    body: [
+      'The 2026 Entrepreneurship Pelican Cup introduced separate undergraduate and graduate divisions, making the competition larger and more selective than in prior years. From 44 entries across Louisiana, only 12 finalist teams advanced to the oral finals at ULM.',
+      'Social Bridge AI stood out with a mission-driven platform that uses artificial intelligence and guided roleplay to help people on the autism spectrum strengthen communication and social confidence through practice-based support.',
+      'Our final presentation combined product vision, customer need, and a practical business case for expanding autism support through accessible technology. That work earned Social Bridge AI first place in the undergraduate division and a $25,000 award.',
+      'The win also created immediate momentum for the next build phase, alongside teammates Roshani Pathak and Pradeep Poudel and with faculty support from Dr. Prasanthi Sreekumari, while keeping the company rooted in Louisiana.',
+    ],
+    images: [
+      '/images/pelican_cup.jpg',
+      '/images/pelican_1.jpg',
+      '/images/pelican_2.jpg',
+      '/images/pelican_3.jpg',
+      '/images/pelican_4.jpeg',
+    ],
+  },
   {
     title: 'ICPC NA South Division Gold Medalist 2025',
     dateline: 'Baton Rouge, LA • February 2025',
@@ -272,55 +306,31 @@ const achievements = [
 const FloatingCard = styled(Paper)(({ theme }) => ({
   borderRadius: 24,
   padding: theme.spacing(4),
-  background: theme.palette.mode === 'dark'
-    ? `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.9)}, ${alpha(theme.palette.background.paper, 0.7)})`
-    : `linear-gradient(135deg, ${alpha('#ffffff', 0.95)}, ${alpha('#f8fafc', 0.9)})`,
-  border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-  boxShadow: theme.shadows[8],
-  backdropFilter: 'blur(20px)',
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.84)
+      : alpha(theme.palette.common.white, 0.82),
+  border: `1px solid ${theme.palette.divider}`,
+  boxShadow: theme.shadows[1],
+  backdropFilter: 'blur(18px)',
   transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
   '&:hover': {
-    transform: 'translateY(-4px)',
-    boxShadow: theme.shadows[12],
-    borderColor: alpha(theme.palette.primary.main, 0.4),
-  },
-}));
-
-const MetricCard = styled(Box)(({ theme }) => ({
-  borderRadius: 20,
-  padding: theme.spacing(3),
-  background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.05)})`,
-  border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-  position: 'relative',
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 3,
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+    transform: 'translateY(-2px)',
+    boxShadow: theme.shadows[2],
+    borderColor: alpha(theme.palette.primary.main, 0.18),
   },
 }));
 
 const QuoteCard = styled(Card)(({ theme }) => ({
   borderRadius: 5,
-  background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.08)}, transparent)`,
-  border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-  borderLeft: `4px solid ${theme.palette.primary.main}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.74)
+      : alpha(theme.palette.common.white, 0.88),
+  border: `1px solid ${theme.palette.divider}`,
+  borderLeft: `4px solid ${theme.palette.secondary.main}`,
   position: 'relative',
   overflow: 'hidden',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: -50,
-    right: -50,
-    width: 100,
-    height: 100,
-    borderRadius: '50%',
-    background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.1)}, transparent)`,
-  },
 }));
 
 export default function AchievementsDetail() {
@@ -391,7 +401,7 @@ export default function AchievementsDetail() {
 
         <Grid container spacing={4}>
           {/* Left Column - Main Content */}
-          <Grid item xs={12} lg={8}>
+          <Grid size={{ xs: 12, lg: 8 }}>
             <Stack spacing={4}>
               {/* Hero Image with Modern Overlay */}
               <Box
@@ -404,7 +414,8 @@ export default function AchievementsDetail() {
                   borderRadius: 5,
                   overflow: 'hidden',
                   height: { xs: 300, md: 500 },
-                  boxShadow: theme.shadows[12],
+                  border: `1px solid ${alpha(theme.palette.common.white, theme.palette.mode === 'dark' ? 0.08 : 0.36)}`,
+                  boxShadow: theme.shadows[2],
                 }}
               >
                 <Box
@@ -423,8 +434,8 @@ export default function AchievementsDetail() {
                     position: 'absolute',
                     inset: 0,
                     background: theme.palette.mode === 'dark'
-                      ? 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)'
-                      : 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
+                      ? 'linear-gradient(to top, rgba(15,12,10,0.82) 0%, rgba(15,12,10,0.34) 54%, transparent 100%)'
+                      : 'linear-gradient(to top, rgba(29,23,18,0.58) 0%, rgba(29,23,18,0.18) 50%, transparent 100%)',
                   }}
                 />
                 <Stack
@@ -469,7 +480,7 @@ export default function AchievementsDetail() {
                       fontWeight: 800,
                       wordBreak: 'break-word',
                       overflowWrap: 'break-word',
-                      textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      textShadow: '0 2px 10px rgba(0,0,0,0.2)',
                     }}
                   >
                     {ach.title}
@@ -481,40 +492,17 @@ export default function AchievementsDetail() {
               {ach.metrics?.length > 0 && (
                 <Grid container spacing={2}>
                   {ach.metrics.map((metric, idx) => (
-                    <Grid item xs={12} sm={4} key={`${metric.label}-${idx}`}>
-                      <MetricCard
+                    <Grid size={{ xs: 12, sm: 4 }} key={`${metric.label}-${idx}`}>
+                      <MetricTile
                         component={motion.div}
+                        label={metric.label}
+                        value={metric.value}
+                        valueVariant="h4"
+                        sx={{ height: '100%' }}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
-                      >
-                        <Typography 
-                          variant="caption" 
-                          color="text.secondary"
-                          sx={{ 
-                            display: 'block',
-                            mb: 1,
-                            fontWeight: 600,
-                            textTransform: 'uppercase',
-                            letterSpacing: 1,
-                          }}
-                        >
-                          {metric.label}
-                        </Typography>
-                        <Typography 
-                          variant="h5" 
-                          sx={{ 
-                            fontWeight: 700,
-                            wordBreak: 'break-word',
-                            overflowWrap: 'break-word',
-                            background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                            backgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                          }}
-                        >
-                          {metric.value}
-                        </Typography>
-                      </MetricCard>
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -551,7 +539,7 @@ export default function AchievementsDetail() {
                     </Typography>
                   </Box>
 
-                  <Divider sx={{ borderColor: alpha(theme.palette.primary.main, 0.2) }} />
+                  <Divider sx={{ borderColor: theme.palette.divider }} />
 
                   {/* Body Content */}
                   <Stack spacing={3}>
@@ -590,7 +578,7 @@ export default function AchievementsDetail() {
                             width: 4,
                             height: 24,
                             borderRadius: 2,
-                            background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                            bgcolor: 'primary.main',
                           }}
                         />
                         Insights
@@ -653,7 +641,7 @@ export default function AchievementsDetail() {
                   </Typography>
                   <Grid container spacing={2}>
                     {ach.images.slice(1).map((src, idx) => (
-                      <Grid item xs={12} sm={6} key={src}>
+                      <Grid size={{ xs: 12, sm: 6 }} key={src}>
                         <Box
                           component={motion.div}
                           whileHover={{ scale: 1.02 }}
@@ -690,7 +678,7 @@ export default function AchievementsDetail() {
           </Grid>
 
           {/* Right Column - Sidebar */}
-          <Grid item xs={12} lg={4}>
+          <Grid size={{ xs: 12, lg: 4 }}>
             <Stack
               spacing={3}
               sx={{
@@ -796,63 +784,6 @@ export default function AchievementsDetail() {
                 </FloatingCard>
               )}
 
-              {/* Navigation Card */}
-              <FloatingCard
-                component={motion.div}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
-                    mb: 3,
-                    fontWeight: 700,
-                  }}
-                >
-                  Navigation
-                </Typography>
-                <Stack spacing={2}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    startIcon={<ArrowBackIcon />}
-                    onClick={() => navigate(-1)}
-                    sx={{ 
-                      borderRadius: 2,
-                      py: 1.5,
-                      fontWeight: 600,
-                    }}
-                  >
-                    Go Back
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    endIcon={<ArrowOutwardIcon />}
-                    onClick={() => navigate('/')}
-                    sx={{ 
-                      borderRadius: 2,
-                      py: 1.5,
-                      fontWeight: 600,
-                    }}
-                  >
-                    Home
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant="text"
-                    onClick={() => navigate('/#achievements')}
-                    sx={{ 
-                      borderRadius: 2,
-                      py: 1.5,
-                      fontWeight: 600,
-                    }}
-                  >
-                    All Achievements
-                  </Button>
-                </Stack>
-              </FloatingCard>
             </Stack>
           </Grid>
         </Grid>

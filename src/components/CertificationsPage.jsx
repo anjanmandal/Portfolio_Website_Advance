@@ -18,7 +18,7 @@ export default function CertificationsPage() {
         pb: { xs: 5, md: 7 },
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Button
           startIcon={<ArrowBackIcon />}
           variant="text"
@@ -31,15 +31,11 @@ export default function CertificationsPage() {
         >
           Back
         </Button>
-        <Typography variant="h3" sx={{ fontWeight: 800, mb: 3 }}>
-          Certifications Library
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+          Back to portfolio
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          A deeper look at the credentials and learning tracks guiding my work across system design,
-          secure infrastructure, and AI/ML delivery.
-        </Typography>
+        <CertificationsSection variant="page" />
       </Container>
-      <CertificationsSection />
     </Box>
   );
 }

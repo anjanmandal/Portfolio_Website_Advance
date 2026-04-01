@@ -1,35 +1,30 @@
 // src/components/ProjectDetail.jsx
 
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
   Box,
   Typography,
   Button,
-  Paper,
   Breadcrumbs,
   Link,
-  useTheme,
-  useMediaQuery,
   Stack,
-  Divider,
   Chip,
   Grid,
-  Card,
-  CardContent,
+  IconButton,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CodeIcon from '@mui/icons-material/Code';
-import { motion } from 'framer-motion';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
+import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
+import { AnimatePresence, motion } from 'framer-motion';
 import { alpha, styled } from '@mui/material/styles';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 /* ——— Project data ——— */
 const projects = [
@@ -83,26 +78,27 @@ const projects = [
       'The system bridges operators, regulators, and the public with AI-assisted dashboards that provide risk scoring, QA/QC tools, and plain-language explanations for every dataset.',
     tags: ['React', 'Node.js', 'OpenAI', 'Maps', 'ClimateTech'],
     highlights: [
-      'Daily Risk 2.0 workflow logs surface type, fatigue, menstrual phase, and heat data while AI generates uncertainty scores and top drivers.',
-      'Movement Coach verification loop records 5-second clips, auto-selects key frames, and grades form against biomechanical twins.',
-      'Counterfactual Coach batches “what-if” planning—reducing cutting, adjusting workloads, or moving indoors—and returns ranked drill substitutions.',
-      'N-of-1 Movement Twin stores athlete baselines, showing drift over time to personalize cues and risk priors.',
+      'Built upload workflows for operator CSV/XLSX reporting with inline validation and integration-ready APIs.',
+      'Created regulator QA/QC dashboards that cross-check submissions against ClimateTrace and EPA datasets.',
+      'Designed a public-facing transparency portal with CCUS maps, trend charts, and downloadable datasets.',
+      'Added AI-authored plain-language explanations so technical carbon data stays readable for broader audiences.',
     ],
     metrics: [
-      { label: 'Focus', value: 'ACL prevention & CCUS transparency' },
+      { label: 'Focus', value: 'CCUS reporting + public trust' },
       { label: 'Portals', value: 'Operator, Regulator, Public' },
-      { label: 'Repository', value: 'LA.CO₂ GitHub' },
+      { label: 'AI layer', value: 'Explainable narratives' },
     ],
     quotes: [
       {
-        text: '"Carbon stewardship and athlete safety shouldn’t live in PDFs. LA.CO₂ makes insight interactive, transparent, and explainable."',
+        text: '"Carbon stewardship should not live in PDFs. LA.CO₂ makes reporting, review, and public trust easier to navigate."',
         speaker: '— Anjan Mandal',
       },
     ],
     body: [
       'Operators upload CSV/XLSX reports, receive inline validation, and push to APIs for automated emissions reporting. Regulator dashboards cross-check data against ClimateTrace/EPA sources with QA/QC workflows and summarized inspection reports.',
       'The public portal visualizes Louisiana CCUS projects via interactive maps and time-series charts. Datasets are downloadable, and AI-generated narratives (OpenAI) explain each trend in plain language to improve public trust.',
-      'Movement Coach and Counterfactual Coach reimagine ACL prevention: athletes log context, get AI risk snapshots, and receive micro-plans, while teams can batch plan sessions and drill substitutions based on risk simulations.',
+      'From upload workflows to public storytelling, the product was designed as one connected interface instead of separate regulator, operator, and community tools. That made the system easier to operate, easier to review, and easier to trust.',
+      'The result is a climate-data experience that feels closer to a modern product than a reporting utility, with stronger validation, clearer review paths, and more accessible public communication.',
     ],
     images: [
      
@@ -146,15 +142,22 @@ const projects = [
       'Counterfactual Coach gives coaches a sandbox to trial adjustments— reduce cutting by 15%, move practice indoors, change work:rest ratios—and shows the predicted risk delta plus suggested micro-drills.',
       'The public transparency layer communicates progress to parents and regulators with interactive trend charts, AI-authored explanations, and CSV exports. PivotProof becomes the accountability layer needed for statewide ACL prevention.',
     ],
-    images: [
-      '/images/laco2-1.png',
-      '/images/laco2-2.png',
-      '/images/laco2-3.png',
-      '/images/laco2-4.png',
-      '/images/laco2-5.png',
-      '/images/laco2-6.png',
-    ],
-    link: 'https://github.com/anjanmandal/LA.CO-.git',
+    images: [],
+    mockPreview: {
+      eyebrow: 'Athlete risk workspace',
+      title: 'PivotProof coach console',
+      metrics: [
+        { value: '18%', label: 'risk delta' },
+        { value: '12', label: 'athletes flagged' },
+        { value: '4', label: 'plan changes' },
+      ],
+      checks: [
+        'Daily Risk 2.0 combines fatigue, surface, and workload context.',
+        'Movement Coach verifies mechanics through short clip review.',
+        'Counterfactual planning suggests safer practice changes before sessions.',
+      ],
+    },
+    link: '',
   },
   {
     title: 'AI-L&L-VIDEO-GENERATOR',
@@ -317,71 +320,392 @@ const projects = [
   },
 ];
 
-const FloatingCard = styled(Paper)(({ theme }) => ({
-  borderRadius: 12,
-  padding: theme.spacing(3),
-  background: theme.palette.mode === 'dark'
-    ? `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.9)}, ${alpha(theme.palette.background.paper, 0.7)})`
-    : `linear-gradient(135deg, ${alpha('#ffffff', 0.95)}, ${alpha('#f8fafc', 0.9)})`,
-  border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-  boxShadow: theme.shadows[4],
-  backdropFilter: 'blur(20px)',
-  transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-  '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: theme.shadows[8],
-    borderColor: alpha(theme.palette.primary.main, 0.3),
-  },
-}));
+const accentColors = ['#B85A2E', '#D46F3A', '#8F4524', '#74695E', '#F3AF7A', '#564D46'];
+const AUTO_ADVANCE_MS = 4200;
+const slugify = (title) => title.toLowerCase().replace(/[^\w]+/g, '-');
 
-const MetricCard = styled(Box)(({ theme }) => ({
-  borderRadius: 12,
-  padding: theme.spacing(2.5),
-  background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.08)}, ${alpha(theme.palette.secondary.main, 0.04)})`,
-  border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+const DetailShell = styled('article', {
+  shouldForwardProp: (prop) => prop !== 'accentColor',
+})(({ theme, accentColor }) => ({
   position: 'relative',
   overflow: 'hidden',
+  isolation: 'isolate',
+  borderRadius: 32,
+  padding: theme.spacing(2.5),
+  border: `1px solid ${alpha(accentColor, 0.18)}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.84)
+      : alpha(theme.palette.common.white, 0.82),
+  boxShadow: theme.shadows[1],
+  backdropFilter: 'blur(18px)',
   '&::before': {
     content: '""',
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+    inset: '0 0 auto 0',
+    height: 4,
+    background: `linear-gradient(90deg, ${alpha(accentColor, 0.92)} 0%, ${alpha(
+      accentColor,
+      0.14
+    )} 74%, transparent 100%)`,
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: -48,
+    right: -22,
+    width: 220,
+    height: 220,
+    borderRadius: '50%',
+    background: alpha(accentColor, 0.08),
+    filter: 'blur(36px)',
+    zIndex: -1,
   },
 }));
 
-const QuoteCard = styled(Card)(({ theme }) => ({
-  borderRadius: 12,
-  background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.06)}, transparent)`,
-  border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-  borderLeft: `3px solid ${theme.palette.primary.main}`,
+const MetaPill = styled(Box)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: theme.spacing(0.8),
+  width: 'fit-content',
+  padding: theme.spacing(0.55, 1),
+  borderRadius: 999,
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.primary.main, 0.12)
+      : alpha(theme.palette.primary.main, 0.06),
+}));
+
+const MetaDot = styled(Box)(({ theme }) => ({
+  width: 7,
+  height: 7,
+  borderRadius: '50%',
+  backgroundColor: theme.palette.primary.main,
+}));
+
+const PreviewStage = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'accentColor',
+})(({ theme, accentColor }) => ({
   position: 'relative',
   overflow: 'hidden',
+  minHeight: 520,
+  borderRadius: 28,
+  border: `1px solid ${alpha(accentColor, 0.18)}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.88)
+      : alpha(theme.palette.common.white, 0.9),
+  boxShadow: theme.shadows[1],
+}));
+
+const PreviewMedia = styled(motion.img)(() => ({
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  display: 'block',
+}));
+
+const PreviewShade = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  inset: 0,
+  background:
+    theme.palette.mode === 'dark'
+      ? 'linear-gradient(180deg, rgba(18,15,13,0.02) 0%, rgba(18,15,13,0.08) 46%, rgba(18,15,13,0.18) 100%)'
+      : 'linear-gradient(180deg, rgba(29,23,18,0.02) 0%, rgba(29,23,18,0.06) 46%, rgba(29,23,18,0.14) 100%)',
+}));
+
+const PreviewOverlay = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  zIndex: 1,
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  padding: theme.spacing(1.75),
+}));
+
+const ThumbRail = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: theme.spacing(1),
+}));
+
+const ThumbButton = styled('button', {
+  shouldForwardProp: (prop) => !['active', 'accentColor'].includes(prop),
+})(({ theme, active, accentColor }) => ({
+  width: 92,
+  height: 68,
+  borderRadius: 16,
+  overflow: 'hidden',
+  border: `1px solid ${active ? alpha(accentColor, 0.24) : theme.palette.divider}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.7)
+      : alpha(theme.palette.common.white, 0.76),
+  padding: 0,
+  cursor: 'pointer',
+  boxShadow: active ? theme.shadows[1] : 'none',
+  transition: 'transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease',
+  '& img': {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    display: 'block',
+  },
+  '&:hover': {
+    transform: 'translateY(-1px)',
+    borderColor: alpha(accentColor, 0.18),
+  },
+  '&:focus-visible': {
+    outline: `3px solid ${alpha(accentColor, 0.18)}`,
+  },
+}));
+
+const SnapshotCard = styled(Box)(({ theme }) => ({
+  height: '100%',
+  borderRadius: 20,
+  border: `1px solid ${theme.palette.divider}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.common.white, 0.03)
+      : alpha(theme.palette.common.white, 0.72),
+  padding: theme.spacing(1.35, 1.45),
+}));
+
+const LensShell = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'accentColor',
+})(({ theme, accentColor }) => ({
+  borderRadius: 30,
+  border: `1px solid ${alpha(accentColor, 0.14)}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.82)
+      : alpha(theme.palette.common.white, 0.8),
+  padding: theme.spacing(2.25),
+  boxShadow: theme.shadows[1],
+  backdropFilter: 'blur(18px)',
+}));
+
+const LensButton = styled('button', {
+  shouldForwardProp: (prop) => !['active', 'accentColor'].includes(prop),
+})(({ theme, active, accentColor }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: theme.spacing(0.8),
+  borderRadius: 999,
+  padding: theme.spacing(1, 1.4),
+  border: `1px solid ${active ? alpha(accentColor, 0.22) : theme.palette.divider}`,
+  background:
+    active
+      ? theme.palette.mode === 'dark'
+        ? alpha(accentColor, 0.14)
+        : alpha(accentColor, 0.08)
+      : theme.palette.mode === 'dark'
+        ? alpha(theme.palette.background.paper, 0.72)
+        : alpha(theme.palette.common.white, 0.72),
+  color: theme.palette.text.primary,
+  cursor: 'pointer',
+  appearance: 'none',
+  font: 'inherit',
+  fontWeight: 700,
+  transition: 'border-color 180ms ease, background 180ms ease, transform 180ms ease',
+  '&:hover': {
+    transform: 'translateY(-1px)',
+    borderColor: alpha(accentColor, 0.16),
+  },
+  '&:focus-visible': {
+    outline: `3px solid ${alpha(accentColor, 0.18)}`,
+  },
+}));
+
+const HighlightRow = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: '22px 1fr',
+  gap: theme.spacing(1.2),
+  alignItems: 'start',
+  borderRadius: 18,
+  border: `1px solid ${theme.palette.divider}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.common.white, 0.03)
+      : alpha(theme.palette.common.white, 0.72),
+  padding: theme.spacing(1.2, 1.25),
+}));
+
+const QuotePanel = styled(Box)(({ theme }) => ({
+  borderRadius: 22,
+  border: `1px solid ${theme.palette.divider}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.76)
+      : alpha(theme.palette.common.white, 0.72),
+  padding: theme.spacing(1.6),
+}));
+
+const ActionButton = styled(Button)(({ theme }) => ({
+  borderRadius: 999,
+  paddingInline: theme.spacing(1.8),
+  fontWeight: 700,
+}));
+
+const MockPreview = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'accentColor',
+})(({ theme, accentColor }) => ({
+  position: 'absolute',
+  inset: 0,
+  padding: theme.spacing(3),
+  display: 'grid',
+  gridTemplateRows: 'auto auto 1fr auto',
+  gap: theme.spacing(2),
+  background:
+    theme.palette.mode === 'dark'
+      ? `radial-gradient(circle at top right, ${alpha(accentColor, 0.16)}, transparent 34%), linear-gradient(180deg, ${alpha(
+          '#0f172a',
+          0.96
+        )} 0%, ${alpha('#0b1220', 0.96)} 100%)`
+      : `radial-gradient(circle at top right, ${alpha(accentColor, 0.14)}, transparent 34%), linear-gradient(180deg, ${alpha(
+          '#f8fafc',
+          0.98
+        )} 0%, ${alpha('#eef2ff', 0.98)} 100%)`,
+}));
+
+const MockMetricGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gap: theme.spacing(1),
+  gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+}));
+
+const MockMetric = styled(Box)(({ theme }) => ({
+  borderRadius: 18,
+  border: `1px solid ${alpha(
+    theme.palette.common.white,
+    theme.palette.mode === 'dark' ? 0.08 : 0.3
+  )}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.common.white, 0.04)
+      : alpha(theme.palette.common.white, 0.72),
+  padding: theme.spacing(1.2),
+  minHeight: 88,
+}));
+
+const MockChecklist = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gap: theme.spacing(1),
+}));
+
+const MockChecklistRow = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: '12px 1fr',
+  gap: theme.spacing(1),
+  alignItems: 'start',
+  borderRadius: 16,
+  border: `1px solid ${alpha(
+    theme.palette.common.white,
+    theme.palette.mode === 'dark' ? 0.08 : 0.28
+  )}`,
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.common.white, 0.04)
+      : alpha(theme.palette.common.white, 0.68),
+  padding: theme.spacing(1.1, 1.2),
 }));
 
 export default function ProjectDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMdUp = useMediaQuery(theme.breakpoints.up('md'));
 
-  const proj = projects.find(
-    (p) => p.title.toLowerCase().replace(/[^\w]+/g, '-') === slug
+  const proj = useMemo(
+    () => projects.find((project) => slugify(project.title) === slug),
+    [slug]
   );
+
+  const projectIndex = useMemo(
+    () => projects.findIndex((project) => slugify(project.title) === slug),
+    [slug]
+  );
+  const accentColor = accentColors[(projectIndex >= 0 ? projectIndex : 0) % accentColors.length];
+
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeLens, setActiveLens] = useState('overview');
+
+  useEffect(() => {
+    setActiveImageIndex(0);
+    setActiveLens('overview');
+  }, [slug]);
+
+  const totalImages = proj?.images?.length || 0;
+  const currentImage = totalImages ? proj.images[activeImageIndex % totalImages] : null;
+  const currentQuote = proj?.quotes?.[0] || null;
+  const linkLabel = proj?.link?.includes('github.com') ? 'Open repository' : 'Visit project';
+
+  useEffect(() => {
+    if (totalImages <= 1) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      setActiveImageIndex((prev) => (prev + 1) % totalImages);
+    }, AUTO_ADVANCE_MS);
+
+    return () => window.clearInterval(intervalId);
+  }, [slug, totalImages]);
+
+  const lenses = useMemo(() => {
+    if (!proj) return [];
+
+    const overviewMetrics = (proj.metrics || []).slice(0, 3);
+    const earlyBody = proj.body?.slice(0, 2) || [];
+    const laterBody = proj.body?.slice(2) || [];
+
+    return [
+      {
+        id: 'overview',
+        label: 'Overview',
+        icon: AutoAwesomeRoundedIcon,
+        eyebrow: 'Product frame',
+        title: 'What the product is trying to make easier.',
+        intro: proj.lead,
+        paragraphs: earlyBody,
+        cards: overviewMetrics,
+        quote: currentQuote,
+      },
+      {
+        id: 'highlights',
+        label: 'Highlights',
+        icon: InsightsRoundedIcon,
+        eyebrow: 'Key moves',
+        title: 'The decisions that made the experience feel usable.',
+        intro: proj.description,
+        bullets: proj.highlights || [],
+        chips: proj.tags || [],
+      },
+      {
+        id: 'notes',
+        label: 'Notes',
+        icon: NotesRoundedIcon,
+        eyebrow: 'Build notes',
+        title: 'Context, architecture, and how the build matured.',
+        intro: laterBody[0] || proj.description,
+        paragraphs: laterBody.length > 1 ? laterBody.slice(1) : earlyBody.slice(1),
+        chips: proj.tags?.slice(0, 6) || [],
+        footer: proj.link
+          ? 'Open the repository for implementation detail. This page stays focused on the product view.'
+          : null,
+      },
+    ];
+  }, [proj, currentQuote]);
+
+  const activeLensData = lenses.find((lens) => lens.id === activeLens) || lenses[0];
 
   if (!proj) {
     return (
       <Container sx={{ py: 6 }}>
         <Stack spacing={2} alignItems="center">
           <Typography variant="h6">Project not found.</Typography>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => navigate(-1)}
-            variant="outlined"
-          >
-            Back
+          <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/#projects')} variant="outlined">
+            Back to projects
           </Button>
         </Stack>
       </Container>
@@ -391,541 +715,543 @@ export default function ProjectDetail() {
   return (
     <Box sx={{ py: { xs: 4, md: 6 }, position: 'relative', minHeight: '100vh' }}>
       <Container maxWidth="xl">
-        {/* Modern Breadcrumb */}
-        <Stack spacing={2} mb={4}>
-          <Breadcrumbs
-            separator={<ArrowOutwardIcon sx={{ fontSize: 14, transform: 'rotate(-45deg)' }} />}
-          >
-            <Link
-              underline="hover"
-              color="text.secondary"
-              sx={{ 
-                cursor: 'pointer',
-                '&:hover': { color: 'primary.main' },
-                transition: 'color 200ms',
-              }}
-              onClick={() => navigate('/')}
+        <Stack spacing={3.5}>
+          <Stack spacing={1.25}>
+            <Breadcrumbs
+              separator={<ArrowOutwardIcon sx={{ fontSize: 14, transform: 'rotate(-45deg)' }} />}
             >
-              Home
-            </Link>
-            <Link
-              underline="hover"
-              color="text.secondary"
-              sx={{ 
-                cursor: 'pointer',
-                '&:hover': { color: 'primary.main' },
-                transition: 'color 200ms',
-              }}
-              onClick={() => navigate('/#projects')}
-            >
-              Projects
-            </Link>
-            <Typography color="text.primary" sx={{ fontWeight: 600 }}>
-              {proj.title}
-            </Typography>
-          </Breadcrumbs>
-        </Stack>
-
-        <Grid container spacing={3}>
-          {/* Left Column - Main Content */}
-          <Grid item xs={12} lg={8}>
-            <Stack spacing={3}>
-              {/* Hero Image */}
-              <Box
-                component={motion.div}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6 }}
-                sx={{
-                  position: 'relative',
-                  borderRadius: 5,
-                  overflow: 'hidden',
-                  height: { xs: 280, md: 400 },
-                  boxShadow: theme.shadows[8],
-                }}
+              <Link
+                underline="hover"
+                color="text.secondary"
+                sx={{ cursor: 'pointer', transition: 'color 200ms' }}
+                onClick={() => navigate('/')}
               >
-                <Box
-                  component="img"
-                  src={proj.images[0]}
-                  alt={proj.title}
-                  loading="lazy"
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: theme.palette.mode === 'dark'
-                      ? 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)'
-                      : 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
-                  }}
-                />
-                <Stack
-                  spacing={1.5}
-                  sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    p: { xs: 3, md: 4 },
-                    color: '#fff',
-                  }}
-                >
+                Home
+              </Link>
+              <Link
+                underline="hover"
+                color="text.secondary"
+                sx={{ cursor: 'pointer', transition: 'color 200ms' }}
+                onClick={() => navigate('/#projects')}
+              >
+                Projects
+              </Link>
+              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+                {proj.title}
+              </Typography>
+            </Breadcrumbs>
+          </Stack>
+
+          <DetailShell accentColor={accentColor}>
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 12, lg: 5 }}>
+                <Stack spacing={2.5}>
                   <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                    <Chip 
-                      label={proj.date} 
-                      size="small"
-                      sx={{ 
-                        bgcolor: alpha('#fff', 0.2),
-                        color: '#fff',
-                        backdropFilter: 'blur(10px)',
-                        fontWeight: 500,
-                      }}
-                    />
-                    {proj.tags?.slice(0, 2).map((tag) => (
-                      <Chip
-                        key={tag}
-                        label={tag}
-                        size="small"
-                        variant="outlined"
-                        sx={{
-                          borderColor: alpha('#fff', 0.5),
-                          color: '#fff',
-                          backdropFilter: 'blur(10px)',
-                        }}
-                      />
-                    ))}
-                  </Stack>
-                  <Typography 
-                    variant={isMdUp ? 'h2' : 'h3'} 
-                    component="h1"
-                    sx={{ 
-                      fontWeight: 800,
-                      wordBreak: 'break-word',
-                      overflowWrap: 'break-word',
-                      textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                    }}
-                  >
-                    {proj.title}
-                  </Typography>
-                </Stack>
-              </Box>
-
-              {/* Metrics */}
-              {proj.metrics?.length > 0 && (
-                <Grid container spacing={2}>
-                  {proj.metrics.map((metric, idx) => (
-                    <Grid item xs={12} sm={4} key={`${metric.label}-${idx}`}>
-                      <MetricCard
-                        component={motion.div}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                      >
-                        <Typography 
-                          variant="caption" 
-                          color="text.secondary"
-                          sx={{ 
-                            display: 'block',
-                            mb: 1,
-                            fontWeight: 600,
-                            textTransform: 'uppercase',
-                            letterSpacing: 0.5,
-                            fontSize: '0.7rem',
-                          }}
-                        >
-                          {metric.label}
-                        </Typography>
-                        <Typography 
-                          variant="h6" 
-                          sx={{ 
-                            fontWeight: 700,
-                            wordBreak: 'break-word',
-                            overflowWrap: 'break-word',
-                            background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                            backgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                          }}
-                        >
-                          {metric.value}
-                        </Typography>
-                      </MetricCard>
-                    </Grid>
-                  ))}
-                </Grid>
-              )}
-
-              {/* Main Content Card */}
-              <FloatingCard
-                component={motion.div}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Stack spacing={3}>
-                  {/* Header Info */}
-                  <Stack spacing={2}>
-                    <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
-                      <Typography 
-                        variant="body2" 
-                        color="text.secondary"
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {proj.date}
+                    <MetaPill>
+                      <MetaDot />
+                      <Typography variant="caption" sx={{ fontWeight: 800, letterSpacing: '0.08em' }}>
+                        PROJECT DETAIL
                       </Typography>
-                      <Box
-                        sx={{
-                          width: 4,
-                          height: 4,
-                          borderRadius: '50%',
-                          bgcolor: 'text.secondary',
-                        }}
-                      />
-                      <Typography 
-                        variant="body2" 
-                        color="text.secondary"
-                        sx={{ fontWeight: 500 }}
-                      >
+                    </MetaPill>
+                    <MetaPill>
+                      <Typography variant="caption" sx={{ fontWeight: 700 }}>
                         {proj.category}
                       </Typography>
-                    </Stack>
-                    <Typography 
-                      variant="h4"
-                      sx={{ 
-                        fontWeight: 700,
-                        wordBreak: 'break-word',
-                        overflowWrap: 'break-word',
-                        lineHeight: 1.3,
+                    </MetaPill>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontWeight: 700, alignSelf: 'center' }}
+                    >
+                      {proj.date}
+                    </Typography>
+                  </Stack>
+
+                  <Stack spacing={1.5}>
+                    <Typography
+                      component="h1"
+                      sx={{
+                        fontWeight: 800,
+                        fontSize: { xs: '2.4rem', md: '4rem' },
+                        lineHeight: { xs: 1.02, md: 0.98 },
+                        letterSpacing: '-0.05em',
+                        maxWidth: 720,
+                      }}
+                    >
+                      {proj.title}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      color="text.secondary"
+                      sx={{
+                        fontWeight: 500,
+                        lineHeight: 1.55,
+                        maxWidth: 720,
+                      }}
+                    >
+                      {proj.description}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: 'text.primary',
+                        lineHeight: 1.8,
+                        fontSize: '1.02rem',
+                        maxWidth: 700,
                       }}
                     >
                       {proj.lead}
                     </Typography>
                   </Stack>
 
-                  <Divider sx={{ borderColor: alpha(theme.palette.primary.main, 0.15) }} />
-
-                  {/* Body Content */}
-                  <Stack spacing={2.5}>
-                    {proj.body.map((paragraph, idx) => (
-                      <Typography 
-                        variant="body1" 
-                        key={idx}
-                        sx={{ 
-                          wordBreak: 'break-word',
-                          overflowWrap: 'break-word',
-                          lineHeight: 1.75,
-                          fontSize: '1.05rem',
-                          color: 'text.primary',
+                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                    {proj.tags?.slice(0, 6).map((tag) => (
+                      <Chip
+                        key={tag}
+                        label={tag}
+                        size="small"
+                        sx={{
+                          fontWeight: 600,
+                          bgcolor: 'transparent',
+                          border: (theme) => `1px solid ${alpha(theme.palette.text.primary, 0.08)}`,
                         }}
-                      >
-                        {paragraph}
-                      </Typography>
+                      />
                     ))}
                   </Stack>
 
-                  {/* Quotes Section */}
-                  {proj.quotes?.length > 0 && (
-                    <Stack spacing={2}>
-                      <Stack direction="row" spacing={1.5} alignItems="center">
-                        <Box
-                          sx={{
-                            width: 3,
-                            height: 20,
-                            borderRadius: 2,
-                            background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                          }}
-                        />
-                        <Typography 
-                          variant="h6" 
-                          sx={{ fontWeight: 700 }}
-                        >
-                          Developer Insights
-                        </Typography>
-                      </Stack>
-                      <Stack spacing={2}>
-                        {proj.quotes.map((quote, idx) => (
-                          <QuoteCard
-                            key={idx}
-                            component={motion.div}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 + idx * 0.1 }}
+                  <Grid container spacing={1.25}>
+                    {(proj.metrics || []).slice(0, 3).map((metric) => (
+                      <Grid size={{ xs: 12, sm: 4 }} key={metric.label}>
+                        <SnapshotCard>
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ display: 'block', mb: 0.75, fontWeight: 700, letterSpacing: '0.08em' }}
                           >
-                            <CardContent sx={{ p: 2.5 }}>
-                              <Typography
-                                variant="body1"
-                                sx={{ 
-                                  fontStyle: 'italic', 
-                                  mb: 1.5,
-                                  wordBreak: 'break-word',
-                                  overflowWrap: 'break-word',
-                                  lineHeight: 1.7,
-                                  fontSize: '1.05rem',
-                                  color: 'text.primary',
-                                }}
-                              >
-                                {quote.text}
-                              </Typography>
-                              <Typography 
-                                variant="caption" 
-                                color="text.secondary"
-                                sx={{ 
-                                  fontWeight: 600,
-                                  wordBreak: 'break-word',
-                                  overflowWrap: 'break-word',
-                                }}
-                              >
-                                {quote.speaker}
-                              </Typography>
-                            </CardContent>
-                          </QuoteCard>
-                        ))}
-                      </Stack>
-                    </Stack>
-                  )}
+                            {metric.label}
+                          </Typography>
+                          <Typography sx={{ fontWeight: 700, lineHeight: 1.35 }}>
+                            {metric.value}
+                          </Typography>
+                        </SnapshotCard>
+                      </Grid>
+                    ))}
+                  </Grid>
 
-                  {/* Image Gallery */}
-                  {proj.images.length > 1 && (
-                    <Stack spacing={2}>
-                      <Typography 
-                        variant="h5" 
-                        sx={{ fontWeight: 700 }}
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25}>
+                    {proj.link && (
+                      <ActionButton
+                        variant="contained"
+                        endIcon={<LaunchRoundedIcon />}
+                        href={proj.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        Project Gallery
-                      </Typography>
-                      <Box>
-                        <Swiper
-                          modules={[Navigation, Pagination]}
-                          spaceBetween={16}
-                          slidesPerView={1}
-                          navigation
-                          pagination={{ clickable: true }}
-                          style={{ borderRadius: 12 }}
-                        >
-                          {proj.images.slice(1).map((src, idx) => (
-                            <SwiperSlide key={idx}>
-                              <Box
-                                component="img"
-                                src={src}
-                                alt={`${proj.title} ${idx + 2}`}
-                                sx={{
-                                  width: '100%',
-                                  height: 350,
-                                  objectFit: 'contain',
-                                  borderRadius: 12,
-                                }}
-                              />
-                            </SwiperSlide>
-                          ))}
-                        </Swiper>
-                      </Box>
-                    </Stack>
-                  )}
-                </Stack>
-              </FloatingCard>
-            </Stack>
-          </Grid>
-
-          {/* Right Column - Sidebar */}
-          <Grid item xs={12} lg={4}>
-            <Stack
-              spacing={2.5}
-              sx={{
-                position: { lg: 'sticky' },
-                top: { lg: 100 },
-              }}
-            >
-              {/* Tags Card */}
-              {proj.tags?.length > 0 && (
-                <FloatingCard
-                  component={motion.div}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <Stack spacing={2}>
-                    <Typography 
-                      variant="h6" 
-                      sx={{ fontWeight: 700 }}
-                    >
-                      Technologies
-                    </Typography>
-                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                      {proj.tags.map((tag) => (
-                        <Chip 
-                          key={tag} 
-                          label={tag} 
-                          size="medium"
-                          icon={<CodeIcon fontSize="small" />}
-                          sx={{ 
-                            fontWeight: 500,
-                            bgcolor: alpha(theme.palette.primary.main, 0.08),
-                            color: 'primary.main',
-                            border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-                          }} 
-                        />
-                      ))}
-                    </Stack>
+                        {linkLabel}
+                      </ActionButton>
+                    )}
                   </Stack>
-                </FloatingCard>
-              )}
+                </Stack>
+              </Grid>
 
-              {/* Highlights Card */}
-              {proj.highlights?.length > 0 && (
-                <FloatingCard
-                  component={motion.div}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <Stack spacing={2}>
-                    <Typography 
-                      variant="h6" 
-                      sx={{ fontWeight: 700 }}
-                    >
-                      Key Features
-                    </Typography>
-                    <Stack spacing={2}>
-                      {proj.highlights.map((item, idx) => (
-                        <Stack 
-                          direction="row" 
-                          spacing={1.5} 
-                          key={idx} 
-                          alignItems="flex-start"
-                        >
-                          <Box
+              <Grid size={{ xs: 12, lg: 7 }}>
+                <Stack spacing={1.5}>
+                  <PreviewStage accentColor={accentColor}>
+                    {currentImage ? (
+                      <>
+                        <AnimatePresence mode="wait">
+                          <PreviewMedia
+                            key={currentImage}
+                            src={currentImage}
+                            alt={`${proj.title} preview ${activeImageIndex + 1}`}
+                            initial={{ opacity: 0.32, scale: 1.02 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0.24, scale: 0.99 }}
+                            transition={{ duration: 0.35, ease: 'easeOut' }}
+                          />
+                        </AnimatePresence>
+                        <PreviewShade />
+                      </>
+                    ) : proj.mockPreview ? (
+                      <MockPreview accentColor={accentColor}>
+                        <Stack spacing={0.75}>
+                          <Typography
+                            variant="caption"
                             sx={{
-                              width: 20,
-                              height: 20,
-                              borderRadius: '50%',
-                              bgcolor: alpha(theme.palette.primary.main, 0.1),
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              flexShrink: 0,
-                              mt: 0.5,
+                              width: 'fit-content',
+                              borderRadius: 999,
+                              px: 1,
+                              py: 0.45,
+                              bgcolor: alpha('#ffffff', 0.9),
+                              color: alpha('#111827', 0.82),
+                              fontWeight: 700,
+                              letterSpacing: '0.08em',
                             }}
                           >
-                            <CheckCircleOutlineIcon
-                              fontSize="small"
-                              color="primary"
-                              sx={{ fontSize: 14 }}
-                            />
-                          </Box>
-                          <Typography 
-                            variant="body2"
-                            sx={{ 
-                              wordBreak: 'break-word',
-                              overflowWrap: 'break-word',
-                              lineHeight: 1.7,
-                              flex: 1,
-                              pt: 0.5,
+                            {proj.mockPreview.eyebrow}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: theme => (theme.palette.mode === 'dark' ? '#F8FAFC' : '#0F172A'),
+                              fontWeight: 800,
+                              fontSize: { xs: '2rem', md: '2.8rem' },
+                              lineHeight: 1.02,
+                              letterSpacing: '-0.04em',
+                              maxWidth: 420,
                             }}
                           >
-                            {item}
+                            {proj.mockPreview.title}
                           </Typography>
                         </Stack>
+
+                        <MockMetricGrid>
+                          {proj.mockPreview.metrics.map((metric) => (
+                            <MockMetric key={metric.label}>
+                              <Typography
+                                sx={{
+                                  fontWeight: 800,
+                                  fontSize: { xs: '1.4rem', md: '1.7rem' },
+                                  color: theme => (theme.palette.mode === 'dark' ? '#F8FAFC' : '#111827'),
+                                }}
+                              >
+                                {metric.value}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  color: theme => alpha(
+                                    theme.palette.mode === 'dark' ? '#F8FAFC' : '#111827',
+                                    0.66
+                                  ),
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em',
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {metric.label}
+                              </Typography>
+                            </MockMetric>
+                          ))}
+                        </MockMetricGrid>
+
+                        <MockChecklist>
+                          {proj.mockPreview.checks.map((item) => (
+                            <MockChecklistRow key={item}>
+                              <Box
+                                sx={{
+                                  width: 12,
+                                  height: 12,
+                                  borderRadius: '50%',
+                                  mt: 0.55,
+                                  bgcolor: accentColor,
+                                }}
+                              />
+                              <Typography
+                                sx={{
+                                  color: theme => alpha(
+                                    theme.palette.mode === 'dark' ? '#F8FAFC' : '#111827',
+                                    0.88
+                                  ),
+                                  lineHeight: 1.6,
+                                  fontWeight: 500,
+                                }}
+                              >
+                                {item}
+                              </Typography>
+                            </MockChecklistRow>
+                          ))}
+                        </MockChecklist>
+
+                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                          {(proj.tags || []).slice(0, 3).map((tag) => (
+                            <Chip
+                              key={tag}
+                              label={tag}
+                              size="small"
+                              sx={{
+                                bgcolor: alpha('#ffffff', 0.1),
+                                color: '#F8FAFC',
+                                border: `1px solid ${alpha('#ffffff', 0.16)}`,
+                                fontWeight: 600,
+                              }}
+                            />
+                          ))}
+                        </Stack>
+                      </MockPreview>
+                    ) : null}
+
+                    <PreviewOverlay>
+                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" gap={1.25}>
+                        <MetaPill
+                          sx={{
+                            bgcolor: alpha('#ffffff', 0.9),
+                            borderColor: alpha('#ffffff', 0.4),
+                          }}
+                        >
+                          <MetaDot sx={{ bgcolor: accentColor }} />
+                          <Typography
+                            variant="caption"
+                            sx={{ color: '#111827', fontWeight: 800, letterSpacing: '0.06em' }}
+                          >
+                            {proj.category}
+                          </Typography>
+                        </MetaPill>
+
+                        {totalImages > 1 && (
+                          <Stack direction="row" spacing={1}>
+                            <IconButton
+                              onClick={() =>
+                                setActiveImageIndex((prev) => (prev - 1 + totalImages) % totalImages)
+                              }
+                              sx={{
+                                bgcolor: alpha('#ffffff', 0.88),
+                                '&:hover': { bgcolor: '#ffffff' },
+                              }}
+                            >
+                              <ChevronLeftRoundedIcon />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => setActiveImageIndex((prev) => (prev + 1) % totalImages)}
+                              sx={{
+                                bgcolor: alpha('#ffffff', 0.88),
+                                '&:hover': { bgcolor: '#ffffff' },
+                              }}
+                            >
+                              <ChevronRightRoundedIcon />
+                            </IconButton>
+                          </Stack>
+                        )}
+                      </Stack>
+
+                      <Stack direction="row" justifyContent="space-between" alignItems="flex-end" gap={1.5}>
+                        <Chip
+                          label={totalImages > 1 ? `${String(activeImageIndex + 1).padStart(2, '0')} / ${String(totalImages).padStart(2, '0')}` : 'Preview'}
+                          size="small"
+                          sx={{
+                            bgcolor: alpha('#111827', 0.72),
+                            color: '#F8FAFC',
+                            fontWeight: 700,
+                          }}
+                        />
+                      </Stack>
+                    </PreviewOverlay>
+                  </PreviewStage>
+
+                  {totalImages > 1 && (
+                    <ThumbRail>
+                      {proj.images.map((src, index) => (
+                        <ThumbButton
+                          key={src}
+                          type="button"
+                          active={index === activeImageIndex}
+                          accentColor={accentColor}
+                          onClick={() => setActiveImageIndex(index)}
+                        >
+                          <img src={src} alt={`${proj.title} thumbnail ${index + 1}`} />
+                        </ThumbButton>
                       ))}
-                    </Stack>
-                  </Stack>
-                </FloatingCard>
-              )}
+                    </ThumbRail>
+                  )}
+                </Stack>
+              </Grid>
+            </Grid>
+          </DetailShell>
 
-              {/* GitHub Link */}
-              {proj.link && (
-                <FloatingCard
-                  component={motion.div}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 }}
+          {activeLensData && (
+            <LensShell accentColor={accentColor}>
+              <Stack spacing={2.5}>
+                <Stack
+                  direction={{ xs: 'column', md: 'row' }}
+                  spacing={1.5}
+                  justifyContent="space-between"
+                  alignItems={{ md: 'center' }}
                 >
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    endIcon={<ArrowOutwardIcon />}
-                    href={proj.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{ 
-                      borderRadius: 2,
-                      py: 1.5,
-                      fontWeight: 600,
-                    }}
-                  >
-                    View on GitHub
-                  </Button>
-                </FloatingCard>
-              )}
+                  <Stack spacing={0.75}>
+                    <Typography
+                      variant="overline"
+                      sx={{ letterSpacing: '0.14em', color: 'text.secondary', fontWeight: 700 }}
+                    >
+                      Build lens
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontWeight: 800,
+                        lineHeight: 1.08,
+                        maxWidth: 780,
+                      }}
+                    >
+                      A cleaner read of the product, the decisions, and the delivery.
+                    </Typography>
+                  </Stack>
 
-              {/* Navigation Card */}
-              <FloatingCard
-                component={motion.div}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                <Stack spacing={2}>
-                  <Typography 
-                    variant="h6" 
-                    sx={{ fontWeight: 700 }}
-                  >
-                    Navigation
-                  </Typography>
-                  <Stack spacing={1.5}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      startIcon={<ArrowBackIcon />}
-                      onClick={() => navigate(-1)}
-                      sx={{ 
-                        borderRadius: 2,
-                        py: 1.5,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Go Back
-                    </Button>
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      endIcon={<ArrowOutwardIcon />}
-                      onClick={() => navigate('/')}
-                      sx={{ 
-                        borderRadius: 2,
-                        py: 1.5,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Home
-                    </Button>
-                    <Button
-                      fullWidth
-                      variant="text"
-                      onClick={() => navigate('/#projects')}
-                      sx={{ 
-                        borderRadius: 2,
-                        py: 1.5,
-                        fontWeight: 600,
-                      }}
-                    >
-                      All Projects
-                    </Button>
+                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                    {lenses.map((lens) => {
+                      const Icon = lens.icon;
+                      return (
+                        <LensButton
+                          key={lens.id}
+                          type="button"
+                          active={activeLens === lens.id}
+                          accentColor={accentColor}
+                          onClick={() => setActiveLens(lens.id)}
+                        >
+                          <Icon fontSize="small" />
+                          <span>{lens.label}</span>
+                        </LensButton>
+                      );
+                    })}
                   </Stack>
                 </Stack>
-              </FloatingCard>
-            </Stack>
-          </Grid>
-        </Grid>
+
+                <AnimatePresence mode="wait">
+                  <Box
+                    key={activeLensData.id}
+                    component={motion.div}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.26, ease: 'easeOut' }}
+                  >
+                    <Stack spacing={2.1}>
+                      <Stack spacing={1}>
+                        <Typography
+                          variant="overline"
+                          sx={{ letterSpacing: '0.14em', color: 'text.secondary', fontWeight: 700 }}
+                        >
+                          {activeLensData.eyebrow}
+                        </Typography>
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontWeight: 800,
+                            lineHeight: 1.1,
+                            maxWidth: 780,
+                          }}
+                        >
+                          {activeLensData.title}
+                        </Typography>
+                        {activeLensData.intro && (
+                          <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            sx={{ lineHeight: 1.78, fontSize: '1.02rem', maxWidth: 920 }}
+                          >
+                            {activeLensData.intro}
+                          </Typography>
+                        )}
+                      </Stack>
+
+                      {activeLensData.cards?.length > 0 && (
+                        <Grid container spacing={1.25}>
+                          {activeLensData.cards.map((card) => (
+                            <Grid size={{ xs: 12, sm: 4 }} key={card.label}>
+                              <SnapshotCard>
+                                <Typography
+                                  variant="caption"
+                                  color="text.secondary"
+                                  sx={{
+                                    display: 'block',
+                                    mb: 0.75,
+                                    fontWeight: 700,
+                                    letterSpacing: '0.08em',
+                                  }}
+                                >
+                                  {card.label}
+                                </Typography>
+                                <Typography sx={{ fontWeight: 700, lineHeight: 1.35 }}>
+                                  {card.value}
+                                </Typography>
+                              </SnapshotCard>
+                            </Grid>
+                          ))}
+                        </Grid>
+                      )}
+
+                      {activeLensData.bullets?.length > 0 && (
+                        <Stack spacing={1.2}>
+                          {activeLensData.bullets.map((item) => (
+                            <HighlightRow key={item}>
+                              <Box
+                                sx={{
+                                  width: 22,
+                                  height: 22,
+                                  borderRadius: '50%',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  bgcolor: alpha(accentColor, 0.12),
+                                  mt: 0.35,
+                                }}
+                              >
+                                <CheckCircleOutlineIcon sx={{ fontSize: 14, color: accentColor }} />
+                              </Box>
+                              <Typography sx={{ lineHeight: 1.72, color: 'text.primary' }}>
+                                {item}
+                              </Typography>
+                            </HighlightRow>
+                          ))}
+                        </Stack>
+                      )}
+
+                      {activeLensData.paragraphs?.map((paragraph) => (
+                        <Typography
+                          key={paragraph}
+                          variant="body1"
+                          sx={{ lineHeight: 1.82, fontSize: '1.02rem', maxWidth: 980 }}
+                        >
+                          {paragraph}
+                        </Typography>
+                      ))}
+
+                      {activeLensData.chips?.length > 0 && (
+                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                          {activeLensData.chips.map((tag) => (
+                            <Chip
+                              key={tag}
+                              label={tag}
+                              size="small"
+                              sx={{
+                                fontWeight: 600,
+                                bgcolor: 'transparent',
+                                border: theme => `1px solid ${alpha(theme.palette.text.primary, 0.08)}`,
+                              }}
+                            />
+                          ))}
+                        </Stack>
+                      )}
+
+                      {activeLensData.quote && (
+                        <QuotePanel>
+                          <Typography
+                            sx={{
+                              fontStyle: 'italic',
+                              lineHeight: 1.7,
+                              fontSize: '1.04rem',
+                              mb: 1,
+                            }}
+                          >
+                            {activeLensData.quote.text}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                            {activeLensData.quote.speaker}
+                          </Typography>
+                        </QuotePanel>
+                      )}
+
+                      {activeLensData.footer && (
+                        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
+                          {activeLensData.footer}
+                        </Typography>
+                      )}
+                    </Stack>
+                  </Box>
+                </AnimatePresence>
+              </Stack>
+            </LensShell>
+          )}
+        </Stack>
       </Container>
     </Box>
   );
 }
-
-
-
-
-

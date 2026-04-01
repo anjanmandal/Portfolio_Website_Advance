@@ -21,7 +21,7 @@ const SectionFrame = forwardRef(
       subtitle,
       actions,
       children,
-      maxWidth = 'lg',
+      maxWidth = 'xl',
       contentSpacing = 4,
       sx,
       contentSx,
@@ -81,15 +81,31 @@ const SectionFrame = forwardRef(
       : {
           elevation: 0,
           sx: {
-            borderRadius: { xs: 3, md: 5 },
+            borderRadius: { xs: 4, md: 5 },
             p: { xs: 3, md: 5 },
-            background: surface,
-            border: `1px solid ${alpha(
-              theme.palette.common.white,
-              theme.palette.mode === 'dark' ? 0.1 : 0.08
-            )}`,
+            background:
+              theme.palette.mode === 'dark'
+                ? alpha(theme.palette.background.paper, 0.84)
+                : alpha(theme.palette.common.white, 0.76),
+            border: `1px solid ${theme.palette.divider}`,
             boxShadow: theme.shadows[1],
-            backdropFilter: 'blur(22px)',
+            backdropFilter: 'blur(20px) saturate(120%)',
+            position: 'relative',
+            overflow: 'hidden',
+            isolation: 'isolate',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              background: `linear-gradient(180deg, ${alpha(
+                theme.palette.common.white,
+                theme.palette.mode === 'dark' ? 0.03 : 0.6
+              )}, transparent 22%)`,
+              left: 0,
+              right: 0,
+              top: 0,
+              height: 120,
+              zIndex: -1,
+            },
           },
         };
 
@@ -98,7 +114,7 @@ const SectionFrame = forwardRef(
         ref={mergedRef}
         component={componentProp}
         {...motionProps}
-        sx={{ position: 'relative', width: '100%', py: { xs: 6, md: 10 }, ...sx }}
+        sx={{ position: 'relative', width: '100%', py: { xs: 7, md: 10 }, ...sx }}
         {...props}
       >
         <Container maxWidth={maxWidth}>

@@ -6,26 +6,26 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import ModeNightRoundedIcon from '@mui/icons-material/ModeNightRounded';
 import WbSunnyRoundedIcon from '@mui/icons-material/WbSunnyRounded';
-import { styled } from '@mui/material/styles';
-import { keyframes } from '@emotion/react';
+import { alpha, styled } from '@mui/material/styles';
 
-// Define the shake animation using keyframes
-const shake = keyframes`
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
-  100% { transform: translateY(0); }
-`;
-
-// Create a styled IconButton with the shake animation
 const AnimatedIconButton = styled(IconButton)(({ theme }) => ({
-  animation: `${shake} 4s ease-in-out infinite`,
-  backgroundImage: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  color: theme.palette.common.white,
+  position: 'relative',
+  overflow: 'hidden',
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.92)
+      : alpha(theme.palette.common.white, 0.9),
+  color: theme.palette.text.primary,
   borderRadius: 999,
+  border: `1px solid ${theme.palette.divider}`,
   boxShadow: theme.shadows[1],
+  backdropFilter: 'blur(14px)',
   '&:hover': {
-    backgroundImage: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.secondary.light})`,
-    boxShadow: theme.shadows[8],
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.background.paper, 1)
+        : alpha(theme.palette.common.white, 1),
+    boxShadow: theme.shadows[2],
   },
 }));
 
